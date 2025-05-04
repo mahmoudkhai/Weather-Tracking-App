@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Weather Tracking App</string>
+    <string name="location_is_null">Sorry, location in null </string>
+    <string name="go_to_setting_dialog">Location permission was denied. Please enable it manually in Settings.</string>
+    <string name="permission_needed">Permission needed</string>
+    <string name="go_to_settings">Go to Settings</string>
+    <string name="cancel">Cancel</string>
+    <string name="please_allow_location_access">We need your location to provide location-based features. Please allow location access.</string>
+    <string name="allow">Allow</string>
 </resources>

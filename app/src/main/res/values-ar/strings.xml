@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="location_is_null">عذراً، لا يمكن الوصول للموقع</string>
+    <string name="go_to_setting_dialog">الموقع تم رفضة، برجاء تفعيلة يدوياً فى الإعدادات </string>
+    <string name="permission_needed">برجاء منح الإذن</string>
+    <string name="go_to_settings">الذهاب إلى الإعدادات</string>
+    <string name="cancel">إلغاء</string>
+    <string name="please_allow_location_access"> هذا التطبيق مبنى على إستخدام الموقع الجغرافى، برجاء السماح بالوصول إلى الموقع الجغرافى </string>
+    <string name="allow">سماح</string>
+</resources>
