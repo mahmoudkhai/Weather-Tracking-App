@@ -5,76 +5,106 @@ import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
 import com.example.weathertrackingapp.common.weatherException.CustomException
 import com.example.weathertrackingapp.data.dto.CurrentConditionsDto
 import com.example.weathertrackingapp.domain.model.WeatherRequest
+import org.json.JSONException
 import org.json.JSONObject
 import java.io.BufferedReader
+import java.io.IOException
 import java.io.InputStreamReader
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
 class ApiServiceImpl : ApiService {
 
-    override fun getCurrentWeather(weatherRequest: WeatherRequest): CurrentConditionsDto {
-        val lat = weatherRequest.latLong.latitude
-        val long = weatherRequest.latLong.longitude
-        val language = weatherRequest.language
-        val urlString =
-            "$BASE_URL/$lat,$long/today?unitGroup=metric&lang=$language&include=current&key=$API_KEY&contentType=json"
-        try {
-            val connection = createHttpGetRequest(urlString)
-            Log.d(TAG, "connection opened successfully with request method = GET")
+    override fun getCurrentWeatherConditions(
+        weatherRequest: WeatherRequest,
+        baseUrl: String,
+        startDate: String,
+        endDate: String,
+        apiKey: String,
+        unitGroup: String,
+        include: String,
+    ): CurrentConditionsDto {
+        val url = buildWeatherUrl(
+            weatherRequest,
+            baseUrl,
+            apiKey,
+            unitGroup,
+            include,
+            startDate,
+            endDate
+        )
 
+        return safeApiCall {
+            val connection = openHttpsUrlConnection(url)
             val responseCode = connection.responseCode
             Log.d(TAG, "Response Code = $responseCode")
-            if (responseCode != HttpsURLConnection.HTTP_OK) {
-                throw CustomException.NetworkException.UnKnownNetworkException("Error Code = $responseCode")
-            }
-            val apiResponse: String = getApiResponseAsString(connection)
-            Log.d(TAG, "opened buffer reader to get the response")
 
-            val wrappedResponse = JSONObject(apiResponse)
-            val currentConditionsJson = wrappedResponse.getJSONObject("currentConditions")
+            handleHttpResponseCode(responseCode)
 
-            return CurrentConditionsDto(
-                cloudcover = currentConditionsJson.getDouble("cloudcover"),
-                conditions = currentConditionsJson.getString("conditions"),
-                datetime = currentConditionsJson.getString("datetime"),
-                datetimeEpoch = currentConditionsJson.getInt("datetimeEpoch"),
-                dew = currentConditionsJson.getDouble("dew"),
-                feelslike = currentConditionsJson.getDouble("feelslike"),
-                humidity = currentConditionsJson.getDouble("humidity"),
-                icon = currentConditionsJson.getString("icon"),
-                moonphase = currentConditionsJson.getDouble("moonphase"),
-                precip = currentConditionsJson.opt("precip"),  // nullable
-                precipprob = currentConditionsJson.getDouble("precipprob"),
-                preciptype = currentConditionsJson.opt("preciptype"), // nullable
-                pressure = currentConditionsJson.getDouble("pressure"),
-                snow = currentConditionsJson.getDouble("snow"),
-                snowdepth = currentConditionsJson.getDouble("snowdepth"),
-                solarenergy = currentConditionsJson.getDouble("solarenergy"),
-                solarradiation = currentConditionsJson.getDouble("solarradiation"),
-                source = currentConditionsJson.getString("source"),
-                stations = currentConditionsJson.getJSONArray("stations").let { array ->
-                    List(array.length()) { index -> array.getString(index) }
-                },
-                sunrise = currentConditionsJson.getString("sunrise"),
-                sunriseEpoch = currentConditionsJson.getInt("sunriseEpoch"),
-                sunset = currentConditionsJson.getString("sunset"),
-                sunsetEpoch = currentConditionsJson.getInt("sunsetEpoch"),
-                temp = currentConditionsJson.getDouble("temp"),
-                uvindex = currentConditionsJson.getDouble("uvindex"),
-                visibility = currentConditionsJson.getDouble("visibility"),
-                winddir = currentConditionsJson.getDouble("winddir"),
-                windgust = currentConditionsJson.opt("windgust"),  // nullable
-                windspeed = currentConditionsJson.getDouble("windspeed")
-            ).also { Log.d(TAG, "Current Conditions = $it") }
+            val apiResponse = getApiResponseAsString(connection)
+            val json = JSONObject(apiResponse).getJSONObject(JSON_ATTRIBUTE_TO_SELECT)
+            val result: CurrentConditionsDto = parseCurrentConditions(json)
 
-        } catch (e: Exception) {
-            throw CustomException.NetworkException.UnKnownNetworkException(
-                "Failed to get Code msg,exception stackTrace = ${e.toString()} cause = ${e.cause}" +
-                        ", message = ${e.message}"
-            )
+            connection to result  // return Pair(connection, result)
         }
 
+    }
+
+    private fun buildWeatherUrl(
+        request: WeatherRequest,
+        baseUrl: String,
+        apiKey: String,
+        unitGroup: String,
+        include: String,
+        startDate: String,
+        endDate: String,
+    ): String {
+        return "$baseUrl/${request.latLong.latitude},${request.latLong.longitude}/${startDate}/${endDate}" +
+                "?unitGroup=$unitGroup&lang=${request.language}&include=$include&key=$apiKey"
+    }
+
+    private fun openHttpsUrlConnection(urlString: String): HttpsURLConnection {
+        val url = URL(urlString)
+        val connection = url.openConnection() as HttpsURLConnection
+        connection.apply {
+            requestMethod = HttpMethods.GET.toString()
+            setRequestProperty("Content-Type", "application/json")
+            setRequestProperty("Accept", "application/json")
+            connectTimeout = 10000
+            readTimeout = 10000
+            doInput = true
+        }
+        return connection
+    }
+
+
+    private inline fun <T> safeApiCall(requiredOperationsToGetDtoObject: () -> Pair<HttpsURLConnection, T>): T {
+        var connection: HttpsURLConnection? = null
+        return try {
+            val (conn, dtoObject) = requiredOperationsToGetDtoObject()
+            connection = conn
+            dtoObject
+        } catch (e: JSONException) {
+            throw CustomException.DataException.ParsingException()
+        } catch (e: IOException) {
+            throw CustomException.NetworkException.PoorInternetConnectionException
+        } catch (e: Exception) {
+            throw CustomException.NetworkException.UnKnownNetworkException("Unknown error: ${e.message}")
+        }finally {
+            connection?.disconnect()
+        }
+    }
+
+    private fun handleHttpResponseCode(code: Int) {
+        when (code) {
+            HttpsURLConnection.HTTP_OK -> return
+            HttpsURLConnection.HTTP_UNAUTHORIZED -> throw CustomException.NetworkException.UnAuthorizedException
+            HttpsURLConnection.HTTP_NOT_FOUND -> throw CustomException.NetworkException.NotFoundException
+            HttpsURLConnection.HTTP_INTERNAL_ERROR -> throw CustomException.NetworkException.BadRequestException
+            HttpsURLConnection.HTTP_BAD_REQUEST -> throw CustomException.NetworkException.BadRequestException
+            429 -> throw CustomException.NetworkException.TooManyRequests
+            else -> throw CustomException.NetworkException.UnKnownNetworkException(code.toString())
+        }
     }
 
     private fun getApiResponseAsString(connection: HttpsURLConnection): String {
@@ -84,18 +114,44 @@ class ApiServiceImpl : ApiService {
         return response
     }
 
-    private fun createHttpGetRequest(urlString: String): HttpsURLConnection {
-        val url = URL(urlString)
-        val connection = url.openConnection() as HttpsURLConnection
-        connection.requestMethod = "GET"
-        return connection
+    private fun parseCurrentConditions(json: JSONObject): CurrentConditionsDto {
+        return CurrentConditionsDto(
+            cloudcover = json.getDouble("cloudcover"),
+            conditions = json.getString("conditions"),
+            datetime = json.getString("datetime"),
+            datetimeEpoch = json.getInt("datetimeEpoch"),
+            dew = json.getDouble("dew"),
+            feelslike = json.getDouble("feelslike"),
+            humidity = json.getDouble("humidity"),
+            icon = json.getString("icon"),
+            moonphase = json.getDouble("moonphase"),
+            precip = json.opt("precip"),
+            precipprob = json.getDouble("precipprob"),
+            preciptype = json.opt("preciptype"),
+            pressure = json.getDouble("pressure"),
+            snow = json.getDouble("snow"),
+            snowdepth = json.getDouble("snowdepth"),
+            solarenergy = json.getDouble("solarenergy"),
+            solarradiation = json.getDouble("solarradiation"),
+            source = json.getString("source"),
+            stations = json.getJSONArray("stations").let { arr ->
+                List(arr.length()) { i -> arr.getString(i) }
+            },
+            sunrise = json.getString("sunrise"),
+            sunriseEpoch = json.getInt("sunriseEpoch"),
+            sunset = json.getString("sunset"),
+            sunsetEpoch = json.getInt("sunsetEpoch"),
+            temp = json.getDouble("temp"),
+            uvindex = json.getDouble("uvindex"),
+            visibility = json.getDouble("visibility"),
+            winddir = json.getDouble("winddir"),
+            windgust = json.opt("windgust"),
+            windspeed = json.getDouble("windspeed")
+        )
     }
 
     companion object {
-        private const val BASE_URL =
-            "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/"
-        private const val API_KEY = "RA2BDAYLZBGTLU4BCQZE4DE8E"
-        const val DTO_OBJECT_NAME = "CurrentConditionsDto"
+        const val JSON_ATTRIBUTE_TO_SELECT = "currentConditions"
 
     }
 }
