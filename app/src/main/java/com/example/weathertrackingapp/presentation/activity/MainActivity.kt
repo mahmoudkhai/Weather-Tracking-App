@@ -25,6 +25,25 @@ import com.example.weathertrackingapp.presentation.presentationUtil.UiUtil
 import com.example.weathertrackingapp.presentation.presentationUtil.UiUtilImpl
 import com.google.android.gms.location.LocationServices
 
+/**
+ * MainActivity delegates utility responsibilities to implementation classes using Kotlin's delegation pattern.
+ *
+ * ## Why delegation?
+ * Delegation is used here to:
+ * - **Promote composition over inheritance**: Instead of subclassing utility classes or making MainActivity implement their logic directly,
+ *   it delegates functionality to standalone utility implementations.
+ * - **Encapsulate and reuse functionality**: Each utility class (UiUtilImpl, LocationUtilImpl, PermissionUtilImpl) encapsulates
+ *   a specific concern (UI helpers, location handling, permission management) making them reusable and testable independently.
+ * - **Reduce boilerplate in MainActivity**: MainActivity doesn't need to manually forward method calls to utility instances —
+ *   the delegation syntax automatically exposes the interface methods as if they were implemented directly in MainActivity.
+ *
+ * ## Benefit:
+ * This pattern keeps MainActivity focused on high-level orchestration while delegating specialized functionality to
+ * dedicated, testable classes, improving modularity, readability, and maintainability.
+ *
+ * Example:
+ * Instead of `uiUtil.showToast()`, we can directly call `showToast()` from MainActivity as if it were a native method.
+ */
 class MainActivity : AppCompatActivity(),
     UiUtil by UiUtilImpl(),
     LocationUtil by LocationUtilImpl(),

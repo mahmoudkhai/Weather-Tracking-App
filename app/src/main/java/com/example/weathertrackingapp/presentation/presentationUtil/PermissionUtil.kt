@@ -6,5 +6,4 @@ import android.content.Context
 interface PermissionUtil {
     fun requestLocationPermission(activity: Activity)
     fun isLocationPermissionGranted(context: Context): Boolean
-
 }
