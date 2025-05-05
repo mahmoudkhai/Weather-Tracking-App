@@ -86,6 +86,7 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
+    //region --------------------Private functions--------------------
 
     private fun handleLocationState(state: AppState<LatLong>) {
         when (state) {
@@ -102,6 +103,16 @@ class MainActivity : AppCompatActivity(),
 
             is AppState.IsLoading -> {}
         }
+    }
+
+    private fun isPermissionGranted(grantResults: IntArray) =
+        grantResults.isNotEmpty() && grantResults[PermissionUtilImpl.FIRST_REQUESTED_PERMISSION] == PackageManager.PERMISSION_GRANTED
+
+    private fun openSetting() {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        val uri = Uri.fromParts("package", packageName, null)
+        intent.data = uri
+        startActivity(intent)
     }
 
     private fun showPermissionExplanationDialog() = showDialog(
@@ -135,21 +146,11 @@ class MainActivity : AppCompatActivity(),
             })
     }
 
-
-    private fun isPermissionGranted(grantResults: IntArray) =
-        grantResults.isNotEmpty() && grantResults[PermissionUtilImpl.FIRST_REQUESTED_PERMISSION] == PackageManager.PERMISSION_GRANTED
-
-    private fun openSetting() {
-        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-        val uri = Uri.fromParts("package", packageName, null)
-        intent.data = uri
-        startActivity(intent)
-    }
-
     private fun releaseDialog() {
         dialog?.dismiss()
         dialog = null
     }
+    //endregion --------------------Private functions--------------------
 
 
     override fun onDestroy() {
