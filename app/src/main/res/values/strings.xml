@@ -7,4 +7,19 @@
     <string name="cancel">Cancel</string>
     <string name="please_allow_location_access">We need your location to provide location-based features. Please allow location access.</string>
     <string name="allow">Allow</string>
+
+    <string name="current_weather">Current Weather</string>
+    <string name="temperature">Temperature:</string>
+    <string name="feels_like">Feels Like:</string>
+    <string name="conditions">Conditions:</string>
+    <string name="icon">Cloud Appearance:</string>
+    <string name="humidity">Humidity:</string>
+    <string name="cloud_cover">Cloud Cover:</string>
+    <string name="wind_speed">Wind Speed:</string>
+    <string name="uv_index">UV Index:</string>
+    <string name="sunrise">Sunrise:</string>
+    <string name="sunset">Sunset:</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

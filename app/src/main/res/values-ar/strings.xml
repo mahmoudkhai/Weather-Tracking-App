@@ -7,4 +7,17 @@
     <string name="cancel">إلغاء</string>
     <string name="please_allow_location_access"> هذا التطبيق مبنى على إستخدام الموقع الجغرافى، برجاء السماح بالوصول إلى الموقع الجغرافى </string>
     <string name="allow">سماح</string>
+
+    <string name="current_weather">الطقس الحالي</string>
+    <string name="temperature">درجة الحرارة:</string>
+    <string name="feels_like">يشعر وكأنه:</string>
+    <string name="conditions">الظروف:</string>
+    <string name="icon">شكل السحاب:</string>
+    <string name="humidity">الرطوبة:</string>
+    <string name="cloud_cover">الغطاء السحابي:</string>
+    <string name="wind_speed">سرعة الرياح:</string>
+    <string name="uv_index"> الأشعة فوق البنفسجية:</string>
+    <string name="sunrise">شروق الشمس:</string>
+    <string name="sunset">غروب الشمس:</string>
+
 </resources>
