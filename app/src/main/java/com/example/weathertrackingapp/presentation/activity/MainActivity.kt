@@ -128,18 +128,23 @@ class MainActivity : AppCompatActivity(),
             negativeButton = getString(R.string.cancel),
             onPositiveButtonClick = {
                 // Open app settings
-                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                val uri = Uri.fromParts("package", packageName, null)
-                intent.data = uri
-                startActivity(intent)
+                openSetting()
             },
             onNegativeButtonClick = {
                 this.finish()
             })
     }
 
+
     private fun isPermissionGranted(grantResults: IntArray) =
         grantResults.isNotEmpty() && grantResults[PermissionUtilImpl.FIRST_REQUESTED_PERMISSION] == PackageManager.PERMISSION_GRANTED
+
+    private fun openSetting() {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        val uri = Uri.fromParts("package", packageName, null)
+        intent.data = uri
+        startActivity(intent)
+    }
 
     private fun releaseDialog() {
         dialog?.dismiss()
