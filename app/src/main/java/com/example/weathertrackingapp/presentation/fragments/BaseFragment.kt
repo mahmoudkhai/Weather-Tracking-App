@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import com.example.weathertrackingapp.R
-import com.example.weathertrackingapp.common.weatherException.CustomException
+import com.example.weathertrackingapp.common.customException.CustomException
 import com.example.weathertrackingapp.common.observerPattern.Observer
 import com.example.weathertrackingapp.presentation.fragments.currentWeather.UiEvent
 
 abstract class BaseFragment<DataType>(private val fragmentId: Int) : Fragment(), Observer<UiEvent> {
+
+    private var loadingView: View? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,7 +30,14 @@ abstract class BaseFragment<DataType>(private val fragmentId: Int) : Fragment(),
         }
     }
 
-    abstract fun showLoading(isLoading: Boolean)
+    private fun showLoading(isLoading: Boolean) {
+        val loadingView = view?.findViewById<View>(R.id.loading_view)
+        if (loadingView != null) {
+            val progressBar = loadingView.findViewById<ProgressBar>(R.id.loading_view)
+            progressBar?.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+    }
+
     abstract fun showError(errorMessage: String)
     abstract fun bindViews(data: DataType)
 

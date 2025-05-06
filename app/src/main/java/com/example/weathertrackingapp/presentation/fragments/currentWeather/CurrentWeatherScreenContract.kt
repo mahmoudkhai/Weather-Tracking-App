@@ -1,6 +1,6 @@
 package com.example.weathertrackingapp.presentation.fragments.currentWeather
 
-import com.example.weathertrackingapp.common.weatherException.CustomException
+import com.example.weathertrackingapp.common.customException.CustomException
 import com.example.weathertrackingapp.domain.model.WeatherRequest
 
 

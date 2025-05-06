@@ -2,7 +2,7 @@ package com.example.weathertrackingapp.presentation.presentationUtil
 
 import android.Manifest
 import androidx.annotation.RequiresPermission
-import com.example.weathertrackingapp.common.weatherException.CustomException
+import com.example.weathertrackingapp.common.customException.CustomException
 import com.example.weathertrackingapp.domain.model.LatLong
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Priority

@@ -23,7 +23,7 @@ class CurrentWeatherViewModel(private val getCurrentWeatherUseCase: GetCurrentWe
         }
 
     override fun onUpdate(dataState: DataState<CurrentConditions>) = when (dataState) {
-        is DataState.IsLoading -> notifyObservers(UiEvent.ShowLoading(dataState.isLoading))
+        is DataState.Loading -> notifyObservers(UiEvent.ShowLoading(dataState.isLoading))
         is DataState.Success<CurrentConditions> -> notifyObservers(UiEvent.Success(dataState.data))
         is DataState.Failure -> notifyObservers(UiEvent.ShowError(dataState.exception))
     }

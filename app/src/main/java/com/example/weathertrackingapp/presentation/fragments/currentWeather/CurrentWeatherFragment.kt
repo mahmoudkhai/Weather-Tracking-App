@@ -2,10 +2,9 @@ package com.example.weathertrackingapp.presentation.fragments.currentWeather
 
 import android.os.Bundle
 import android.view.View
-import android.widget.ProgressBar
 import android.widget.TextView
 import com.example.weathertrackingapp.R
-import com.example.weathertrackingapp.common.weatherException.CustomException
+import com.example.weathertrackingapp.common.customException.CustomException
 import com.example.weathertrackingapp.data.dataSources.remote.WeatherRemoteDSImpl
 import com.example.weathertrackingapp.data.dataSources.remote.apiService.ApiServiceImpl
 import com.example.weathertrackingapp.data.repository.WeatherRepositoryImpl
@@ -60,13 +59,13 @@ class CurrentWeatherFragment :
         language = systemLanguage,
     )
 
-    override fun showLoading(isLoading: Boolean) {
-        requireView().findViewById<ProgressBar>(R.id.progress_bar).visibility = if (isLoading) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-    }
+//    override fun showLoading(isLoading: Boolean) {
+//        requireView().findViewById<ProgressBar>(R.id.progress_bar).visibility = if (isLoading) {
+//            View.VISIBLE
+//        } else {
+//            View.GONE
+//        }
+//    }
 
     override fun showError(errorMessage: String) {
         requireView().findViewById<TextView>(R.id.errorTextView).text =

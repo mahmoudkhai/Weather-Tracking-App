@@ -1,4 +1,4 @@
-package com.example.weathertrackingapp.common.weatherException
+package com.example.weathertrackingapp.common.customException
 
 sealed class CustomException() : Exception() {
 
@@ -14,9 +14,7 @@ sealed class CustomException() : Exception() {
     }
 
     sealed class DataException() : CustomException() {
-        data class ParsingException(
-            override val message: String = "Parsing or Mapping Error",
-        ) : DataException()
+        data object ParsingException : DataException()
     }
 
     sealed class LocationException() : CustomException() {

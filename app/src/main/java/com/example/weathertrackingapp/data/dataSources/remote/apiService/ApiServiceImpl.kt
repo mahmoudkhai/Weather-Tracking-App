@@ -2,7 +2,7 @@ package com.example.weathertrackingapp.data.dataSources.remote.apiService
 
 import android.util.Log
 import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
-import com.example.weathertrackingapp.common.weatherException.CustomException
+import com.example.weathertrackingapp.common.customException.CustomException
 import com.example.weathertrackingapp.data.dto.CurrentConditionsDto
 import com.example.weathertrackingapp.domain.model.WeatherRequest
 import org.json.JSONException
@@ -85,7 +85,7 @@ class ApiServiceImpl : ApiService {
             connection = conn
             dtoObject
         } catch (e: JSONException) {
-            throw CustomException.DataException.ParsingException()
+            throw CustomException.DataException.ParsingException
         } catch (e: IOException) {
             throw CustomException.NetworkException.NoInternetConnection
         } catch (e: Exception) {
