@@ -13,8 +13,6 @@ import com.example.weathertrackingapp.domain.entity.requestModels.LatLong
 import com.example.weathertrackingapp.domain.entity.requestModels.WeatherRequest
 import com.example.weathertrackingapp.presentation.delegationPattern.LocationUtil
 import com.example.weathertrackingapp.presentation.delegationPattern.LocationUtilImpl
-import com.example.weathertrackingapp.presentation.delegationPattern.SystemUtil
-import com.example.weathertrackingapp.presentation.delegationPattern.SystemUtilImpl
 import com.example.weathertrackingapp.presentation.presentationUtil.PresentationConstants
 import com.example.weathertrackingapp.presentation.presentationUtil.UiEvent
 import com.google.android.gms.location.LocationServices

@@ -7,7 +7,6 @@ import com.example.weathertrackingapp.data.dto.CurrentConditionsDto
 import com.example.weathertrackingapp.data.dto.DayForecastDto
 import com.example.weathertrackingapp.data.dto.FiveDaysForecastDto
 import com.example.weathertrackingapp.domain.entity.requestModels.WeatherRequest
-import com.example.weathertrackingapp.domain.entity.responseEntities.FiveDaysForecast
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.BufferedReader
