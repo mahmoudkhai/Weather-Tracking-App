@@ -1,6 +1,5 @@
 package com.example.weathertrackingapp.presentation.presentationUtil
 
-import com.example.weathertrackingapp.common.customState.ResultState
 import com.example.weathertrackingapp.domain.model.LatLong
 import com.google.android.gms.location.FusedLocationProviderClient
 

@@ -1,8 +1,6 @@
 package com.example.weathertrackingapp.data.dataSources.remote
 
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
 import com.example.weathertrackingapp.data.constants.ApiKeyProvider
 import com.example.weathertrackingapp.data.dataSources.remote.apiService.ApiService
