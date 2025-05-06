@@ -1,6 +1,6 @@
-package com.example.weathertrackingapp.presentation.presentationUtil
+package com.example.weathertrackingapp.presentation.delegationPattern
 
-import com.example.weathertrackingapp.domain.model.requestModels.LatLong
+import com.example.weathertrackingapp.domain.entity.requestModels.LatLong
 import com.google.android.gms.location.FusedLocationProviderClient
 
 /**

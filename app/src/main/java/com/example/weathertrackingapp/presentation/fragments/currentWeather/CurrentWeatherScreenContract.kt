@@ -1,15 +1,10 @@
 package com.example.weathertrackingapp.presentation.fragments.currentWeather
 
-import com.example.weathertrackingapp.common.customException.CustomException
-import com.example.weathertrackingapp.domain.model.requestModels.CurrentWeatherRequest
+import com.example.weathertrackingapp.domain.entity.requestModels.WeatherRequest
 
 
-sealed interface UserIntent {
-    data class GetCurrentWeather(val currentWeatherRequest: CurrentWeatherRequest) : UserIntent
-}
-
-sealed interface UiEvent {
-    data class ShowLoading(val isLoading: Boolean) : UiEvent
-    data class Success<T>(val data: T) : UiEvent
-    data class ShowError(val error: CustomException) : UiEvent
+sealed interface CurrentWeatherScreenContract {
+    sealed interface Intent {
+        data class GetCurrentWeather(val weatherRequest: WeatherRequest) : Intent
+    }
 }

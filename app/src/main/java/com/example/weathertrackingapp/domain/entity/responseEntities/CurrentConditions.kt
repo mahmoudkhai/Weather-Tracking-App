@@ -1,4 +1,4 @@
-package com.example.weathertrackingapp.domain.model.responseModels
+package com.example.weathertrackingapp.domain.entity.responseEntities
 
 data class CurrentConditions(
     val temperature: Double,

@@ -2,62 +2,51 @@ package com.example.weathertrackingapp.presentation.fragments.currentWeather
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import com.example.weathertrackingapp.R
-import com.example.weathertrackingapp.common.customException.CustomException
-import com.example.weathertrackingapp.data.dataSources.remote.WeatherRemoteDSImpl
-import com.example.weathertrackingapp.data.dataSources.remote.apiService.ApiServiceImpl
-import com.example.weathertrackingapp.data.repository.WeatherRepositoryImpl
-import com.example.weathertrackingapp.domain.model.responseModels.CurrentConditions
-import com.example.weathertrackingapp.domain.model.requestModels.LatLong
-import com.example.weathertrackingapp.domain.model.requestModels.CurrentWeatherRequest
-import com.example.weathertrackingapp.domain.useCase.GetCurrentWeatherUseCase
-import com.example.weathertrackingapp.presentation.fragments.BaseFragment
-import com.example.weathertrackingapp.presentation.presentationUtil.LocationUtil
-import com.example.weathertrackingapp.presentation.presentationUtil.LocationUtilImpl
-import com.example.weathertrackingapp.presentation.presentationUtil.PresentationCommonConstants
-import com.google.android.gms.location.LocationServices
+import com.example.weathertrackingapp.common.di.AppDependenciesProvider
+import com.example.weathertrackingapp.domain.entity.requestModels.LatLong
+import com.example.weathertrackingapp.domain.entity.requestModels.WeatherRequest
+import com.example.weathertrackingapp.domain.entity.responseEntities.CurrentConditions
+import com.example.weathertrackingapp.presentation.fragments.base.BaseFragment
+import com.example.weathertrackingapp.presentation.fragments.fiveDaysForecase.FiveDaysForecastFragment
 
 class CurrentWeatherFragment :
-    BaseFragment<CurrentConditions>(R.layout.fragment_current_weather),
-    LocationUtil by LocationUtilImpl() {
+    BaseFragment<CurrentConditions>(R.layout.fragment_current_weather) {
 
-    private lateinit var systemLanguage: String
-    private val viewModel by lazy {
-        CurrentWeatherViewModel(
-            GetCurrentWeatherUseCase(
-                WeatherRepositoryImpl(
-                    WeatherRemoteDSImpl(ApiServiceImpl())
-                )
-            )
-        )
+    override val viewModel by lazy {
+        AppDependenciesProvider.provideCurrentWeatherViewModel()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        systemLanguage = arguments?.getString(PresentationCommonConstants.SYSTEM_LANGUAGE)
-            ?: PresentationCommonConstants.DEFAULT_LANGUAGE
-
-        setFusedLocationClient(LocationServices.getFusedLocationProviderClient(requireActivity()))
-        try {
-            requestFreshLocation { latLong ->
-                viewModel.registerObserver(this)
-                getCurrentWeatherInBackground(createWeatherRequest(latLong))
-            }
-        } catch (locationException: CustomException.LocationException) {
-            showError(getFailureMessage(locationException))
+        requireView().findViewById<Button>(R.id.btn_navigate_to_forecast).setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container , FiveDaysForecastFragment())
+                .addToBackStack(null)
+                .commit()
         }
     }
 
-    private fun getCurrentWeatherInBackground(currentWeatherRequest: CurrentWeatherRequest) = Thread {
-        viewModel.processUserIntent(UserIntent.GetCurrentWeather(currentWeatherRequest))
-    }.start()
+    override fun registerObserverIntoViewModel() =
+        viewModel.registerObserver(this)
 
-    private fun createWeatherRequest(latLong: LatLong): CurrentWeatherRequest = CurrentWeatherRequest(
-        latLong = latLong,
-        language = systemLanguage,
-    )
+    override fun getDataInBackgroundThread(weatherRequest: WeatherRequest) =
+        Thread {
+            viewModel.processUserIntent(
+                CurrentWeatherScreenContract.Intent.GetCurrentWeather(
+                    weatherRequest
+                )
+            )
+        }.start()
+
+    override fun createWeatherRequest(latLong: LatLong): WeatherRequest =
+        WeatherRequest(
+            latLong = latLong,
+            language = systemLanguage,
+        )
+
 
 //    override fun showLoading(isLoading: Boolean) {
 //        requireView().findViewById<ProgressBar>(R.id.progress_bar).visibility = if (isLoading) {
@@ -73,6 +62,7 @@ class CurrentWeatherFragment :
                 " ${getString(R.string.swipe_to_refresh)}"
             )
     }
+
 
     override fun bindViews(data: CurrentConditions) {
         bindCurrentConditions(data)
@@ -98,11 +88,7 @@ class CurrentWeatherFragment :
         view.findViewById<TextView>(R.id.tvSunset).text = currentConditions.sunset
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        destroyFusedLocationClient()
+    override fun unRegisterFragmentFromViewModel() {
         viewModel.unregisterObserver(this)
-        viewModel.onDestroy()
     }
-
 }

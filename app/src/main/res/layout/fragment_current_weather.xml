@@ -181,6 +181,15 @@
         app:layout_constraintTop_toBottomOf="@id/tvSunrise"
         tools:text="06:45 PM" />
 
+    <Button
+        android:id="@+id/btn_navigate_to_forecast"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/click_here_to_view_next_5_days_forecast"
+        app:layout_constraintBottom_toTopOf="@id/guideline70_horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline70_horizontal"
         android:layout_width="match_parent"

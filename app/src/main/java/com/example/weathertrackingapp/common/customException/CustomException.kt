@@ -15,6 +15,7 @@ sealed class CustomException() : Exception() {
 
     sealed class DataException() : CustomException() {
         data object ParsingException : DataException()
+        data object UnSupportedTypeCasting:DataException()
     }
 
     sealed class LocationException() : CustomException() {

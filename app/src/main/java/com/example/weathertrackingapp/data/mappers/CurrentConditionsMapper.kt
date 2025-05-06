@@ -1,7 +1,7 @@
 package com.example.weathertrackingapp.data.mappers
 
 import com.example.weathertrackingapp.data.dto.CurrentConditionsDto
-import com.example.weathertrackingapp.domain.model.responseModels.CurrentConditions
+import com.example.weathertrackingapp.domain.entity.responseEntities.CurrentConditions
 
 object CurrentConditionsMapper : Mapper<CurrentConditionsDto, CurrentConditions> {
     override fun dtoToDomain(input: CurrentConditionsDto): CurrentConditions {

@@ -1,4 +1,4 @@
-package com.example.weathertrackingapp.presentation.presentationUtil
+package com.example.weathertrackingapp.presentation.delegationPattern
 
 import android.app.Activity
 import android.content.Context
