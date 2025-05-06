@@ -8,22 +8,19 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AppCompatActivity
 import com.example.weathertrackingapp.R
-import com.example.weathertrackingapp.common.appState.AppState
-import com.example.weathertrackingapp.common.weatherException.CustomException
-import com.example.weathertrackingapp.databinding.ActivityMainBinding
-import com.example.weathertrackingapp.domain.model.LatLong
-import com.example.weathertrackingapp.presentation.presentationUtil.LocationUtil
-import com.example.weathertrackingapp.presentation.presentationUtil.LocationUtilImpl
+import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
+import com.example.weathertrackingapp.presentation.fragments.currentWeather.CurrentWeatherFragment
 import com.example.weathertrackingapp.presentation.presentationUtil.PermissionUtil
 import com.example.weathertrackingapp.presentation.presentationUtil.PermissionUtilImpl
+import com.example.weathertrackingapp.presentation.presentationUtil.PresentationCommonConstants
+import com.example.weathertrackingapp.presentation.presentationUtil.SystemUtil
+import com.example.weathertrackingapp.presentation.presentationUtil.SystemUtilImpl
 import com.example.weathertrackingapp.presentation.presentationUtil.UiUtil
 import com.example.weathertrackingapp.presentation.presentationUtil.UiUtilImpl
-import com.google.android.gms.location.LocationServices
 
 /**
  * MainActivity delegates utility responsibilities to implementation classes using Kotlin's delegation pattern.
@@ -46,26 +43,26 @@ import com.google.android.gms.location.LocationServices
  */
 class MainActivity : AppCompatActivity(),
     UiUtil by UiUtilImpl(),
-    LocationUtil by LocationUtilImpl(),
+    SystemUtil by SystemUtilImpl(),
     PermissionUtil by PermissionUtilImpl() {
 
-    private lateinit var binding: ActivityMainBinding
     private var dialog: Dialog? = null
     private var comingBackFromSettings = false
+    private val currentWeatherFragment: CurrentWeatherFragment by lazy {
+        CurrentWeatherFragment()
+    }
 
 
     @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_main)
 
-
-        setFusedLocationClient(LocationServices.getFusedLocationProviderClient(this))
-        if (isLocationPermissionGranted(this)) requestFreshLocation(::handleLocationState)
-        else requestLocationPermission(this)
+        if (!isLocationPermissionGranted(this)) requestLocationPermission(this)
+        else navigateToCurrentWeatherFragmentWithBundle()
     }
+
 
     @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
     override fun onResume() {
@@ -75,7 +72,7 @@ class MainActivity : AppCompatActivity(),
         if (comingBackFromSettings) {
             comingBackFromSettings = false
             if (isLocationPermissionGranted(this)) {
-                requestFreshLocation(::handleLocationState)
+                navigateToCurrentWeatherFragmentWithBundle()
             } else {
                 Log.d(TAG, "onResume: Location is still deniend")
                 showGoToSettingsDialog()
@@ -92,7 +89,7 @@ class MainActivity : AppCompatActivity(),
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PermissionUtilImpl.LOCATION_PERMISSION_REQUEST_CODE) {
-            if (isPermissionGranted(grantResults)) requestFreshLocation(::handleLocationState)
+            if (isPermissionGranted(grantResults)) navigateToCurrentWeatherFragmentWithBundle()
             else {
                 if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
                     // User denied WITHOUT "Don't ask again" → can show rationale and re-request
@@ -105,24 +102,18 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
+
     //region --------------------Private functions--------------------
 
-    private fun handleLocationState(state: AppState<LatLong>) {
-        when (state) {
-            is AppState.Success -> {
-                Log.d(TAG, "Lat and long are =  ${state.data.toString()}")
-            }
-
-            is AppState.Failure -> when (state.exception) {
-                is CustomException.LocationException.UnKnownLocationException -> {
-                    Log.d(TAG, "Location error: ${state.exception.message}")
-                    Toast.makeText(this, state.exception.message, Toast.LENGTH_LONG).show()
-                }
-            }
-
-            is AppState.IsLoading -> {}
-        }
+    private fun navigateToCurrentWeatherFragmentWithBundle() {
+        val bundle = Bundle()
+        bundle.putString(PresentationCommonConstants.SYSTEM_LANGUAGE, getSystemLanguage())
+        currentWeatherFragment.arguments = bundle
+        supportFragmentManager.beginTransaction()
+            .add(R.id.fragment_container, currentWeatherFragment)
+            .commit()
     }
+
 
     private fun isPermissionGranted(grantResults: IntArray) =
         grantResults.isNotEmpty() && grantResults[PermissionUtilImpl.FIRST_REQUESTED_PERMISSION] == PackageManager.PERMISSION_GRANTED
@@ -171,14 +162,5 @@ class MainActivity : AppCompatActivity(),
     }
     //endregion --------------------Private functions--------------------
 
-
-    override fun onDestroy() {
-        super.onDestroy()
-        destroyFusedLocationClient()
-    }
-
-    companion object {
-        private const val TAG = "MAIN_ACTIVITY_TAG"
-    }
 
 }

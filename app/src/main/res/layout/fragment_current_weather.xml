@@ -1,0 +1,197 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="30dp">
+
+    <include
+        android:id="@+id/loading_view"
+        layout="@layout/loading"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.45" />
+
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/current_weather"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/labelTemperature"
+        style="@style/WeatherLabelStyle"
+        android:text="@string/temperature"
+        app:layout_constraintBaseline_toBaselineOf="@id/tvTemperature"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textTitle" />
+
+    <TextView
+        android:id="@+id/tvTemperature"
+        style="@style/WeatherValueStyle"
+        app:layout_constraintStart_toStartOf="@id/guideline30"
+        app:layout_constraintTop_toBottomOf="@id/textTitle"
+        tools:text="28°C" />
+
+    <TextView
+        android:id="@+id/labelFeelsLike"
+        style="@style/WeatherLabelStyle"
+        android:text="@string/feels_like"
+        app:layout_constraintBaseline_toBaselineOf="@id/tvFeelsLike"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/labelTemperature" />
+
+    <TextView
+        android:id="@+id/tvFeelsLike"
+        style="@style/WeatherValueStyle"
+        app:layout_constraintStart_toStartOf="@id/guideline30"
+        app:layout_constraintTop_toBottomOf="@id/tvTemperature"
+        tools:text="29°C" />
+
+    <TextView
+        android:id="@+id/labelConditions"
+        style="@style/WeatherLabelStyle"
+        android:text="@string/conditions"
+        app:layout_constraintBaseline_toBaselineOf="@id/tvConditions"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/labelFeelsLike" />
+
+    <TextView
+        android:id="@+id/tvConditions"
+        style="@style/WeatherValueStyle"
+        app:layout_constraintStart_toStartOf="@id/guideline30"
+        app:layout_constraintTop_toBottomOf="@id/tvFeelsLike"
+        tools:text="Clear" />
+
+    <TextView
+        android:id="@+id/labelIcon"
+        style="@style/WeatherLabelStyle"
+        android:text="@string/icon"
+        app:layout_constraintBaseline_toBaselineOf="@id/tvIcon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/labelConditions" />
+
+    <TextView
+        android:id="@+id/tvIcon"
+        style="@style/WeatherValueStyle"
+        app:layout_constraintStart_toStartOf="@id/guideline30"
+        app:layout_constraintTop_toBottomOf="@id/tvConditions"
+        tools:text="☀️" />
+
+    <TextView
+        android:id="@+id/labelHumidity"
+        style="@style/WeatherLabelStyle"
+        android:text="@string/humidity"
+        app:layout_constraintBaseline_toBaselineOf="@id/tvHumidity"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/labelIcon" />
+
+    <TextView
+        android:id="@+id/tvHumidity"
+        style="@style/WeatherValueStyle"
+        app:layout_constraintStart_toStartOf="@id/guideline30"
+        app:layout_constraintTop_toBottomOf="@id/tvIcon"
+        tools:text="50%" />
+
+    <TextView
+        android:id="@+id/labelCloudCover"
+        style="@style/WeatherLabelStyle"
+        android:text="@string/cloud_cover"
+        app:layout_constraintBaseline_toBaselineOf="@id/tvCloudCover"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/labelHumidity" />
+
+    <TextView
+        android:id="@+id/tvCloudCover"
+        style="@style/WeatherValueStyle"
+        app:layout_constraintStart_toStartOf="@id/guideline30"
+        app:layout_constraintTop_toBottomOf="@id/tvHumidity"
+        tools:text="20%" />
+
+    <TextView
+        android:id="@+id/labelWindSpeed"
+        style="@style/WeatherLabelStyle"
+        android:text="@string/wind_speed"
+        app:layout_constraintBaseline_toBaselineOf="@id/tvWindSpeed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/labelCloudCover" />
+
+    <TextView
+        android:id="@+id/tvWindSpeed"
+        style="@style/WeatherValueStyle"
+        app:layout_constraintStart_toStartOf="@id/guideline30"
+        app:layout_constraintTop_toBottomOf="@id/tvCloudCover"
+        tools:text="10 km/h" />
+
+    <TextView
+        android:id="@+id/labelUvIndex"
+        style="@style/WeatherLabelStyle"
+        android:text="@string/uv_index"
+        app:layout_constraintBaseline_toBaselineOf="@id/tvUvIndex"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/labelWindSpeed" />
+
+    <TextView
+        android:id="@+id/tvUvIndex"
+        style="@style/WeatherValueStyle"
+        app:layout_constraintStart_toStartOf="@id/guideline30"
+        app:layout_constraintTop_toBottomOf="@id/tvWindSpeed"
+        tools:text="3" />
+
+    <TextView
+        android:id="@+id/labelSunrise"
+        style="@style/WeatherLabelStyle"
+        android:text="@string/sunrise"
+        app:layout_constraintBaseline_toBaselineOf="@id/tvSunrise"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/labelUvIndex" />
+
+    <TextView
+        android:id="@+id/tvSunrise"
+        style="@style/WeatherValueStyle"
+        app:layout_constraintStart_toStartOf="@id/guideline30"
+        app:layout_constraintTop_toBottomOf="@id/tvUvIndex"
+        tools:text="06:00 AM" />
+
+    <TextView
+        android:id="@+id/labelSunset"
+        style="@style/WeatherLabelStyle"
+        android:text="@string/sunset"
+        app:layout_constraintBaseline_toBaselineOf="@id/tvSunset"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/labelSunrise" />
+
+    <TextView
+        android:id="@+id/tvSunset"
+        style="@style/WeatherValueStyle"
+        app:layout_constraintStart_toStartOf="@id/guideline30"
+        app:layout_constraintTop_toBottomOf="@id/tvSunrise"
+        tools:text="06:45 PM" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline70_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".7" />
+
+    <include
+        android:id="@+id/error_view"
+        layout="@layout/error"
+        app:layout_constraintTop_toBottomOf="@id/guideline70_horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
