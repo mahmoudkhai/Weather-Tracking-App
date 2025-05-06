@@ -1,8 +1,10 @@
 package com.example.weathertrackingapp.domain.useCase
 
 import android.util.Log
-import com.example.weathertrackingapp.common.customState.ResultState
 import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
+import com.example.weathertrackingapp.common.customState.DataState
+import com.example.weathertrackingapp.common.observerPattern.Observable
+import com.example.weathertrackingapp.common.observerPattern.Observer
 import com.example.weathertrackingapp.common.weatherException.CustomException
 import com.example.weathertrackingapp.domain.model.CurrentConditions
 import com.example.weathertrackingapp.domain.model.WeatherRequest
@@ -10,34 +12,33 @@ import com.example.weathertrackingapp.domain.repository.WeatherRepository
 
 class GetCurrentWeatherUseCase(
     private val weatherRepository: WeatherRepository,
-) {
+) : Observable<DataState<CurrentConditions>> {
 
-    private val observers = mutableSetOf<UseCaseObserver<CurrentConditions>>()
+    private val observers = mutableSetOf<Observer<DataState<CurrentConditions>>>()
 
     operator fun invoke(weatherRequest: WeatherRequest) {
         Log.d(TAG, "invoke: getting current weather for $weatherRequest")
         try {
-            notifyObservers(ResultState.IsLoading(true))
+            notifyObservers(DataState.IsLoading(true))
             val currentConditions = weatherRepository.getCurrentWeather(weatherRequest)
-            notifyObservers(ResultState.Success(currentConditions))
+            notifyObservers(DataState.Success(currentConditions))
         } catch (e: CustomException) {
             Log.e(TAG, "invoke: error getting current weather", e)
-            notifyObservers(ResultState.Failure(e))
-        }finally {
-            notifyObservers(ResultState.IsLoading(false))
+            notifyObservers(DataState.Failure(e))
+        } finally {
+            notifyObservers(DataState.IsLoading(false))
         }
     }
 
-    private fun notifyObservers(newState: ResultState<CurrentConditions>) {
+    override fun notifyObservers(newState: DataState<CurrentConditions>) {
         observers.forEach { it.onUpdate(newState) }
     }
 
-
-    fun registerObserver(observer: UseCaseObserver<CurrentConditions>) {
+    override fun registerObserver(observer: Observer<DataState<CurrentConditions>>) {
         observers.add(observer)
     }
 
-    fun unregisterObserver(observer: UseCaseObserver<CurrentConditions>) {
+    override fun unregisterObserver(observer: Observer<DataState<CurrentConditions>>) {
         observers.remove(observer)
     }
 

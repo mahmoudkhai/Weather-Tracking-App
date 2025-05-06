@@ -13,7 +13,7 @@ import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AppCompatActivity
 import com.example.weathertrackingapp.R
 import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
-import com.example.weathertrackingapp.presentation.fragments.CurrentWeatherFragment
+import com.example.weathertrackingapp.presentation.fragments.currentWeather.CurrentWeatherFragment
 import com.example.weathertrackingapp.presentation.presentationUtil.PermissionUtil
 import com.example.weathertrackingapp.presentation.presentationUtil.PermissionUtilImpl
 import com.example.weathertrackingapp.presentation.presentationUtil.PresentationCommonConstants
