@@ -87,7 +87,7 @@ class ApiServiceImpl : ApiService {
         } catch (e: JSONException) {
             throw CustomException.DataException.ParsingException()
         } catch (e: IOException) {
-            throw CustomException.NetworkException.PoorInternetConnectionException
+            throw CustomException.NetworkException.NoInternetConnection
         } catch (e: Exception) {
             throw CustomException.NetworkException.UnKnownNetworkException("Unknown error: ${e.message}")
         }finally {

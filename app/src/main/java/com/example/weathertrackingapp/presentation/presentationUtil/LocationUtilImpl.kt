@@ -2,7 +2,7 @@ package com.example.weathertrackingapp.presentation.presentationUtil
 
 import android.Manifest
 import androidx.annotation.RequiresPermission
-import com.example.weathertrackingapp.common.appState.ResultState
+import com.example.weathertrackingapp.common.customState.ResultState
 import com.example.weathertrackingapp.common.weatherException.CustomException
 import com.example.weathertrackingapp.domain.model.LatLong
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -20,22 +20,20 @@ class LocationUtilImpl() : LocationUtil {
 
 
     @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
-    override fun requestFreshLocation(callBack: (ResultState<LatLong>) -> Unit) {
+    override fun requestFreshLocation(callBack: (LatLong) -> Unit) {
         val cancellationTokenSource = CancellationTokenSource()
         fusedLocationClient?.getCurrentLocation(
             Priority.PRIORITY_HIGH_ACCURACY, cancellationTokenSource.token
         )?.addOnSuccessListener { location ->
             if (location != null) {
-                callBack(ResultState.Success(LatLong(location.latitude, location.longitude)))
+                callBack(LatLong(location.latitude, location.longitude))
             } else {
-                ResultState.Failure(CustomException.LocationException.UnKnownLocationException("Location is null"))
+                throw CustomException.LocationException.UnKnownLocationException("Location is null")
                 // Maybe inform user to try again / move outdoors
             }
         }?.addOnFailureListener { exception ->
-            ResultState.Failure(
-                CustomException.LocationException.UnKnownLocationException(
-                    exception.message ?: "Unknown error"
-                )
+            throw CustomException.LocationException.UnKnownLocationException(
+                exception.message ?: "Unknown error"
             )
         }
     }

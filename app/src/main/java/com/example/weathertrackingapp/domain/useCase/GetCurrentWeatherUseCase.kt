@@ -1,7 +1,7 @@
 package com.example.weathertrackingapp.domain.useCase
 
 import android.util.Log
-import com.example.weathertrackingapp.common.appState.ResultState
+import com.example.weathertrackingapp.common.customState.ResultState
 import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
 import com.example.weathertrackingapp.common.weatherException.CustomException
 import com.example.weathertrackingapp.domain.model.CurrentConditions
@@ -12,15 +12,34 @@ class GetCurrentWeatherUseCase(
     private val weatherRepository: WeatherRepository,
 ) {
 
-    operator fun invoke(weatherRequest: WeatherRequest): ResultState<CurrentConditions> {
+    private val observers = mutableSetOf<UseCaseObserver<CurrentConditions>>()
+
+    operator fun invoke(weatherRequest: WeatherRequest) {
         Log.d(TAG, "invoke: getting current weather for $weatherRequest")
-        return try {
+        try {
+            notifyObservers(ResultState.IsLoading(true))
             val currentConditions = weatherRepository.getCurrentWeather(weatherRequest)
-            ResultState.Success(currentConditions)
+            notifyObservers(ResultState.Success(currentConditions))
         } catch (e: CustomException) {
             Log.e(TAG, "invoke: error getting current weather", e)
-            ResultState.Failure(e)
+            notifyObservers(ResultState.Failure(e))
+        }finally {
+            notifyObservers(ResultState.IsLoading(false))
         }
     }
+
+    private fun notifyObservers(newState: ResultState<CurrentConditions>) {
+        observers.forEach { it.onUpdate(newState) }
+    }
+
+
+    fun registerObserver(observer: UseCaseObserver<CurrentConditions>) {
+        observers.add(observer)
+    }
+
+    fun unregisterObserver(observer: UseCaseObserver<CurrentConditions>) {
+        observers.remove(observer)
+    }
+
 
 }

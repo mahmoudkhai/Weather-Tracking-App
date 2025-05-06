@@ -1,4 +1,4 @@
-package com.example.weathertrackingapp.common.appState
+package com.example.weathertrackingapp.common.customState
 
 import com.example.weathertrackingapp.common.weatherException.CustomException
 

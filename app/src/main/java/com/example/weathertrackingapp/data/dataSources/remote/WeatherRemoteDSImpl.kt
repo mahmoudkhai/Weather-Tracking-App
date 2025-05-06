@@ -13,7 +13,6 @@ import java.time.LocalDate
 
 class WeatherRemoteDSImpl(private val api: ApiService) : WeatherRemoteDS {
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun getCurrentWeather(weatherRequest: WeatherRequest): CurrentConditionsDto {
         Log.d(TAG, "getCurrentWeather: from weather remote dataSource")
         return api.getCurrentWeatherConditions(

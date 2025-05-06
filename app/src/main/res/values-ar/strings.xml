@@ -20,4 +20,18 @@
     <string name="sunrise">شروق الشمس:</string>
     <string name="sunset">غروب الشمس:</string>
 
+    <string name="no_internet_connection">لا يوجد اتصال بالإنترنت</string>
+    <string name="unknown_network_error">خطأ في الشبكة</string>
+    <string name="unauthorized_error">غير مصرح لك بالوصول</string>
+    <string name="not_found_error">الصفحة أو المورد غير موجود</string>
+    <string name="bad_request_error">طلب غير صالح</string>
+    <string name="internal_server_error">خطأ في الخادم الداخلي</string>
+    <string name="too_many_requests_error">تم إرسال العديد من الطلبات في وقت قصير</string>
+
+    <string name="parsing_error">خطأ في تحليل البيانات</string>
+    <string name="unknown_location_error">موقع غير معروف</string>
+    <string name="general_error">خطأ عام، برجاء الإتصال بالدعم الفنى</string>
+    <string name="swipe_to_refresh">اسحب لأسفل لإعادة المحاولة</string>
+
+
 </resources>
