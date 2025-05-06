@@ -1,8 +1,10 @@
 package com.example.weathertrackingapp.domain.repository
 
-import com.example.weathertrackingapp.domain.model.CurrentConditions
-import com.example.weathertrackingapp.domain.model.WeatherRequest
+import com.example.weathertrackingapp.domain.model.responseModels.CurrentConditions
+import com.example.weathertrackingapp.domain.model.responseModels.FiveDaysForecast
+import com.example.weathertrackingapp.domain.model.requestModels.CurrentWeatherRequest
 
 interface WeatherRepository {
-    fun getCurrentWeather(weatherRequest: WeatherRequest): CurrentConditions
+    fun getCurrentWeather(currentWeatherRequest: CurrentWeatherRequest): CurrentConditions
+    fun getFiveDaysForecast(currentWeatherRequest: CurrentWeatherRequest): FiveDaysForecast
 }

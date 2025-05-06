@@ -4,7 +4,7 @@ import android.util.Log
 import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
 import com.example.weathertrackingapp.common.customException.CustomException
 import com.example.weathertrackingapp.data.dto.CurrentConditionsDto
-import com.example.weathertrackingapp.domain.model.WeatherRequest
+import com.example.weathertrackingapp.domain.model.requestModels.CurrentWeatherRequest
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.BufferedReader
@@ -16,7 +16,7 @@ import javax.net.ssl.HttpsURLConnection
 class ApiServiceImpl : ApiService {
 
     override fun getCurrentWeatherConditions(
-        weatherRequest: WeatherRequest,
+        currentWeatherRequest: CurrentWeatherRequest,
         baseUrl: String,
         startDate: String,
         endDate: String,
@@ -25,7 +25,7 @@ class ApiServiceImpl : ApiService {
         include: String,
     ): CurrentConditionsDto {
         val url = buildWeatherUrl(
-            weatherRequest,
+            currentWeatherRequest,
             baseUrl,
             apiKey,
             unitGroup,
@@ -51,7 +51,7 @@ class ApiServiceImpl : ApiService {
     }
 
     private fun buildWeatherUrl(
-        request: WeatherRequest,
+        request: CurrentWeatherRequest,
         baseUrl: String,
         apiKey: String,
         unitGroup: String,

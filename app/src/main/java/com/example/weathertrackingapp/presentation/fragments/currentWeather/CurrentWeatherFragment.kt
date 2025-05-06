@@ -8,9 +8,9 @@ import com.example.weathertrackingapp.common.customException.CustomException
 import com.example.weathertrackingapp.data.dataSources.remote.WeatherRemoteDSImpl
 import com.example.weathertrackingapp.data.dataSources.remote.apiService.ApiServiceImpl
 import com.example.weathertrackingapp.data.repository.WeatherRepositoryImpl
-import com.example.weathertrackingapp.domain.model.CurrentConditions
-import com.example.weathertrackingapp.domain.model.LatLong
-import com.example.weathertrackingapp.domain.model.WeatherRequest
+import com.example.weathertrackingapp.domain.model.responseModels.CurrentConditions
+import com.example.weathertrackingapp.domain.model.requestModels.LatLong
+import com.example.weathertrackingapp.domain.model.requestModels.CurrentWeatherRequest
 import com.example.weathertrackingapp.domain.useCase.GetCurrentWeatherUseCase
 import com.example.weathertrackingapp.presentation.fragments.BaseFragment
 import com.example.weathertrackingapp.presentation.presentationUtil.LocationUtil
@@ -50,11 +50,11 @@ class CurrentWeatherFragment :
         }
     }
 
-    private fun getCurrentWeatherInBackground(weatherRequest: WeatherRequest) = Thread {
-        viewModel.processUserIntent(UserIntent.GetCurrentWeather(weatherRequest))
+    private fun getCurrentWeatherInBackground(currentWeatherRequest: CurrentWeatherRequest) = Thread {
+        viewModel.processUserIntent(UserIntent.GetCurrentWeather(currentWeatherRequest))
     }.start()
 
-    private fun createWeatherRequest(latLong: LatLong): WeatherRequest = WeatherRequest(
+    private fun createWeatherRequest(latLong: LatLong): CurrentWeatherRequest = CurrentWeatherRequest(
         latLong = latLong,
         language = systemLanguage,
     )

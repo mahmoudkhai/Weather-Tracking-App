@@ -1,11 +1,11 @@
 package com.example.weathertrackingapp.presentation.fragments.currentWeather
 
 import com.example.weathertrackingapp.common.customException.CustomException
-import com.example.weathertrackingapp.domain.model.WeatherRequest
+import com.example.weathertrackingapp.domain.model.requestModels.CurrentWeatherRequest
 
 
 sealed interface UserIntent {
-    data class GetCurrentWeather(val weatherRequest: WeatherRequest) : UserIntent
+    data class GetCurrentWeather(val currentWeatherRequest: CurrentWeatherRequest) : UserIntent
 }
 
 sealed interface UiEvent {

@@ -1,13 +1,13 @@
 package com.example.weathertrackingapp.presentation.fragments.currentWeather
 
-import com.example.weathertrackingapp.common.customState.DataState
-import com.example.weathertrackingapp.domain.model.CurrentConditions
+import com.example.weathertrackingapp.common.customState.DomainState
+import com.example.weathertrackingapp.domain.model.responseModels.CurrentConditions
 import com.example.weathertrackingapp.domain.useCase.GetCurrentWeatherUseCase
 import com.example.weathertrackingapp.common.observerPattern.Observable
 import com.example.weathertrackingapp.common.observerPattern.Observer
 
 class CurrentWeatherViewModel(private val getCurrentWeatherUseCase: GetCurrentWeatherUseCase) :
-    Observer<DataState<CurrentConditions>>, Observable<UiEvent> {
+    Observer<DomainState<CurrentConditions>>, Observable<UiEvent> {
 
     init {
         getCurrentWeatherUseCase.registerObserver(this)
@@ -18,14 +18,14 @@ class CurrentWeatherViewModel(private val getCurrentWeatherUseCase: GetCurrentWe
     fun processUserIntent(userIntent: UserIntent) =
         when (userIntent) {
             is UserIntent.GetCurrentWeather -> {
-                getCurrentWeatherUseCase(userIntent.weatherRequest)
+                getCurrentWeatherUseCase(userIntent.currentWeatherRequest)
             }
         }
 
-    override fun onUpdate(dataState: DataState<CurrentConditions>) = when (dataState) {
-        is DataState.Loading -> notifyObservers(UiEvent.ShowLoading(dataState.isLoading))
-        is DataState.Success<CurrentConditions> -> notifyObservers(UiEvent.Success(dataState.data))
-        is DataState.Failure -> notifyObservers(UiEvent.ShowError(dataState.exception))
+    override fun onUpdate(domainState: DomainState<CurrentConditions>) = when (domainState) {
+        is DomainState.Loading -> notifyObservers(UiEvent.ShowLoading(domainState.isLoading))
+        is DomainState.Success<CurrentConditions> -> notifyObservers(UiEvent.Success(domainState.data))
+        is DomainState.Failure -> notifyObservers(UiEvent.ShowError(domainState.exception))
     }
 
     override fun registerObserver(observer: Observer<UiEvent>) {
