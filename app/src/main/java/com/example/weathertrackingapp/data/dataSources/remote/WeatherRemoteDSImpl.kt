@@ -7,11 +7,9 @@ import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
 import com.example.weathertrackingapp.data.constants.ApiKeyProvider
 import com.example.weathertrackingapp.data.dataSources.remote.apiService.ApiService
 import com.example.weathertrackingapp.data.dto.CurrentConditionsDto
-import com.example.weathertrackingapp.domain.dataSources.remote.WeatherRemoteDS
 import com.example.weathertrackingapp.domain.model.WeatherRequest
-import com.google.android.gms.common.internal.Constants
+import com.example.weathertrackingapp.domain.repository.dataSources.remote.WeatherRemoteDS
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 class WeatherRemoteDSImpl(private val api: ApiService) : WeatherRemoteDS {
 

@@ -1,7 +1,7 @@
 package com.example.weathertrackingapp.domain.useCase
 
 import android.util.Log
-import com.example.weathertrackingapp.common.appState.AppState
+import com.example.weathertrackingapp.common.appState.ResultState
 import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
 import com.example.weathertrackingapp.common.weatherException.CustomException
 import com.example.weathertrackingapp.domain.model.CurrentConditions
@@ -12,14 +12,14 @@ class GetCurrentWeatherUseCase(
     private val weatherRepository: WeatherRepository,
 ) {
 
-    operator fun invoke(weatherRequest: WeatherRequest): AppState<CurrentConditions> {
+    operator fun invoke(weatherRequest: WeatherRequest): ResultState<CurrentConditions> {
         Log.d(TAG, "invoke: getting current weather for $weatherRequest")
         return try {
             val currentConditions = weatherRepository.getCurrentWeather(weatherRequest)
-            AppState.Success(currentConditions)
+            ResultState.Success(currentConditions)
         } catch (e: CustomException) {
             Log.e(TAG, "invoke: error getting current weather", e)
-            AppState.Failure(e)
+            ResultState.Failure(e)
         }
     }
 

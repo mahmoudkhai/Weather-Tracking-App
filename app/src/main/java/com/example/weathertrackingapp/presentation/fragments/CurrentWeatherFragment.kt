@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.weathertrackingapp.R
-import com.example.weathertrackingapp.common.appState.AppState
+import com.example.weathertrackingapp.common.appState.ResultState
 import com.example.weathertrackingapp.common.weatherException.CustomException
 import com.example.weathertrackingapp.data.dataSources.remote.WeatherRemoteDSImpl
 import com.example.weathertrackingapp.data.dataSources.remote.apiService.ApiServiceImpl
@@ -43,14 +43,14 @@ class CurrentWeatherFragment :
         requestFreshLocation(::handleLocationState)
     }
 
-    private fun handleLocationState(state: AppState<LatLong>) = handleState(
+    private fun handleLocationState(state: ResultState<LatLong>) = handleState(
         state = state,
         onSuccess = { latLong ->
             getCurrentWeatherInBackground(createWeatherRequest(latLong), ::handleWeatherState)
         }, onFailure = { customException -> })
 
 
-    private fun handleWeatherState(state: AppState<CurrentConditions>) = handleState(
+    private fun handleWeatherState(state: ResultState<CurrentConditions>) = handleState(
         state,
         onSuccess = ::bindCurrentConditions,
         onFailure = { TODO() },
@@ -59,7 +59,7 @@ class CurrentWeatherFragment :
 
     private fun getCurrentWeatherInBackground(
         weatherRequest: WeatherRequest,
-        onResult: (AppState<CurrentConditions>) -> Unit,
+        onResult: (ResultState<CurrentConditions>) -> Unit,
     ) =
         Thread {
             val result = GetCurrentWeatherUseCase(
@@ -73,14 +73,14 @@ class CurrentWeatherFragment :
         }.start()
 
     private fun <T> handleState(
-        state: AppState<T>,
+        state: ResultState<T>,
         onSuccess: (T) -> Unit,
         onFailure: (CustomException) -> Unit,
         onLoading: () -> Unit = {},
     ) = when (state) {
-        is AppState.Success<T> -> onSuccess(state.data)
-        is AppState.Failure -> onFailure(state.exception)
-        is AppState.IsLoading -> onLoading()
+        is ResultState.Success<T> -> onSuccess(state.data)
+        is ResultState.Failure -> onFailure(state.exception)
+        is ResultState.IsLoading -> onLoading()
     }
 
     private fun createWeatherRequest(latLong: LatLong): WeatherRequest = WeatherRequest(
