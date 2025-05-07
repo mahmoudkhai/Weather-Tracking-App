@@ -6,14 +6,14 @@ import com.example.weathertrackingapp.common.customException.CustomException
 import com.example.weathertrackingapp.common.observerPattern.Observer
 import com.example.weathertrackingapp.domain.customState.DomainState
 import com.example.weathertrackingapp.domain.entity.requestModels.WeatherRequest
-import com.example.weathertrackingapp.domain.entity.responseEntities.CurrentConditions
+import com.example.weathertrackingapp.domain.entity.responseEntities.CurrentWeather
 import com.example.weathertrackingapp.domain.repository.WeatherRepository
 
 class GetCurrentWeatherUseCase(
     private val weatherRepository: WeatherRepository,
-) : BaseUseCase<DomainState<CurrentConditions>>() {
+) : BaseUseCase<DomainState<CurrentWeather>>() {
 
-    override val observers = mutableSetOf<Observer<DomainState<CurrentConditions>>>()
+    override val observers = mutableSetOf<Observer<DomainState<CurrentWeather>>>()
 
     operator fun invoke(weatherRequest: WeatherRequest) {
         Log.d(TAG, "invoke: getting current weather for $weatherRequest")

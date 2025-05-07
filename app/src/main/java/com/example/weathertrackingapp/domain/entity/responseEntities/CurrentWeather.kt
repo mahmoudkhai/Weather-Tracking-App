@@ -1,6 +1,6 @@
 package com.example.weathertrackingapp.domain.entity.responseEntities
 
-data class CurrentConditions(
+data class CurrentWeather(
     val temperature: Double,
     val feelsLike: Double,
     val conditions: String,

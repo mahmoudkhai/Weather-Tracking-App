@@ -8,14 +8,14 @@ import com.example.weathertrackingapp.R
 import com.example.weathertrackingapp.common.di.AppDependenciesProvider
 import com.example.weathertrackingapp.domain.entity.requestModels.LatLong
 import com.example.weathertrackingapp.domain.entity.requestModels.WeatherRequest
-import com.example.weathertrackingapp.domain.entity.responseEntities.CurrentConditions
+import com.example.weathertrackingapp.domain.entity.responseEntities.CurrentWeather
 import com.example.weathertrackingapp.presentation.delegationPattern.UiUtil
 import com.example.weathertrackingapp.presentation.delegationPattern.UiUtilImpl
 import com.example.weathertrackingapp.presentation.fragments.base.BaseFragment
 import com.example.weathertrackingapp.presentation.fragments.fiveDaysForecase.FiveDaysForecastFragment
 
 class CurrentWeatherFragment : UiUtil by UiUtilImpl(),
-    BaseFragment<CurrentConditions>(R.layout.fragment_current_weather) {
+    BaseFragment<CurrentWeather>(R.layout.fragment_current_weather) {
 
     override val viewModel by lazy {
         AppDependenciesProvider.provideCurrentWeatherViewModel()
@@ -76,28 +76,28 @@ class CurrentWeatherFragment : UiUtil by UiUtilImpl(),
     }
 
 
-    override fun bindViews(data: CurrentConditions) {
+    override fun bindViews(data: CurrentWeather) {
         bindCurrentConditions(data)
     }
 
-    private fun bindCurrentConditions(currentConditions: CurrentConditions) {
+    private fun bindCurrentConditions(currentWeather: CurrentWeather) {
         val view = requireView()
         view.findViewById<TextView>(R.id.tvTemperature).text =
-            currentConditions.temperature.toString()
+            currentWeather.temperature.toString()
         view.findViewById<TextView>(R.id.tvFeelsLike).text =
-            currentConditions.feelsLike.toString()
-        view.findViewById<TextView>(R.id.tvConditions).text = currentConditions.conditions
-        view.findViewById<TextView>(R.id.tvIcon).text = currentConditions.icon
+            currentWeather.feelsLike.toString()
+        view.findViewById<TextView>(R.id.tvConditions).text = currentWeather.conditions
+        view.findViewById<TextView>(R.id.tvIcon).text = currentWeather.icon
         view.findViewById<TextView>(R.id.tvHumidity).text =
-            currentConditions.humidity.toString()
+            currentWeather.humidity.toString()
         view.findViewById<TextView>(R.id.tvCloudCover).text =
-            currentConditions.cloudCover.toString()
+            currentWeather.cloudCover.toString()
         view.findViewById<TextView>(R.id.tvWindSpeed).text =
-            currentConditions.windSpeed.toString()
+            currentWeather.windSpeed.toString()
         view.findViewById<TextView>(R.id.tvUvIndex).text =
-            currentConditions.uvIndex.toString()
-        view.findViewById<TextView>(R.id.tvSunrise).text = currentConditions.sunrise
-        view.findViewById<TextView>(R.id.tvSunset).text = currentConditions.sunset
+            currentWeather.uvIndex.toString()
+        view.findViewById<TextView>(R.id.tvSunrise).text = currentWeather.sunrise
+        view.findViewById<TextView>(R.id.tvSunset).text = currentWeather.sunset
     }
 
     override fun unRegisterFragmentFromViewModel() {
