@@ -1,6 +1,6 @@
 package com.example.weathertrackingapp.data.mappers
 
-interface Mapper<DTO, Domain> {
+interface Mapper<DTO, Entity> {
 
-    fun dtoToDomain(input: DTO): Domain
+    fun dtoToDomain(input: DTO): Entity
 }

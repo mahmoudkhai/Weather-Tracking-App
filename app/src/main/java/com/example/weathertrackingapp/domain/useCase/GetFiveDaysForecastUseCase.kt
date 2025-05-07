@@ -6,26 +6,28 @@ import com.example.weathertrackingapp.common.customException.CustomException
 import com.example.weathertrackingapp.common.observerPattern.Observer
 import com.example.weathertrackingapp.domain.customState.DomainState
 import com.example.weathertrackingapp.domain.entity.requestModels.WeatherRequest
-import com.example.weathertrackingapp.domain.entity.responseEntities.CurrentWeather
+import com.example.weathertrackingapp.domain.entity.responseEntities.FiveDaysForecast
 import com.example.weathertrackingapp.domain.repository.WeatherRepository
 
-class GetCurrentWeatherUseCase(
-    private val weatherRepository: WeatherRepository,
-) : BaseUseCase<DomainState<CurrentWeather>>() {
+class GetFiveDaysForecastUseCase(private val weatherRepository: WeatherRepository) :
+    BaseUseCase<DomainState<FiveDaysForecast>>() {
 
-    override val observers = mutableSetOf<Observer<DomainState<CurrentWeather>>>()
+    override val observers = mutableSetOf<Observer<DomainState<FiveDaysForecast>>>()
 
-    operator fun invoke(weatherRequest: WeatherRequest) {
-        Log.d(TAG, "invoke: getting current weather for $weatherRequest")
+    operator fun invoke(
+        weatherRequest: WeatherRequest,
+    ) {
         try {
             notifyObservers(DomainState.Loading(true))
-            val currentConditions = weatherRepository.getCurrentWeather(weatherRequest)
-            notifyObservers(DomainState.Success(currentConditions))
+            val fiveDaysForecast = weatherRepository.getFiveDaysForecast(weatherRequest)
+            Log.d(TAG, "now five days weather looks like this \n $fiveDaysForecast")
+            notifyObservers(DomainState.Success(fiveDaysForecast))
         } catch (e: CustomException) {
-            Log.e(TAG, "invoke: error getting current weather", e)
             notifyObservers(DomainState.Failure(e))
         } finally {
             notifyObservers(DomainState.Loading(false))
         }
     }
+
+
 }

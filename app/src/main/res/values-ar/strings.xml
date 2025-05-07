@@ -32,6 +32,8 @@
     <string name="unknown_location_error">موقع غير معروف</string>
     <string name="general_error">خطأ عام، برجاء الإتصال بالدعم الفنى</string>
     <string name="swipe_to_refresh">اسحب لأسفل لإعادة المحاولة</string>
+    <string name="click_here_to_view_next_5_days_forecast">Click Here To View Next 5 Days Forecast</string>
+    <string name="un_supported_type_casting">خطأ اثناء تحويل شكل البيانات لنوع معين</string>
 
 
 </resources>

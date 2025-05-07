@@ -1,4 +1,4 @@
-package com.example.weathertrackingapp.domain.model
+package com.example.weathertrackingapp.domain.entity.requestModels
 
 data class WeatherRequest(
     val latLong: LatLong,

@@ -14,13 +14,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.weathertrackingapp.R
 import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
 import com.example.weathertrackingapp.presentation.fragments.currentWeather.CurrentWeatherFragment
-import com.example.weathertrackingapp.presentation.presentationUtil.PermissionUtil
-import com.example.weathertrackingapp.presentation.presentationUtil.PermissionUtilImpl
-import com.example.weathertrackingapp.presentation.presentationUtil.PresentationCommonConstants
-import com.example.weathertrackingapp.presentation.presentationUtil.SystemUtil
-import com.example.weathertrackingapp.presentation.presentationUtil.SystemUtilImpl
-import com.example.weathertrackingapp.presentation.presentationUtil.UiUtil
-import com.example.weathertrackingapp.presentation.presentationUtil.UiUtilImpl
+import com.example.weathertrackingapp.presentation.delegationPattern.PermissionUtil
+import com.example.weathertrackingapp.presentation.delegationPattern.PermissionUtilImpl
+import com.example.weathertrackingapp.presentation.presentationUtil.PresentationConstants
+import com.example.weathertrackingapp.presentation.delegationPattern.SystemUtil
+import com.example.weathertrackingapp.presentation.delegationPattern.SystemUtilImpl
+import com.example.weathertrackingapp.presentation.delegationPattern.UiUtil
+import com.example.weathertrackingapp.presentation.delegationPattern.UiUtilImpl
 
 /**
  * MainActivity delegates utility responsibilities to implementation classes using Kotlin's delegation pattern.
@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity(),
 
     private fun navigateToCurrentWeatherFragmentWithBundle() {
         val bundle = Bundle()
-        bundle.putString(PresentationCommonConstants.SYSTEM_LANGUAGE, getSystemLanguage())
+        bundle.putString(PresentationConstants.SYSTEM_LANGUAGE, getSystemLanguage())
         currentWeatherFragment.arguments = bundle
         supportFragmentManager.beginTransaction()
             .add(R.id.fragment_container, currentWeatherFragment)

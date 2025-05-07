@@ -1,5 +1,5 @@
 package com.example.weathertrackingapp.common.observerPattern
 
 interface Observer<T> {
-    fun onUpdate(resultState: T)
+    fun onUpdate(domainState: T)
 }
