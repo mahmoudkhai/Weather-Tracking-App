@@ -9,10 +9,12 @@ import com.example.weathertrackingapp.common.di.AppDependenciesProvider
 import com.example.weathertrackingapp.domain.entity.requestModels.LatLong
 import com.example.weathertrackingapp.domain.entity.requestModels.WeatherRequest
 import com.example.weathertrackingapp.domain.entity.responseEntities.CurrentConditions
+import com.example.weathertrackingapp.presentation.delegationPattern.UiUtil
+import com.example.weathertrackingapp.presentation.delegationPattern.UiUtilImpl
 import com.example.weathertrackingapp.presentation.fragments.base.BaseFragment
 import com.example.weathertrackingapp.presentation.fragments.fiveDaysForecase.FiveDaysForecastFragment
 
-class CurrentWeatherFragment :
+class CurrentWeatherFragment : UiUtil by UiUtilImpl(),
     BaseFragment<CurrentConditions>(R.layout.fragment_current_weather) {
 
     override val viewModel by lazy {
@@ -21,12 +23,22 @@ class CurrentWeatherFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        enableSwipeToRefreshFeature(
+            view.findViewById(R.id.root_layout),
+            view.findViewById(R.id.swipe_progress_bar),
+            ::onRefresh
+        )
         requireView().findViewById<Button>(R.id.btn_navigate_to_forecast).setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container , FiveDaysForecastFragment())
-                .addToBackStack(null)
-                .commit()
+            navigateToFiveDaysForecastFragment()
         }
+    }
+
+
+    private fun navigateToFiveDaysForecastFragment() {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, FiveDaysForecastFragment())
+            .addToBackStack(null)
+            .commit()
     }
 
     override fun registerObserverIntoViewModel() =

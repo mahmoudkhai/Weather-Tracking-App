@@ -1,9 +1,14 @@
 package com.example.weathertrackingapp.presentation.fragments.base
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import com.example.weathertrackingapp.R
@@ -22,7 +27,7 @@ abstract class BaseFragment<DataType>(private val fragmentId: Int) : Fragment(),
 
     abstract val viewModel: BaseViewModel<UiEvent>
     lateinit var systemLanguage: String
-    private var loadingView: View? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,9 +38,15 @@ abstract class BaseFragment<DataType>(private val fragmentId: Int) : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         systemLanguage = savedInstanceState?.getString(PresentationConstants.SYSTEM_LANGUAGE)
             ?: PresentationConstants.DEFAULT_LANGUAGE
         setFusedLocationClient(LocationServices.getFusedLocationProviderClient(requireActivity()))
+        fetchWeatherData()
+    }
+
+
+    private fun fetchWeatherData() {
         try {
             requestFreshLocation { latLong ->
                 registerObserverIntoViewModel()
@@ -44,8 +55,9 @@ abstract class BaseFragment<DataType>(private val fragmentId: Int) : Fragment(),
         } catch (locationException: CustomException.LocationException) {
             showError(getFailureMessage(locationException))
         }
-
     }
+
+    fun onRefresh() = fetchWeatherData()
 
     abstract fun getDataInBackgroundThread(weatherRequest: WeatherRequest)
     abstract fun createWeatherRequest(latLong: LatLong): WeatherRequest
@@ -60,9 +72,9 @@ abstract class BaseFragment<DataType>(private val fragmentId: Int) : Fragment(),
     }
 
     private fun showLoading(isLoading: Boolean) {
-        val loadingView = view?.findViewById<View>(R.id.loading_view)
+        val loadingView = view?.findViewById<View>(R.id.progress_bar)
         if (loadingView != null) {
-            val progressBar = loadingView.findViewById<ProgressBar>(R.id.loading_view)
+            val progressBar = loadingView.findViewById<ProgressBar>(R.id.progress_bar)
             progressBar?.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
     }
@@ -111,6 +123,7 @@ abstract class BaseFragment<DataType>(private val fragmentId: Int) : Fragment(),
             CustomException.DataException.UnSupportedTypeCasting -> {
                 getString(R.string.un_supported_type_casting)
             }
+
             else -> {
                 getString(R.string.general_error)
             }
