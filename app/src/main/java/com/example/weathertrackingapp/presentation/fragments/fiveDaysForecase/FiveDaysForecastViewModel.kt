@@ -27,13 +27,14 @@ class FiveDaysForecastViewModel(
     override fun onUpdate(domainState: DomainState<FiveDaysForecastEntity>) = when (domainState) {
         is DomainState.Loading -> notifyAllSubscribers(UiEvent.ShowLoading(domainState.isLoading))
         is DomainState.SuccessWithFreshData<FiveDaysForecastEntity> -> notifyAllSubscribers(
-            UiEvent.Success(domainState.data.toFiveDaysForecast())
+            UiEvent.SuccessWithFreshData(domainState.data.toFiveDaysForecast())
         )
 
         is DomainState.FailureWithCachedData -> {
-            if (domainState.cachedData != null)
-                notifyAllSubscribers(UiEvent.Success(domainState.cachedData))
-            else
+            if (domainState.cachedData != null) {
+                notifyAllSubscribers(UiEvent.ShowError(domainState.exception))
+                notifyAllSubscribers(UiEvent.SuccessWithCachedData(domainState.cachedData.toFiveDaysForecast()))
+            } else
                 notifyAllSubscribers(UiEvent.ShowError(domainState.exception))
         }
     }

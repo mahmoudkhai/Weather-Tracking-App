@@ -1,5 +1,7 @@
 package com.example.weathertrackingapp.data.repository.dataSources.local.csvLocalDs
 
+import android.util.Log
+import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
 import com.example.weathertrackingapp.data.dto.CurrentWeatherDto
 import java.io.File
 import java.io.FileWriter
@@ -20,35 +22,36 @@ class CurrentWeatherCSVFile(
         }
     }
 
-    override fun fromDtoToCsvRow(entity: CurrentWeatherDto): String {
+    override fun fromDtoToCsvRow(dto: CurrentWeatherDto): String {
         val rowString = StringBuilder().apply {
-            append(entity.cloudcover)
-            append("$CSV_SEPARATOR${entity.conditions}")
-            append("$CSV_SEPARATOR${entity.datetime}")
-            append("$CSV_SEPARATOR${entity.datetimeEpoch}")
-            append("$CSV_SEPARATOR${entity.dew}")
-            append("$CSV_SEPARATOR${entity.feelslike}")
-            append("$CSV_SEPARATOR${entity.humidity}")
-            append("$CSV_SEPARATOR${entity.icon}")
-            append("$CSV_SEPARATOR${entity.moonphase}")
-            append("$CSV_SEPARATOR${entity.precipprob}")
-            append("$CSV_SEPARATOR${entity.pressure}")
-            append("$CSV_SEPARATOR${entity.snow}")
-            append("$CSV_SEPARATOR${entity.snowdepth}")
-            append("$CSV_SEPARATOR${entity.solarenergy}")
-            append("$CSV_SEPARATOR${entity.solarradiation}")
-            append("$CSV_SEPARATOR${entity.source}")
-            append("$CSV_SEPARATOR${entity.stations.joinToString(STATIONS_SEPARATOR)}")
-            append("$CSV_SEPARATOR${entity.sunrise}")
-            append("$CSV_SEPARATOR${entity.sunriseEpoch}")
-            append("$CSV_SEPARATOR${entity.sunset}")
-            append("$CSV_SEPARATOR${entity.sunsetEpoch}")
-            append("$CSV_SEPARATOR${entity.temp}")
-            append("$CSV_SEPARATOR${entity.uvindex}")
-            append("$CSV_SEPARATOR${entity.visibility}")
-            append("$CSV_SEPARATOR${entity.winddir}")
-            append("$CSV_SEPARATOR${entity.windspeed}")
+            append(dto.cloudcover)
+            append("$CSV_SEPARATOR${dto.conditions}")
+            append("$CSV_SEPARATOR${dto.datetime}")
+            append("$CSV_SEPARATOR${dto.datetimeEpoch}")
+            append("$CSV_SEPARATOR${dto.dew}")
+            append("$CSV_SEPARATOR${dto.feelslike}")
+            append("$CSV_SEPARATOR${dto.humidity}")
+            append("$CSV_SEPARATOR${dto.icon}")
+            append("$CSV_SEPARATOR${dto.moonphase}")
+            append("$CSV_SEPARATOR${dto.precipprob}")
+            append("$CSV_SEPARATOR${dto.pressure}")
+            append("$CSV_SEPARATOR${dto.snow}")
+            append("$CSV_SEPARATOR${dto.snowdepth}")
+            append("$CSV_SEPARATOR${dto.solarenergy}")
+            append("$CSV_SEPARATOR${dto.solarradiation}")
+            append("$CSV_SEPARATOR${dto.source}")
+            append("$CSV_SEPARATOR${dto.stations.joinToString(STATIONS_SEPARATOR)}")
+            append("$CSV_SEPARATOR${dto.sunrise}")
+            append("$CSV_SEPARATOR${dto.sunriseEpoch}")
+            append("$CSV_SEPARATOR${dto.sunset}")
+            append("$CSV_SEPARATOR${dto.sunsetEpoch}")
+            append("$CSV_SEPARATOR${dto.temp}")
+            append("$CSV_SEPARATOR${dto.uvindex}")
+            append("$CSV_SEPARATOR${dto.visibility}")
+            append("$CSV_SEPARATOR${dto.winddir}")
+            append("$CSV_SEPARATOR${dto.windspeed}")
         }
+        Log.d(TAG, "converting dto to csv row result = : $rowString ")
         return rowString.toString()
     }
 
@@ -82,7 +85,9 @@ class CurrentWeatherCSVFile(
             visibility = data[VISIBILITY].toDouble(),
             winddir = data[WINDDIR].toDouble(),
             windspeed = data[WINDSPEED].toDouble()
-        )
+        ).also {
+            Log.d(TAG, "converting row to DTo result = : $it ")
+        }
     }
 
     companion object CurrentWeatherIndices {

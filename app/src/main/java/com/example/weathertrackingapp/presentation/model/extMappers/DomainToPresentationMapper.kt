@@ -1,5 +1,7 @@
 package com.example.weathertrackingapp.presentation.model.extMappers
 
+import android.util.Log
+import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
 import com.example.weathertrackingapp.domain.entity.responseEntities.CurrentWeatherEntity
 import com.example.weathertrackingapp.domain.entity.responseEntities.FiveDaysForecastEntity
 import com.example.weathertrackingapp.domain.entity.responseEntities.WholeDayWeatherEntity
@@ -10,6 +12,7 @@ import com.example.weathertrackingapp.presentation.model.WholeDayWeather
 // here i used another approach instead of data layer approach that i applied, i know this is inconsistent but i'm learning.
 // and i feel this approach is better than creating an Object for mapping because Object will live as long as the app live.
 fun CurrentWeatherEntity.toCurrentWeather(): CurrentWeather {
+    Log.d(TAG, "current weather Entity = $this")
     return CurrentWeather(
         temperature = this.temperature,
         feelsLike = this.feelsLike,

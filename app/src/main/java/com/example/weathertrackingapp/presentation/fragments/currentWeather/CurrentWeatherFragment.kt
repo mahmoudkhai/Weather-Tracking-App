@@ -34,6 +34,10 @@ class CurrentWeatherFragment : UiUtil by UiUtilImpl(),
         }
     }
 
+    override fun initializeViews(view: View) {
+        errorTextView = view.findViewById(R.id.errorTextView)
+        progressBar = view.findViewById(R.id.progress_bar)
+    }
 
     private fun navigateToFiveDaysForecastFragment() {
         parentFragmentManager.beginTransaction()
@@ -59,23 +63,6 @@ class CurrentWeatherFragment : UiUtil by UiUtilImpl(),
             latLong = latLong,
             language = WeatherApp.systemLanguage,
         )
-
-
-//    override fun showLoading(isLoading: Boolean) {
-//        requireView().findViewById<ProgressBar>(R.id.progress_bar).visibility = if (isLoading) {
-//            View.VISIBLE
-//        } else {
-//            View.GONE
-//        }
-//    }
-
-    override fun showError(errorMessage: String) {
-        requireView().findViewById<TextView>(R.id.errorTextView).text =
-            errorMessage.plus(
-                " ${getString(R.string.swipe_to_refresh)}"
-            )
-    }
-
 
     override fun bindViews(data: CurrentWeather) {
         bindCurrentConditions(data)

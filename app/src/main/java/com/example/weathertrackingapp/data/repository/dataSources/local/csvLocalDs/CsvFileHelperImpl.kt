@@ -1,5 +1,7 @@
 package com.example.weathertrackingapp.data.repository.dataSources.local.csvLocalDs
 
+import android.util.Log
+import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
 import com.example.weathertrackingapp.common.customException.CustomException
 import java.io.BufferedWriter
 import java.io.File
@@ -29,6 +31,7 @@ abstract class CsvFileHelperImpl<DTO>(
     }
 
     override fun overrideAllOldData(dto: DTO) {
+        Log.d(TAG, "overrideAllOldData of csv file with this Dto: $dto ")
         val newRaw = fromDtoToCsvRow(dto)
         BufferedWriter(FileWriter(file, OVERRIDE_ALL_DATA)).use { writer ->
             writer.appendLine(newRaw)
@@ -42,8 +45,15 @@ abstract class CsvFileHelperImpl<DTO>(
     }
 
     private fun getListOfDtoObjectFromCsvFile() =
-        file.readLines().asSequence().drop(FIRST_ROW_OF_CSV_FILE).filter { it.isNotBlank() }
-            .map(::fromCsvRowToDto).toList()
+        file.readLines().asSequence().also {
+            Log.d(TAG, "current file with before dropping first row = : ${it.toString()} ")
+        }.also {
+            Log.d(TAG, "current file with after dropping first row = : ${it.toString()} ")
+        }.filter { it.isNotBlank() }.also {
+            Log.d(TAG, "current file with after filtering not blank values = : $it ")
+        }.map(::fromCsvRowToDto).toList().also {
+            Log.d(TAG, "final cached dto after reading the file = : $it ")
+        }
 
     abstract fun fromDtoToCsvRow(dto: DTO): String
 
@@ -54,8 +64,11 @@ abstract class CsvFileHelperImpl<DTO>(
             function()
         } catch (e: IOException) {
             throw CustomException.DataException.LocalInputOutputException
+        } catch (e: IndexOutOfBoundsException) {
+            throw CustomException.DataException.NoCachedDataFound
         } catch (e: Exception) {
-            throw CustomException.DataException.UnKnownDataException
+            Log.e(TAG, "Error while reading/writing CSV file: ${e.toString()}")
+            throw CustomException.DataException.UnKnownDataException(e)
         }
     }
 

@@ -32,8 +32,12 @@
     <string name="unknown_location_error">موقع غير معروف</string>
     <string name="general_error">خطأ عام، برجاء الإتصال بالدعم الفنى</string>
     <string name="swipe_to_refresh">اسحب لأسفل لإعادة المحاولة</string>
-    <string name="click_here_to_view_next_5_days_forecast">Click Here To View Next 5 Days Forecast</string>
+    <string name="click_here_to_view_next_5_days_forecast">إضغط هنا لرؤية طقس خمسة أيام قادمة</string>
     <string name="un_supported_type_casting">خطأ اثناء تحويل شكل البيانات لنوع معين</string>
+    <string name="input_output_exception">حدثت مشكلة فى القراءة أو الكتابة فى الداتابيز</string>
+    <string name="no_cached_data_in_database">لا يوجد بيانات تم تخزينها مسبقاً</string>
+    <string name="un_know_database_exception">حدث خطأ غير معروف أثناء التعامل مع الملفات المخزنة مسبقاً</string>
+    <string name="and"> و  </string>
 
 
 </resources>

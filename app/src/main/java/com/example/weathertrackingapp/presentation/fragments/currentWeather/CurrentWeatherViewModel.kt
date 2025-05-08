@@ -27,13 +27,14 @@ class CurrentWeatherViewModel(private val getCurrentWeatherUseCase: GetCurrentWe
     override fun onUpdate(domainState: DomainState<CurrentWeatherEntity>) = when (domainState) {
         is DomainState.Loading -> notifyAllSubscribers(UiEvent.ShowLoading(domainState.isLoading))
         is DomainState.SuccessWithFreshData<CurrentWeatherEntity> -> notifyAllSubscribers(
-            UiEvent.Success(domainState.data.toCurrentWeather())
+            UiEvent.SuccessWithFreshData(domainState.data.toCurrentWeather())
         )
 
         is DomainState.FailureWithCachedData -> {
-            if (domainState.cachedData != null)
-                notifyAllSubscribers(UiEvent.Success(domainState.cachedData))
-            else
+            if (domainState.cachedData != null) {
+                notifyAllSubscribers(UiEvent.ShowError(domainState.exception))
+                notifyAllSubscribers(UiEvent.SuccessWithCachedData(domainState.cachedData.toCurrentWeather()))
+            } else
                 notifyAllSubscribers(UiEvent.ShowError(domainState.exception))
         }
     }

@@ -1,8 +1,8 @@
 package com.example.weathertrackingapp.presentation.fragments.fiveDaysForecase
 
-import android.util.Log
+import android.os.Bundle
+import android.view.View
 import com.example.weathertrackingapp.R
-import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
 import com.example.weathertrackingapp.common.di.AppDependenciesProvider
 import com.example.weathertrackingapp.domain.entity.requestModels.LatLong
 import com.example.weathertrackingapp.domain.entity.requestModels.WeatherRequest
@@ -16,6 +16,16 @@ class FiveDaysForecastFragment :
     override val viewModel by lazy {
         AppDependenciesProvider.provideFiveDaysForecastViewModel()
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun initializeViews(view: View) {
+        errorTextView = view.findViewById(R.id.errorTextView)
+        progressBar = view.findViewById(R.id.progress_bar)
+    }
+
 
     override fun registerObserverIntoViewModel() = viewModel.registerSubscriber(this)
 
@@ -31,9 +41,6 @@ class FiveDaysForecastFragment :
             )
         }.start()
 
-    override fun showError(errorMessage: String) {
-        Log.d(TAG, "Error Message = $errorMessage")
-    }
 
     override fun bindViews(data: FiveDaysForecast) {
 

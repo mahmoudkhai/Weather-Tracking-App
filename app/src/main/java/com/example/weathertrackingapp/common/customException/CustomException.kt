@@ -16,7 +16,8 @@ sealed class CustomException() : Exception() {
         data object ParsingException : DataException()
         data object UnSupportedTypeCasting : DataException()
         data object LocalInputOutputException : DataException()
-        data object UnKnownDataException : DataException()
+        data object NoCachedDataFound : DataException()
+        data class UnKnownDataException(val exception: Exception) : DataException()
     }
 
     sealed class LocationException() : CustomException() {

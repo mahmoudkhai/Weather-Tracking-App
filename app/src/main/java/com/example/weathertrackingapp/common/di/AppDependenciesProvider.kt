@@ -1,5 +1,7 @@
 package com.example.weathertrackingapp.common.di
 
+import android.util.Log
+import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
 import com.example.weathertrackingapp.data.repository.WeatherRepositoryImpl
 import com.example.weathertrackingapp.data.repository.dataSources.local.WeatherLocalDSImpl
 import com.example.weathertrackingapp.data.repository.dataSources.local.csvLocalDs.CurrentWeatherCSVFile
@@ -61,7 +63,9 @@ object AppDependenciesProvider {
         if (!baseDir.exists()) {
             baseDir.mkdirs()
         }
-        File(baseDir, "currentWeather.csv").absolutePath
+        File(baseDir, "currentWeather.csv").absolutePath.also {
+            Log.d(TAG, "current weather csv file created with path = : $it ")
+        }
     })
 
     private fun getFiveDaysForecastCSVFileInstance() = FiveDaysForecastCSVFile(run {
@@ -69,7 +73,9 @@ object AppDependenciesProvider {
         if (!baseDir.exists()) {
             baseDir.mkdirs()
         }
-        File(baseDir, "fiveDaysForecast.csv").absolutePath
+        File(baseDir, "fiveDaysForecast.csv").absolutePath.also {
+            Log.d(TAG, "five days weather forecast csv file created with path = : $it ")
+        }
     })
 
 }

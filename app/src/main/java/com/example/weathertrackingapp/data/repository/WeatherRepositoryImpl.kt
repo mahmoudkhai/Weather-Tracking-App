@@ -27,7 +27,9 @@ class WeatherRepositoryImpl(
             },
             localDSCall = {
                 val localData = weatherLocalDS.getCurrentWeatherDto()
-                CurrentConditionsMapper.dtoToEntity(localData)
+                CurrentConditionsMapper.dtoToEntity(localData).also {
+                    Log.d(TAG, "getCurrentWeather: from local data source entity = $it")
+                }
             }
         )
     }
@@ -60,13 +62,13 @@ class WeatherRepositoryImpl(
             )
             try {
                 val localData = localDSCall()
-                DomainState.FailureWithCachedData(remoteDSException, localData)
+                DomainState.FailureWithCachedData(listOf(remoteDSException), localData)
             } catch (localDSException: CustomException) {
                 Log.e(
                     TAG,
                     "Error fetching from local DS storage: ${localDSException.localizedMessage}"
                 )
-                DomainState.FailureWithCachedData(localDSException)
+                DomainState.FailureWithCachedData(listOf(remoteDSException, localDSException))
             }
         }
     }
