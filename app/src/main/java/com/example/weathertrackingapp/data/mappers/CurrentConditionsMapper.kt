@@ -1,11 +1,11 @@
 package com.example.weathertrackingapp.data.mappers
 
-import com.example.weathertrackingapp.data.dto.CurrentConditionsDto
-import com.example.weathertrackingapp.domain.entity.responseEntities.CurrentWeather
+import com.example.weathertrackingapp.data.dto.CurrentWeatherDto
+import com.example.weathertrackingapp.domain.entity.responseEntities.CurrentWeatherEntity
 
-object CurrentConditionsMapper : Mapper<CurrentConditionsDto, CurrentWeather> {
-    override fun dtoToDomain(input: CurrentConditionsDto): CurrentWeather {
-        return CurrentWeather(
+object CurrentConditionsMapper : DataToDomainMapper<CurrentWeatherDto, CurrentWeatherEntity> {
+    override fun dtoToEntity(input: CurrentWeatherDto): CurrentWeatherEntity {
+        return CurrentWeatherEntity(
             temperature = input.temp,
             feelsLike = input.feelslike,
             conditions = input.conditions,
@@ -18,4 +18,5 @@ object CurrentConditionsMapper : Mapper<CurrentConditionsDto, CurrentWeather> {
             sunset = input.sunset
         )
     }
+
 }

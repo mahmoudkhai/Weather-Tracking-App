@@ -1,22 +1,22 @@
 package com.example.weathertrackingapp.domain.useCase
 
-import com.example.weathertrackingapp.common.observerPattern.Observable
 import com.example.weathertrackingapp.common.observerPattern.Observer
+import com.example.weathertrackingapp.common.observerPattern.Subscriber
 
-abstract class BaseUseCase<OBSERVABLE> : Observable<OBSERVABLE> {
+abstract class BaseUseCase<OBSERVABLE> : Observer<OBSERVABLE> {
 
-    abstract val observers: MutableSet<Observer<OBSERVABLE>>
+    abstract val subscribers: MutableSet<Subscriber<OBSERVABLE>>
 
-    override fun registerObserver(observer: Observer<OBSERVABLE>) {
-        observers.add(observer)
+    override fun registerSubscriber(subscriber: Subscriber<OBSERVABLE>) {
+        subscribers.add(subscriber)
     }
 
-    override fun unregisterObserver(observer: Observer<OBSERVABLE>) {
-        observers.remove(observer)
+    override fun unregisterSubscriber(subscriber: Subscriber<OBSERVABLE>) {
+        subscribers.remove(subscriber)
     }
 
-    override fun notifyObservers(newEvent: OBSERVABLE) {
-        observers.forEach { it.onUpdate(newEvent) }
+    override fun notifyAllSubscribers(newEvent: OBSERVABLE) {
+        subscribers.forEach { it.onUpdate(newEvent) }
     }
 
 }

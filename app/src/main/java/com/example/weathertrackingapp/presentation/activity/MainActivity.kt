@@ -13,14 +13,11 @@ import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AppCompatActivity
 import com.example.weathertrackingapp.R
 import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
-import com.example.weathertrackingapp.presentation.fragments.currentWeather.CurrentWeatherFragment
 import com.example.weathertrackingapp.presentation.delegationPattern.PermissionUtil
 import com.example.weathertrackingapp.presentation.delegationPattern.PermissionUtilImpl
-import com.example.weathertrackingapp.presentation.presentationUtil.PresentationConstants
-import com.example.weathertrackingapp.presentation.delegationPattern.SystemUtil
-import com.example.weathertrackingapp.presentation.delegationPattern.SystemUtilImpl
 import com.example.weathertrackingapp.presentation.delegationPattern.UiUtil
 import com.example.weathertrackingapp.presentation.delegationPattern.UiUtilImpl
+import com.example.weathertrackingapp.presentation.fragments.currentWeather.CurrentWeatherFragment
 
 /**
  * MainActivity delegates utility responsibilities to implementation classes using Kotlin's delegation pattern.
@@ -43,7 +40,6 @@ import com.example.weathertrackingapp.presentation.delegationPattern.UiUtilImpl
  */
 class MainActivity : AppCompatActivity(),
     UiUtil by UiUtilImpl(),
-    SystemUtil by SystemUtilImpl(),
     PermissionUtil by PermissionUtilImpl() {
 
     private var dialog: Dialog? = null
@@ -60,19 +56,19 @@ class MainActivity : AppCompatActivity(),
         setContentView(R.layout.activity_main)
 
         if (!isLocationPermissionGranted(this)) requestLocationPermission(this)
-        else navigateToCurrentWeatherFragmentWithBundle()
+        else navigateToCurrentWeatherFragment()
     }
 
 
     @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
     override fun onResume() {
         super.onResume()
-        releaseDialog()
 
         if (comingBackFromSettings) {
+            releaseDialog()
             comingBackFromSettings = false
             if (isLocationPermissionGranted(this)) {
-                navigateToCurrentWeatherFragmentWithBundle()
+                navigateToCurrentWeatherFragment()
             } else {
                 Log.d(TAG, "onResume: Location is still deniend")
                 showGoToSettingsDialog()
@@ -89,7 +85,7 @@ class MainActivity : AppCompatActivity(),
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PermissionUtilImpl.LOCATION_PERMISSION_REQUEST_CODE) {
-            if (isPermissionGranted(grantResults)) navigateToCurrentWeatherFragmentWithBundle()
+            if (isPermissionGranted(grantResults)) navigateToCurrentWeatherFragment()
             else {
                 if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
                     // User denied WITHOUT "Don't ask again" → can show rationale and re-request
@@ -105,10 +101,7 @@ class MainActivity : AppCompatActivity(),
 
     //region --------------------Private functions--------------------
 
-    private fun navigateToCurrentWeatherFragmentWithBundle() {
-        val bundle = Bundle()
-        bundle.putString(PresentationConstants.SYSTEM_LANGUAGE, getSystemLanguage())
-        currentWeatherFragment.arguments = bundle
+    private fun navigateToCurrentWeatherFragment() {
         supportFragmentManager.beginTransaction()
             .add(R.id.fragment_container, currentWeatherFragment)
             .commit()
@@ -160,7 +153,11 @@ class MainActivity : AppCompatActivity(),
         dialog?.dismiss()
         dialog = null
     }
-    //endregion --------------------Private functions--------------------
 
+    //endregion --------------------Private functions--------------------
+    override fun onDestroy() {
+        super.onDestroy()
+        releaseDialog()
+    }
 
 }

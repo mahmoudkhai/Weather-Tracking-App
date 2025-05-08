@@ -1,6 +1,6 @@
 package com.example.weathertrackingapp.data.dto
 
-data class CurrentConditionsDto(
+data class CurrentWeatherDto(
     val cloudcover: Double,
     val conditions: String,
     val datetime: String,

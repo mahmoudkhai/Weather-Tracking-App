@@ -1,6 +1,6 @@
 package com.example.weathertrackingapp.data.dto
 
-data class DayForecastDto(
+data class WholeDayWeatherDto(
     val cloudcover: Double,
     val conditions: String,
     val datetime: String,
@@ -34,5 +34,5 @@ data class DayForecastDto(
     val visibility: Double,
     val winddir: Double,
     val windgust: Double,
-    val windspeed: Double
+    val windspeed: Double,
 )

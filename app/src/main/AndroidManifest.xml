@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WeatherTrackingApp"
-        tools:targetApi="31">
+        tools:targetApi="31"
+        android:name=".presentation.WeatherApp">
         <activity
             android:name=".presentation.activity.MainActivity"
             android:exported="true">

@@ -10,12 +10,13 @@ sealed class CustomException() : Exception() {
         data object BadRequestException : NetworkException()
         data object InternalServerErrorException : NetworkException()
         data object TooManyRequests : NetworkException()
-
     }
 
     sealed class DataException() : CustomException() {
         data object ParsingException : DataException()
-        data object UnSupportedTypeCasting:DataException()
+        data object UnSupportedTypeCasting : DataException()
+        data object LocalInputOutputException : DataException()
+        data object UnKnownDataException : DataException()
     }
 
     sealed class LocationException() : CustomException() {

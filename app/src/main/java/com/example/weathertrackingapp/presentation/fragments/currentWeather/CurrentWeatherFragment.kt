@@ -8,11 +8,12 @@ import com.example.weathertrackingapp.R
 import com.example.weathertrackingapp.common.di.AppDependenciesProvider
 import com.example.weathertrackingapp.domain.entity.requestModels.LatLong
 import com.example.weathertrackingapp.domain.entity.requestModels.WeatherRequest
-import com.example.weathertrackingapp.domain.entity.responseEntities.CurrentWeather
+import com.example.weathertrackingapp.presentation.WeatherApp
 import com.example.weathertrackingapp.presentation.delegationPattern.UiUtil
 import com.example.weathertrackingapp.presentation.delegationPattern.UiUtilImpl
 import com.example.weathertrackingapp.presentation.fragments.base.BaseFragment
 import com.example.weathertrackingapp.presentation.fragments.fiveDaysForecase.FiveDaysForecastFragment
+import com.example.weathertrackingapp.presentation.model.CurrentWeather
 
 class CurrentWeatherFragment : UiUtil by UiUtilImpl(),
     BaseFragment<CurrentWeather>(R.layout.fragment_current_weather) {
@@ -42,7 +43,7 @@ class CurrentWeatherFragment : UiUtil by UiUtilImpl(),
     }
 
     override fun registerObserverIntoViewModel() =
-        viewModel.registerObserver(this)
+        viewModel.registerSubscriber(this)
 
     override fun getDataInBackgroundThread(weatherRequest: WeatherRequest) =
         Thread {
@@ -56,7 +57,7 @@ class CurrentWeatherFragment : UiUtil by UiUtilImpl(),
     override fun createWeatherRequest(latLong: LatLong): WeatherRequest =
         WeatherRequest(
             latLong = latLong,
-            language = systemLanguage,
+            language = WeatherApp.systemLanguage,
         )
 
 
@@ -101,6 +102,6 @@ class CurrentWeatherFragment : UiUtil by UiUtilImpl(),
     }
 
     override fun unRegisterFragmentFromViewModel() {
-        viewModel.unregisterObserver(this)
+        viewModel.unregisterSubscriber(this)
     }
 }

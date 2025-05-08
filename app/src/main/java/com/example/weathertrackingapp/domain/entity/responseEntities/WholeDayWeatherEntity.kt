@@ -1,6 +1,6 @@
 package com.example.weathertrackingapp.domain.entity.responseEntities
 
-data class DayForecast(
+data class WholeDayWeatherEntity(
     val description: String,
     val conditions: String,
     val datetime: String,
@@ -12,5 +12,4 @@ data class DayForecast(
     val sunrise: String,
     val temp: Double,
     val windspeed: Double,
-
     )

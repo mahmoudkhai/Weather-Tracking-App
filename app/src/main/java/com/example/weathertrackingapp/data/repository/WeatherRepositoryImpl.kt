@@ -2,27 +2,73 @@ package com.example.weathertrackingapp.data.repository
 
 import android.util.Log
 import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
+import com.example.weathertrackingapp.common.customException.CustomException
 import com.example.weathertrackingapp.data.mappers.CurrentConditionsMapper
 import com.example.weathertrackingapp.data.mappers.FiveDaysForecastMapper
+import com.example.weathertrackingapp.domain.customState.DomainState
 import com.example.weathertrackingapp.domain.entity.requestModels.WeatherRequest
-import com.example.weathertrackingapp.domain.entity.responseEntities.CurrentWeather
-import com.example.weathertrackingapp.domain.entity.responseEntities.FiveDaysForecast
+import com.example.weathertrackingapp.domain.entity.responseEntities.CurrentWeatherEntity
+import com.example.weathertrackingapp.domain.entity.responseEntities.FiveDaysForecastEntity
 import com.example.weathertrackingapp.domain.repository.WeatherRepository
+import com.example.weathertrackingapp.domain.repository.dataSources.local.WeatherLocalDS
 import com.example.weathertrackingapp.domain.repository.dataSources.remote.WeatherRemoteDS
 
-class WeatherRepositoryImpl(private val weatherRemoteDS: WeatherRemoteDS) :
-    WeatherRepository {
-    override fun getCurrentWeather(weatherRequest: WeatherRequest): CurrentWeather {
-        Log.d(TAG, "getCurrentWeather: now in the repository impl to get current weather")
-        return CurrentConditionsMapper.dtoToDomain(
-            weatherRemoteDS.getCurrentWeather(
-                weatherRequest
-            )
+class WeatherRepositoryImpl(
+    private val weatherRemoteDS: WeatherRemoteDS,
+    private val weatherLocalDS: WeatherLocalDS,
+) : WeatherRepository {
+
+    override fun getCurrentWeather(weatherRequest: WeatherRequest): DomainState<CurrentWeatherEntity> {
+        return safeDataSourceCall<CurrentWeatherEntity>(
+            remoteDSCall = {
+                val currentWeatherDto = weatherRemoteDS.getCurrentWeather(weatherRequest)
+                weatherLocalDS.cacheCurrentWeatherDto(currentWeatherDto)
+                CurrentConditionsMapper.dtoToEntity(currentWeatherDto)
+            },
+            localDSCall = {
+                val localData = weatherLocalDS.getCurrentWeatherDto()
+                CurrentConditionsMapper.dtoToEntity(localData)
+            }
         )
     }
 
-    override fun getFiveDaysForecast(weatherRequest: WeatherRequest): FiveDaysForecast {
-        Log.d(TAG, "getCurrentWeather: now in the repository impl to get five days weather")
-        return FiveDaysForecastMapper.dtoToDomain(weatherRemoteDS.getFiveDaysForecast(weatherRequest))
+    override fun getFiveDaysForecast(weatherRequest: WeatherRequest): DomainState<FiveDaysForecastEntity> {
+        return safeDataSourceCall<FiveDaysForecastEntity>(
+            remoteDSCall = {
+                val fiveDaysForecastDto = weatherRemoteDS.getFiveDaysForecast(weatherRequest)
+                weatherLocalDS.cacheFiveDaysForecastDto(fiveDaysForecastDto)
+                FiveDaysForecastMapper.dtoToEntity(fiveDaysForecastDto)
+            },
+            localDSCall = {
+                val localData = weatherLocalDS.getFiveDaysForecastDto()
+                FiveDaysForecastMapper.dtoToEntity(localData)
+            }
+        )
     }
+
+
+    private fun <T> safeDataSourceCall(
+        remoteDSCall: () -> T,
+        localDSCall: () -> T,
+    ): DomainState<T> {
+        return try {
+            DomainState.SuccessWithFreshData(remoteDSCall())
+        } catch (remoteDSException: CustomException) {
+            Log.e(
+                TAG,
+                "Error fetching from remote DS source: ${remoteDSException.localizedMessage}"
+            )
+            try {
+                val localData = localDSCall()
+                DomainState.FailureWithCachedData(remoteDSException, localData)
+            } catch (localDSException: CustomException) {
+                Log.e(
+                    TAG,
+                    "Error fetching from local DS storage: ${localDSException.localizedMessage}"
+                )
+                DomainState.FailureWithCachedData(localDSException)
+            }
+        }
+    }
+
 }

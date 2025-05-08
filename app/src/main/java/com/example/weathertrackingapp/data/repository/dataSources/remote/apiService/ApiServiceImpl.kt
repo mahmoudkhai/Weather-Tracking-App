@@ -1,10 +1,10 @@
-package com.example.weathertrackingapp.data.dataSources.remote.apiService
+package com.example.weathertrackingapp.data.repository.dataSources.remote.apiService
 
 import android.util.Log
 import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
 import com.example.weathertrackingapp.common.customException.CustomException
-import com.example.weathertrackingapp.data.dto.CurrentConditionsDto
-import com.example.weathertrackingapp.data.dto.DayForecastDto
+import com.example.weathertrackingapp.data.dto.CurrentWeatherDto
+import com.example.weathertrackingapp.data.dto.WholeDayWeatherDto
 import com.example.weathertrackingapp.data.dto.FiveDaysForecastDto
 import com.example.weathertrackingapp.domain.entity.requestModels.WeatherRequest
 import org.json.JSONException
@@ -131,7 +131,7 @@ class ApiServiceImpl : ApiService {
         responseType: KClass<DTO>,
     ): DTO {
         return when (responseType) {
-            CurrentConditionsDto::class -> buildCurrentConditionDtoObject(
+            CurrentWeatherDto::class -> buildCurrentConditionDtoObject(
                 json.getJSONObject(ATTRIBUTE_TO_SELECT)
             ) as DTO
 
@@ -153,7 +153,7 @@ class ApiServiceImpl : ApiService {
             days = json.getJSONArray("days").let { daysArray ->
                 List(daysArray.length()) { i ->
                     val dayJson = daysArray.getJSONObject(i)
-                    DayForecastDto(
+                    WholeDayWeatherDto(
                         cloudcover = dayJson.getDouble("cloudcover"),
                         conditions = dayJson.getString("conditions"),
                         datetime = dayJson.getString("datetime"),
@@ -194,7 +194,7 @@ class ApiServiceImpl : ApiService {
         )
     }
 
-    private fun buildCurrentConditionDtoObject(json: JSONObject) = CurrentConditionsDto(
+    private fun buildCurrentConditionDtoObject(json: JSONObject) = CurrentWeatherDto(
         cloudcover = json.getDouble("cloudcover"),
         conditions = json.getString("conditions"),
         datetime = json.getString("datetime"),

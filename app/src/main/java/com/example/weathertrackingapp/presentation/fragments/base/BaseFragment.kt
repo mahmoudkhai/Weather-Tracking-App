@@ -1,32 +1,26 @@
 package com.example.weathertrackingapp.presentation.fragments.base
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import com.example.weathertrackingapp.R
 import com.example.weathertrackingapp.common.customException.CustomException
-import com.example.weathertrackingapp.common.observerPattern.Observer
+import com.example.weathertrackingapp.common.observerPattern.Subscriber
 import com.example.weathertrackingapp.domain.entity.requestModels.LatLong
 import com.example.weathertrackingapp.domain.entity.requestModels.WeatherRequest
 import com.example.weathertrackingapp.presentation.delegationPattern.LocationUtil
 import com.example.weathertrackingapp.presentation.delegationPattern.LocationUtilImpl
-import com.example.weathertrackingapp.presentation.presentationUtil.PresentationConstants
 import com.example.weathertrackingapp.presentation.presentationUtil.UiEvent
 import com.google.android.gms.location.LocationServices
 
-abstract class BaseFragment<DataType>(private val fragmentId: Int) : Fragment(), Observer<UiEvent>,
+abstract class BaseFragment<DataType>(private val fragmentId: Int) : Fragment(),
+    Subscriber<UiEvent>,
     LocationUtil by LocationUtilImpl() {
 
     abstract val viewModel: BaseViewModel<UiEvent>
-    lateinit var systemLanguage: String
 
 
     override fun onCreateView(
@@ -39,8 +33,6 @@ abstract class BaseFragment<DataType>(private val fragmentId: Int) : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        systemLanguage = savedInstanceState?.getString(PresentationConstants.SYSTEM_LANGUAGE)
-            ?: PresentationConstants.DEFAULT_LANGUAGE
         setFusedLocationClient(LocationServices.getFusedLocationProviderClient(requireActivity()))
         fetchWeatherData()
     }
@@ -66,6 +58,7 @@ abstract class BaseFragment<DataType>(private val fragmentId: Int) : Fragment(),
     override fun onUpdate(domainState: UiEvent) = requireActivity().runOnUiThread {
         when (domainState) {
             is UiEvent.ShowLoading -> showLoading(domainState.isLoading)
+            // i need to solve this to avoid casting exception at runtime if presentation model changed and i forget to edit it in fragment
             is UiEvent.Success<*> -> bindViews(domainState.data as DataType)
             is UiEvent.ShowError -> showError(errorMessage = getFailureMessage(exception = domainState.error))
         }

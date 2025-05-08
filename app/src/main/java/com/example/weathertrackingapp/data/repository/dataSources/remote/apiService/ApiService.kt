@@ -1,4 +1,4 @@
-package com.example.weathertrackingapp.data.dataSources.remote.apiService
+package com.example.weathertrackingapp.data.repository.dataSources.remote.apiService
 
 import com.example.weathertrackingapp.domain.entity.requestModels.WeatherRequest
 import kotlin.reflect.KClass
