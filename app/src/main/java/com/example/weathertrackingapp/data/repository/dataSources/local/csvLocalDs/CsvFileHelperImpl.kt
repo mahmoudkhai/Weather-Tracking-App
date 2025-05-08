@@ -21,16 +21,23 @@ abstract class CsvFileHelperImpl<DTO>(
         }
     }
 
-    override fun writeDtoAsString(dto: DTO) = safeCsvFileCall<Unit> {
+    override fun insertNewData(dto: DTO) = safeCsvFileCall<Unit> {
         val newRow = fromDtoToCsvRow(dto)
-        BufferedWriter(FileWriter(file, true)).use { writer ->
+        BufferedWriter(FileWriter(file, KEEP_ALL_DATA)).use { writer ->
             writer.appendLine(newRow)
+        }
+    }
+
+    override fun overrideAllOldData(dto: DTO) {
+        val newRaw = fromDtoToCsvRow(dto)
+        BufferedWriter(FileWriter(file, OVERRIDE_ALL_DATA)).use { writer ->
+            writer.appendLine(newRaw)
         }
     }
 
     override fun readAllDTOs(): List<DTO> = safeCsvFileCall(::getListOfDtoObjectFromCsvFile)
 
-    override fun readMoseRecentDto(): DTO = safeCsvFileCall {
+    override fun readMoseRecentData(): DTO = safeCsvFileCall {
         getListOfDtoObjectFromCsvFile().last()
     }
 
@@ -54,5 +61,7 @@ abstract class CsvFileHelperImpl<DTO>(
 
     companion object {
         const val FIRST_ROW_OF_CSV_FILE = 1
+        const val KEEP_ALL_DATA = true
+        const val OVERRIDE_ALL_DATA = false
     }
 }

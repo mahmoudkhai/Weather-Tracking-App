@@ -3,15 +3,15 @@ package com.example.weathertrackingapp.presentation.fragments.fiveDaysForecase
 import android.util.Log
 import com.example.weathertrackingapp.R
 import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
+import com.example.weathertrackingapp.common.di.AppDependenciesProvider
 import com.example.weathertrackingapp.domain.entity.requestModels.LatLong
 import com.example.weathertrackingapp.domain.entity.requestModels.WeatherRequest
-import com.example.weathertrackingapp.domain.entity.responseEntities.FiveDaysForecastEntity
-import com.example.weathertrackingapp.presentation.fragments.base.BaseFragment
-import com.example.weathertrackingapp.common.di.AppDependenciesProvider
 import com.example.weathertrackingapp.presentation.WeatherApp
+import com.example.weathertrackingapp.presentation.fragments.base.BaseFragment
+import com.example.weathertrackingapp.presentation.model.FiveDaysForecast
 
 class FiveDaysForecastFragment :
-    BaseFragment<FiveDaysForecastEntity>(R.layout.fragment_five_days_frocast) {
+    BaseFragment<FiveDaysForecast>(R.layout.fragment_five_days_frocast) {
 
     override val viewModel by lazy {
         AppDependenciesProvider.provideFiveDaysForecastViewModel()
@@ -35,7 +35,7 @@ class FiveDaysForecastFragment :
         Log.d(TAG, "Error Message = $errorMessage")
     }
 
-    override fun bindViews(data: FiveDaysForecastEntity) {
+    override fun bindViews(data: FiveDaysForecast) {
 
     }
 

@@ -11,14 +11,14 @@ class WeatherLocalDSImpl(
     private val fiveDaysForecastCSVFile: FiveDaysForecastCSVFile,
 ) : WeatherLocalDS {
     override fun cacheCurrentWeatherDto(currentWeatherEntity: CurrentWeatherDto) =
-        currentWeatherCSVFile.writeDtoAsString(currentWeatherEntity)
+        currentWeatherCSVFile.overrideAllOldData(currentWeatherEntity)
 
     override fun getCurrentWeatherDto(): CurrentWeatherDto =
-        currentWeatherCSVFile.readMoseRecentDto()
+        currentWeatherCSVFile.readMoseRecentData()
 
     override fun cacheFiveDaysForecastDto(fiveDaysForecastDto: FiveDaysForecastDto) =
-        fiveDaysForecastCSVFile.writeDtoAsString(fiveDaysForecastDto)
+        fiveDaysForecastCSVFile.overrideAllOldData(fiveDaysForecastDto)
 
     override fun getFiveDaysForecastDto(): FiveDaysForecastDto =
-        fiveDaysForecastCSVFile.readMoseRecentDto()
+        fiveDaysForecastCSVFile.readMoseRecentData()
 }
