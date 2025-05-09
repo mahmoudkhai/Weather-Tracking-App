@@ -31,7 +31,7 @@ class CurrentWeatherCSVFile(
             append("${dto.queryCost},")
             append("${dto.resolvedAddress?.replace(',', '|')},")
             append("${dto.timeZone?.replace(',', '|')},")
-            append("${dto.address?.replace(',', '|')},")
+            append("${dto.address},")
             append("${dto.currentConditions?.pressure},")
             append("${dto.currentConditions?.datetime},")
             append("${dto.currentConditions?.feelslike},")
@@ -114,30 +114,30 @@ class CurrentWeatherCSVFile(
         const val QUERY_COST = 0
         const val RESOLVED_ADDRESS = 1
         const val TIME_ZONE = 2
-        const val ADDRESS = 4
-        const val PRESSURE = 5
-        const val DATETIME = 6
-        const val FEELSLIKE = 7
-        const val TEMP = 8
-        const val CONDITIONS = 9
-        const val ICON = 10
-        const val CLOUDCOVER = 11
-        const val HUMIDITY = 12
-        const val UVINDEX = 13
-        const val WINDSPEED = 14
-        const val SUNRISE = 15
-        const val SUNSET = 16
-        const val DESCRIPTION = 17
-        const val DAY_CONDITIONS = 18
-        const val DAY_FEELSLIKE = 19
-        const val DAY_DATETIME = 20
-        const val DAY_HUMIDITY = 21
-        const val DAY_PRECIP = 22
-        const val DAY_ICON = 23
-        const val DAY_SUNRISE = 24
-        const val DAY_PRESSURE = 25
-        const val DAY_TEMP = 26
-        const val DAY_WINDSPEED = 27
+        const val ADDRESS = 3
+        const val PRESSURE = 4
+        const val DATETIME = 5
+        const val FEELSLIKE = 6
+        const val TEMP = 7
+        const val CONDITIONS = 8
+        const val ICON = 9
+        const val CLOUDCOVER = 10
+        const val HUMIDITY = 11
+        const val UVINDEX = 12
+        const val WINDSPEED = 13
+        const val SUNRISE = 14
+        const val SUNSET = 15
+        const val DESCRIPTION = 16
+        const val DAY_CONDITIONS = 17
+        const val DAY_FEELSLIKE = 18
+        const val DAY_DATETIME = 19
+        const val DAY_HUMIDITY = 20
+        const val DAY_PRECIP = 21
+        const val DAY_ICON = 22
+        const val DAY_SUNRISE = 23
+        const val DAY_PRESSURE = 24
+        const val DAY_TEMP = 25
+        const val DAY_WINDSPEED = 26
         val HEADERS = listOf(
             "cloudcover", "conditions", "datetime", "datetimeEpoch", "dew",
             "feelslike", "humidity", "icon", "moonphase", "precipprob",

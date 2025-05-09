@@ -1,5 +1,7 @@
 package com.example.weathertrackingapp.data.repository.dataSources.local.csvLocalDs
 
+import android.util.Log
+import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
 import com.example.weathertrackingapp.data.dto.FiveDaysForecastDto
 import com.example.weathertrackingapp.data.dto.WholeDayWeatherDto
 import java.io.File
@@ -25,7 +27,7 @@ class FiveDaysForecastCSVFile(
         val rowString = StringBuilder().apply {
             append("${dto.resolvedAddress?.replace(',', '|')},")
             append("${dto.address?.replace(',', '|')},")
-            append("${dto.timezone?.replace(',', '|')},")
+            append("${dto.timezone}")
 
             val daysString = dto.days?.joinToString(DAY_SEPARATOR) { day ->
                 listOf(
@@ -45,15 +47,25 @@ class FiveDaysForecastCSVFile(
     }
 
     override fun fromCsvRowToDto(row: String): FiveDaysForecastDto {
-        val data = row.split(CSV_SEPARATOR, limit = SPLIT_LIMIT)
+        val data: List<String> = row.split("&", limit = 5).also {
+            Log.d(TAG, "splitted data count = ${it.count()}")
+        }
 
-        val resolvedAddress = data[RESOLVED_ADDRESS]
-        val address = data[ADDRESS]
-        val timezone = data[TIMEZONE]
-        val daysString = data[DAYS]
+        val statistics = data.first().split(',').also {
+            Log.d(TAG, "statistics are $it")
+        }
+        val resolvedAddress =
+            statistics[RESOLVED_ADDRESS].also { Log.d(TAG, "resolved address = ${it}") }
+                .toString()
+        val address = statistics[ADDRESS]
+        val timezone = statistics[TIMEZONE]
+        val daysString: List<String> = data[1].split("##").also {
+            Log.d(TAG, "daysString count = ${it.count()}")
+            Log.d(TAG, "daysString count fist element is  = ${it.first()}")
+        }.drop(CURRENT_DAY_INDEX)
 
-        val days: List<WholeDayWeatherDto> = daysString.split(DAY_SEPARATOR).map { dayStr ->
-            val parts = dayStr.split(FIELD_SEPARATOR)
+        val days: List<WholeDayWeatherDto> = daysString.map { dayStr ->
+            val parts = dayStr.split("|")
             WholeDayWeatherDto(
                 cloudcover = parts[CLOUDCOVER].toDouble(),
                 conditions = parts[CONDITIONS],
@@ -90,7 +102,9 @@ class FiveDaysForecastCSVFile(
                 windgust = parts[WINDGUST].toDouble(),
                 windspeed = parts[WINDSPEED].toDouble()
             )
+
         }
+
 
         return FiveDaysForecastDto(
             resolvedAddress = resolvedAddress,
@@ -102,6 +116,7 @@ class FiveDaysForecastCSVFile(
 
 
     companion object FiveDaysForecastIndicies {
+        const val CURRENT_DAY_INDEX = 1
         const val CSV_SEPARATOR = "&"
         const val DAY_SEPARATOR = "##"
         const val FIELD_SEPARATOR = "|"
@@ -110,6 +125,8 @@ class FiveDaysForecastCSVFile(
         const val RESOLVED_ADDRESS = 0
         const val ADDRESS = 1
         const val TIMEZONE = 2
+
+        // Indices for the fields in the days list
         const val CLOUDCOVER = 0
         const val CONDITIONS = 1
         const val DATETIME = 2
@@ -144,6 +161,7 @@ class FiveDaysForecastCSVFile(
         const val WINDDIR = 31
         const val WINDGUST = 32
         const val WINDSPEED = 33
+
         val HEADERS = listOf(
             "resolvedAddress",
             "address",
