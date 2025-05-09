@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -9,8 +12,17 @@
         android:layout_height="wrap_content"
         tools:context=".presentation.fragments.fiveDaysForecase.FiveDaysForecastFragment">
 
+        <TextView
+            android:id="@+id/errorTextView"
+            style="@style/errorStyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Error" />
+
         <ProgressBar
             android:id="@+id/progress_bar"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|center_horizontal"
@@ -23,6 +35,7 @@
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline30"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -36,10 +49,11 @@
             android:text="@string/day_1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/errorTextView" />
 
         <TextView
             android:id="@+id/firstDayResolvedAddressTV"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/resolved_address"
@@ -48,6 +62,7 @@
 
         <TextView
             android:id="@+id/TVfirstDayResolvedAddress"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@id/guideline30"
@@ -55,6 +70,7 @@
 
         <TextView
             android:id="@+id/firstDayAddressTV"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/address"
@@ -63,6 +79,7 @@
 
         <TextView
             android:id="@+id/TVfirstDayAddress"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@id/guideline30"
@@ -70,6 +87,7 @@
 
         <TextView
             android:id="@+id/firstDayDescritpionTV"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_description"
@@ -78,6 +96,7 @@
 
         <TextView
             android:id="@+id/TVfirstDayDescription"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -85,6 +104,7 @@
 
         <TextView
             android:id="@+id/firstDayConditionsTV"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_conditions"
@@ -93,6 +113,7 @@
 
         <TextView
             android:id="@+id/TVfirstDayConditions"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -100,6 +121,7 @@
 
         <TextView
             android:id="@+id/firstDayDateTimeTV"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_datetime"
@@ -108,6 +130,7 @@
 
         <TextView
             android:id="@+id/TVfirstDayDateTime"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -115,6 +138,7 @@
 
         <TextView
             android:id="@+id/firstDayIconTV"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_icon"
@@ -123,6 +147,7 @@
 
         <TextView
             android:id="@+id/TVfirstDayIcon"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -130,6 +155,7 @@
 
         <TextView
             android:id="@+id/firstDayTempTV"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_temperature"
@@ -138,6 +164,7 @@
 
         <TextView
             android:id="@+id/TVfirstDayTemp"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -145,6 +172,7 @@
 
         <TextView
             android:id="@+id/firstDayWindSpeedTV"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_wind_speed"
@@ -153,6 +181,7 @@
 
         <TextView
             android:id="@+id/TVfirstDayWindSpeed"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -171,6 +200,7 @@
 
         <TextView
             android:id="@+id/descritpionTV2"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_description"
@@ -179,6 +209,7 @@
 
         <TextView
             android:id="@+id/TVDescription2"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -186,6 +217,7 @@
 
         <TextView
             android:id="@+id/conditionsTV2"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_conditions"
@@ -194,6 +226,7 @@
 
         <TextView
             android:id="@+id/TVConditions2"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -201,6 +234,7 @@
 
         <TextView
             android:id="@+id/dateTimeTV2"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_datetime"
@@ -209,6 +243,7 @@
 
         <TextView
             android:id="@+id/TVDateTime2"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -216,6 +251,7 @@
 
         <TextView
             android:id="@+id/iconTV2"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_icon"
@@ -224,6 +260,7 @@
 
         <TextView
             android:id="@+id/TVIcon2"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -231,6 +268,7 @@
 
         <TextView
             android:id="@+id/tempTV2"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_temperature"
@@ -239,6 +277,7 @@
 
         <TextView
             android:id="@+id/TVTemp2"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -246,6 +285,7 @@
 
         <TextView
             android:id="@+id/windSpeedTV2"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_wind_speed"
@@ -254,6 +294,7 @@
 
         <TextView
             android:id="@+id/TVWindSpeed2"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -271,6 +312,7 @@
 
         <TextView
             android:id="@+id/descritpionTV3"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_description"
@@ -279,6 +321,7 @@
 
         <TextView
             android:id="@+id/TVDescription3"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -286,6 +329,7 @@
 
         <TextView
             android:id="@+id/conditionsTV3"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_conditions"
@@ -294,6 +338,7 @@
 
         <TextView
             android:id="@+id/TVConditions3"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -301,6 +346,7 @@
 
         <TextView
             android:id="@+id/dateTimeTV3"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_datetime"
@@ -309,6 +355,7 @@
 
         <TextView
             android:id="@+id/TVDateTime3"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -316,6 +363,7 @@
 
         <TextView
             android:id="@+id/iconTV3"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_icon"
@@ -324,6 +372,7 @@
 
         <TextView
             android:id="@+id/TVIcon3"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -331,6 +380,7 @@
 
         <TextView
             android:id="@+id/tempTV3"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_temperature"
@@ -339,6 +389,7 @@
 
         <TextView
             android:id="@+id/TVTemp3"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -346,6 +397,7 @@
 
         <TextView
             android:id="@+id/windSpeedTV3"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_wind_speed"
@@ -354,6 +406,7 @@
 
         <TextView
             android:id="@+id/TVWindSpeed3"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -371,6 +424,7 @@
 
         <TextView
             android:id="@+id/descritpionTV4"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_description"
@@ -379,6 +433,7 @@
 
         <TextView
             android:id="@+id/TVDescription4"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -386,6 +441,7 @@
 
         <TextView
             android:id="@+id/conditionsTV4"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_conditions"
@@ -394,6 +450,7 @@
 
         <TextView
             android:id="@+id/TVConditions4"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -401,6 +458,7 @@
 
         <TextView
             android:id="@+id/dateTimeTV4"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_datetime"
@@ -409,6 +467,7 @@
 
         <TextView
             android:id="@+id/TVDateTime4"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -416,6 +475,7 @@
 
         <TextView
             android:id="@+id/iconTV4"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_icon"
@@ -424,6 +484,7 @@
 
         <TextView
             android:id="@+id/TVIcon4"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -431,6 +492,7 @@
 
         <TextView
             android:id="@+id/tempTV4"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_temperature"
@@ -439,6 +501,7 @@
 
         <TextView
             android:id="@+id/TVTemp4"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -446,6 +509,7 @@
 
         <TextView
             android:id="@+id/windSpeedTV4"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_wind_speed"
@@ -454,6 +518,7 @@
 
         <TextView
             android:id="@+id/TVWindSpeed4"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -471,6 +536,7 @@
 
         <TextView
             android:id="@+id/descritpionTV5"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_description"
@@ -479,6 +545,7 @@
 
         <TextView
             android:id="@+id/TVDescription5"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -486,6 +553,7 @@
 
         <TextView
             android:id="@+id/conditionsTV5"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_conditions"
@@ -494,6 +562,7 @@
 
         <TextView
             android:id="@+id/TVConditions5"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -501,6 +570,7 @@
 
         <TextView
             android:id="@+id/dateTimeTV5"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_datetime"
@@ -509,6 +579,7 @@
 
         <TextView
             android:id="@+id/TVDateTime5"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -516,6 +587,7 @@
 
         <TextView
             android:id="@+id/iconTV5"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_icon"
@@ -524,6 +596,7 @@
 
         <TextView
             android:id="@+id/TVIcon5"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -531,6 +604,7 @@
 
         <TextView
             android:id="@+id/tempTV5"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_temperature"
@@ -539,6 +613,7 @@
 
         <TextView
             android:id="@+id/TVTemp5"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -546,6 +621,7 @@
 
         <TextView
             android:id="@+id/windSpeedTV5"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/WD_wind_speed"
@@ -554,6 +630,7 @@
 
         <TextView
             android:id="@+id/TVWindSpeed5"
+            style="@style/WeatherLabelStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/guideline30"
@@ -570,13 +647,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/errorTextView"
-            style="@style/errorStyle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guideline80_horizontal"
-            tools:text="Error" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
