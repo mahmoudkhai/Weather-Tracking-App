@@ -91,7 +91,10 @@ class WeatherRepositoryImpl(
     } catch (e: Exception) {
         val localException = when (e) {
             is IOException -> CustomException.DataException.LocalInputOutputException
-            is IndexOutOfBoundsException -> CustomException.DataException.NoCachedDataFound
+            is IndexOutOfBoundsException -> {
+                Log.d(TAG, "IndexOutOfBoundsException = $e")
+                CustomException.DataException.NoCachedDataFound(e)
+            }
             else -> CustomException.DataException.UnKnownDataException(e)
         }
         DomainState.FailureWithCachedData(exception = listOf(remoteDSException, localException))

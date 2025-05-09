@@ -18,7 +18,7 @@ abstract class CsvFileHelperImpl<DTO>(
     init {
         if (!file.exists()) {
             FileWriter(file, true).use { writer ->
-                writer.appendLine(headers.joinToString(","))
+//                writer.appendLine(headers.joinToString(","))
             }
         }
     }
@@ -31,16 +31,18 @@ abstract class CsvFileHelperImpl<DTO>(
     }
 
     override fun overrideAllOldData(dto: DTO) {
-        Log.d(TAG, "overrideAllOldData of csv file with this Dto: $dto ")
         val newRaw = fromDtoToCsvRow(dto).also {
             Log.d(TAG, "new raw data to be written in the file = $it ")
         }
         BufferedWriter(FileWriter(file, OVERRIDE_ALL_DATA)).use { writer ->
             writer.appendLine(newRaw)
         }
+        Log.d(TAG, "Verifying written file content: ${file.readLines().last()}")
     }
 
-    override fun readMoseRecentData(): DTO = fromCsvRowToDto(file.readLines().toString())
+    override fun readMoseRecentData(): DTO = fromCsvRowToDto(file.readLines().last().also {
+        Log.d(TAG, "this is the string to convert to dto $it")
+    })
 
 
 //        file.readLines().also {

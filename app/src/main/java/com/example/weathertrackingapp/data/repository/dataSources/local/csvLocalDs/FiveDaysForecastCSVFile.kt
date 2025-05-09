@@ -102,7 +102,7 @@ class FiveDaysForecastCSVFile(
 
 
     companion object FiveDaysForecastIndicies {
-        const val CSV_SEPARATOR = ","
+        const val CSV_SEPARATOR = "&"
         const val DAY_SEPARATOR = "##"
         const val FIELD_SEPARATOR = "|"
         const val DAYS = 3
