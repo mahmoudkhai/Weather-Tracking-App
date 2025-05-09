@@ -2,7 +2,11 @@ package com.example.weathertrackingapp.data.repository.dataSources.local.csvLoca
 
 import android.util.Log
 import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
+import com.example.weathertrackingapp.data.dto.CurrentConditionDto
 import com.example.weathertrackingapp.data.dto.CurrentWeatherDto
+import com.example.weathertrackingapp.data.dto.WholeDayWeatherDto
+import com.example.weathertrackingapp.presentation.model.CurrentConditions
+import com.example.weathertrackingapp.presentation.model.WholeDayWeather
 import java.io.File
 import java.io.FileWriter
 
@@ -23,105 +27,117 @@ class CurrentWeatherCSVFile(
     }
 
     override fun fromDtoToCsvRow(dto: CurrentWeatherDto): String {
-        val rowString = StringBuilder().apply {
-            append(dto.cloudcover)
-            append("$CSV_SEPARATOR${dto.conditions}")
-            append("$CSV_SEPARATOR${dto.datetime}")
-            append("$CSV_SEPARATOR${dto.datetimeEpoch}")
-            append("$CSV_SEPARATOR${dto.dew}")
-            append("$CSV_SEPARATOR${dto.feelslike}")
-            append("$CSV_SEPARATOR${dto.humidity}")
-            append("$CSV_SEPARATOR${dto.icon}")
-            append("$CSV_SEPARATOR${dto.moonphase}")
-            append("$CSV_SEPARATOR${dto.precipprob}")
-            append("$CSV_SEPARATOR${dto.pressure}")
-            append("$CSV_SEPARATOR${dto.snow}")
-            append("$CSV_SEPARATOR${dto.snowdepth}")
-            append("$CSV_SEPARATOR${dto.solarenergy}")
-            append("$CSV_SEPARATOR${dto.solarradiation}")
-            append("$CSV_SEPARATOR${dto.source}")
-            append("$CSV_SEPARATOR${dto.stations.joinToString(STATIONS_SEPARATOR)}")
-            append("$CSV_SEPARATOR${dto.sunrise}")
-            append("$CSV_SEPARATOR${dto.sunriseEpoch}")
-            append("$CSV_SEPARATOR${dto.sunset}")
-            append("$CSV_SEPARATOR${dto.sunsetEpoch}")
-            append("$CSV_SEPARATOR${dto.temp}")
-            append("$CSV_SEPARATOR${dto.uvindex}")
-            append("$CSV_SEPARATOR${dto.visibility}")
-            append("$CSV_SEPARATOR${dto.winddir}")
-            append("$CSV_SEPARATOR${dto.windspeed}")
-        }
-        Log.d(TAG, "converting dto to csv row result = : $rowString ")
-        return rowString.toString()
+        return StringBuilder().apply {
+            append("${dto.queryCost}|")
+            append("${dto.resolvedAddress}|")
+            append("${dto.timeZone}|")
+            append("${dto.address}|")
+            append("${dto.currentConditions?.pressure}|")
+            append("${dto.currentConditions?.datetime}|")
+            append("${dto.currentConditions?.feelslike}|")
+            append("${dto.currentConditions?.temp}|")
+            append("${dto.currentConditions?.conditions}|")
+            append("${dto.currentConditions?.icon}|")
+            append("${dto.currentConditions?.cloudcover}|")
+            append("${dto.currentConditions?.humidity}|")
+            append("${dto.currentConditions?.uvindex}|")
+            append("${dto.currentConditions?.windspeed}|")
+            append("${dto.currentConditions?.sunrise}|")
+            append("${dto.currentConditions?.sunset}|")
+            append("${dto.days?.description}|")
+            append("${dto.days?.conditions}|")
+            append("${dto.days?.feelslike}|")
+            append("${dto.days?.datetime}|")
+            append("${dto.days?.humidity}|")
+            append("${dto.days?.precip}|")
+            append("${dto.days?.icon}|")
+            append("${dto.days?.sunrise}|")
+            append("${dto.days?.pressure}|")
+            append("${dto.days?.temp}|")
+            append("${dto.days?.windspeed}")
+        }.toString()
     }
+
 
     override fun fromCsvRowToDto(row: String): CurrentWeatherDto {
-        val data = row.split(CSV_SEPARATOR, limit = SPLIT_LIMIT)
+        // Split the CSV row by commas
+        val values = row.split("|")
+        Log.d(TAG, "fromCsvRowToDto: $values")
+
+        // Mapping values to respective fields
+        val currentConditions = CurrentConditionDto(
+            pressure = values[PRESSURE].toDoubleOrNull(),
+            datetime = values[DATETIME],
+            feelslike = values[FEELSLIKE].toDoubleOrNull(),
+            temp = values[TEMP].toDoubleOrNull(),
+            conditions = values[CONDITIONS],
+            icon = values[ICON],
+            cloudcover = values[CLOUDCOVER].toDoubleOrNull(),
+            humidity = values[HUMIDITY].toDoubleOrNull(),
+            uvindex = values[UVINDEX].toDoubleOrNull(),
+            windspeed = values[WINDSPEED].toDoubleOrNull(),
+            sunrise = values[SUNRISE],
+            sunset = values[SUNSET]
+        )
+
+        val wholeDayWeather = WholeDayWeatherDto(
+            description = values[DESCRIPTION],
+            conditions = values[DAY_CONDITIONS],
+            feelslike = values[DAY_FEELSLIKE].toDoubleOrNull(),
+            datetime = values[DAY_DATETIME],
+            humidity = values[DAY_HUMIDITY].toDoubleOrNull(),
+            precip = values[DAY_PRECIP].toDoubleOrNull(),
+            icon = values[DAY_ICON],
+            sunrise = values[DAY_SUNRISE],
+            pressure = values[DAY_PRESSURE].toDoubleOrNull(),
+            temp = values[DAY_TEMP].toDoubleOrNull(),
+            windspeed = values[DAY_WINDSPEED].toDoubleOrNull()
+        )
 
         return CurrentWeatherDto(
-            cloudcover = data[CLOUDCOVER].toDouble(),
-            conditions = data[CONDITIONS],
-            datetime = data[DATETIME],
-            datetimeEpoch = data[DATETIME_EPOCH].toInt(),
-            dew = data[DEW].toDouble(),
-            feelslike = data[FEELSLIKE].toDouble(),
-            humidity = data[HUMIDITY].toDouble(),
-            icon = data[ICON],
-            moonphase = data[MOONPHASE].toDouble(),
-            precipprob = data[PRECIPPROB].toDouble(),
-            pressure = data[PRESSURE].toDouble(),
-            snow = data[SNOW].toDouble(),
-            snowdepth = data[SNOWDEPTH].toDouble(),
-            solarenergy = data[SOLARENERGY].toDouble(),
-            solarradiation = data[SOLARRADIATION].toDouble(),
-            source = data[SOURCE],
-            stations = data[STATIONS].split(STATIONS_SEPARATOR),
-            sunrise = data[SUNRISE],
-            sunriseEpoch = data[SUNRISE_EPOCH].toInt(),
-            sunset = data[SUNSET],
-            sunsetEpoch = data[SUNSET_EPOCH].toInt(),
-            temp = data[TEMP].toDouble(),
-            uvindex = data[UVINDEX].toDouble(),
-            visibility = data[VISIBILITY].toDouble(),
-            winddir = data[WINDDIR].toDouble(),
-            windspeed = data[WINDSPEED].toDouble()
+            queryCost = values[QUERY_COST].toIntOrNull(),
+            resolvedAddress = values[RESOLVED_ADDRESS],
+            timeZone = values[TIME_ZONE],
+            address = values[ADDRESS],
+            currentConditions = currentConditions,
+            days = wholeDayWeather
         ).also {
-            Log.d(TAG, "converting row to DTo result = : $it ")
+            Log.d(TAG, "Current Weather Cached Data = ${it.toString()}")
         }
+
     }
+
 
     companion object CurrentWeatherIndices {
         const val CSV_SEPARATOR = ","
-        const val STATIONS_SEPARATOR = "|"
-        const val SPLIT_LIMIT = 26
 
-        const val CLOUDCOVER = 0
-        const val CONDITIONS = 1
-        const val DATETIME = 2
-        const val DATETIME_EPOCH = 3
-        const val DEW = 4
-        const val FEELSLIKE = 5
-        const val HUMIDITY = 6
-        const val ICON = 7
-        const val MOONPHASE = 8
-        const val PRECIPPROB = 9
-        const val PRESSURE = 10
-        const val SNOW = 11
-        const val SNOWDEPTH = 12
-        const val SOLARENERGY = 13
-        const val SOLARRADIATION = 14
-        const val SOURCE = 15
-        const val STATIONS = 16
-        const val SUNRISE = 17
-        const val SUNRISE_EPOCH = 18
-        const val SUNSET = 19
-        const val SUNSET_EPOCH = 20
-        const val TEMP = 21
-        const val UVINDEX = 22
-        const val VISIBILITY = 23
-        const val WINDDIR = 24
-        const val WINDSPEED = 25
-
+        const val QUERY_COST = 0
+        const val RESOLVED_ADDRESS = 1
+        const val TIME_ZONE = 2
+        const val ADDRESS = 4
+        const val PRESSURE = 5
+        const val DATETIME = 6
+        const val FEELSLIKE = 7
+        const val TEMP = 8
+        const val CONDITIONS = 9
+        const val ICON = 10
+        const val CLOUDCOVER = 11
+        const val HUMIDITY = 12
+        const val UVINDEX = 13
+        const val WINDSPEED = 14
+        const val SUNRISE = 15
+        const val SUNSET = 16
+        const val DESCRIPTION = 17
+        const val DAY_CONDITIONS = 18
+        const val DAY_FEELSLIKE = 19
+        const val DAY_DATETIME = 20
+        const val DAY_HUMIDITY = 21
+        const val DAY_PRECIP = 22
+        const val DAY_ICON = 23
+        const val DAY_SUNRISE = 24
+        const val DAY_PRESSURE = 25
+        const val DAY_TEMP = 26
+        const val DAY_WINDSPEED = 27
         val HEADERS = listOf(
             "cloudcover", "conditions", "datetime", "datetimeEpoch", "dew",
             "feelslike", "humidity", "icon", "moonphase", "precipprob",

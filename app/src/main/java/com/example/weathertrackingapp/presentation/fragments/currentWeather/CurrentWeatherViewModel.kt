@@ -5,7 +5,7 @@ import com.example.weathertrackingapp.domain.customState.DomainState
 import com.example.weathertrackingapp.domain.entity.responseEntities.CurrentWeatherEntity
 import com.example.weathertrackingapp.domain.useCase.GetCurrentWeatherUseCase
 import com.example.weathertrackingapp.presentation.fragments.base.BaseViewModel
-import com.example.weathertrackingapp.presentation.model.extMappers.toCurrentWeather
+import com.example.weathertrackingapp.presentation.presentationUtil.toCurrentWeather
 import com.example.weathertrackingapp.presentation.presentationUtil.UiEvent
 
 class CurrentWeatherViewModel(private val getCurrentWeatherUseCase: GetCurrentWeatherUseCase) :

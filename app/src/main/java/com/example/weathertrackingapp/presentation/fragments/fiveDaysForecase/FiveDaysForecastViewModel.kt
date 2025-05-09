@@ -5,7 +5,7 @@ import com.example.weathertrackingapp.domain.customState.DomainState
 import com.example.weathertrackingapp.domain.entity.responseEntities.FiveDaysForecastEntity
 import com.example.weathertrackingapp.domain.useCase.GetFiveDaysForecastUseCase
 import com.example.weathertrackingapp.presentation.fragments.base.BaseViewModel
-import com.example.weathertrackingapp.presentation.model.extMappers.toFiveDaysForecast
+import com.example.weathertrackingapp.presentation.presentationUtil.toFiveDaysForecast
 import com.example.weathertrackingapp.presentation.presentationUtil.UiEvent
 
 class FiveDaysForecastViewModel(

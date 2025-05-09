@@ -3,7 +3,7 @@ package com.example.weathertrackingapp.common.customException
 sealed class CustomException() : Exception() {
 
     sealed class NetworkException() : CustomException() {
-        data class UnKnownNetworkException(override val message: String) : CustomException()
+        data class UnKnownNetworkException(val errorMessage:String) : CustomException()
         data object UnAuthorizedException : NetworkException()
         data object NoInternetConnection : NetworkException()
         data object NotFoundException : NetworkException()

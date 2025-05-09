@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
 
 class UiUtilImpl : UiUtil {
+
     override fun enableSwipeToRefreshFeature(
         rootLayout: ViewGroup,
         loadingProgressBar: ProgressBar,
@@ -46,7 +47,7 @@ class UiUtilImpl : UiUtil {
                 }
 
                 MotionEvent.ACTION_MOVE -> {
-                    if (longPressDetected)resetProgressBar(loadingProgressBar)
+                    if (longPressDetected) resetProgressBar(loadingProgressBar)
                     if (userSwappedDown(motionEvent) && !isThresholdReached) {  // only respond to downward swipes
                         showProgressBarWhileUserSwipingDown(loadingProgressBar, motionEvent)
                     }

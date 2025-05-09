@@ -20,6 +20,18 @@
     <string name="sunrise">Sunrise:</string>
     <string name="sunset">Sunset:</string>
 
+    <string name="WD_description">Description</string>
+    <string name="WD_datetime">Datetime</string>
+    <string name="WD_icon">Icon</string>
+    <string name="WD_conditions">Conditions</string>
+    <string name="WD_feels_like">Feels Like</string>
+    <string name="WD_humidity">Humidity</string>
+    <string name="WD_precip">Precipitation</string>
+    <string name="WD_pressure">Pressure</string>
+    <string name="WD_temperature">Temperature</string>
+    <string name="WD_wind_speed">Wind Speed</string>
+
+
     <string name="no_internet_connection">No Internet Connection</string>
     <string name="unknown_network_error">Unknown Network Error</string>
     <string name="unauthorized_error">Unauthorized</string>
@@ -42,5 +54,11 @@
     <string name="no_cached_data_in_database">Local database Error, there is no data in the cache</string>
     <string name="un_know_database_exception">Local database error %1$s</string>
     <string name="and">and </string>
+    <string name="time">time</string>
+    <string name="resolved_address">Resolved Address</string>
+    <string name="time_zone">Time Zone</string>
+    <string name="pressure">Pressure</string>
+    <string name="address">Address</string>
+    <string name="whole_day_summary">Whole Day Summary</string>
 
 </resources>

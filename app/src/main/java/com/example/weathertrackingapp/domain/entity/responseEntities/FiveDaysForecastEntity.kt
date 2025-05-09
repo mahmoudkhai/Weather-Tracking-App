@@ -1,8 +1,22 @@
 package com.example.weathertrackingapp.domain.entity.responseEntities
 
 data class FiveDaysForecastEntity(
-    val resolvedAddress: String,
-    val address: String,
-    val timezone: String,
-    val days: List<WholeDayWeatherEntity>,
+    val resolvedAddress: String? = null,
+    val address: String? = null,
+    val timezone: String? = null,
+    val days: List<WholeDayWeatherEntity>? = null,
+)
+
+data class WholeDayWeatherEntity(
+    val description: String? = null,
+    val conditions: String? = null,
+    val datetime: String? = null,
+    val feelslike: Double? = null,
+    val humidity: Double? = null,
+    val icon: String? = null,
+    val precip: Double? = null,
+    val pressure: Double? = null,
+    val sunrise: String? = null,
+    val temp: Double? = null,
+    val windspeed: Double? = null,
 )

@@ -74,7 +74,10 @@ object AppDependenciesProvider {
             baseDir.mkdirs()
         }
         File(baseDir, "fiveDaysForecast.csv").absolutePath.also {
-            Log.d(TAG, "five days weather forecast csv file created with path = : $it ")
+            Log.d(
+                TAG,
+                "five days weather forecast csv file created with path = : $it and base Dir = $baseDir "
+            )
         }
     })
 

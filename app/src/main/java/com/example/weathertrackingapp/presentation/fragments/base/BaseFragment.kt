@@ -99,7 +99,8 @@ abstract class BaseFragment<DataType>(private val fragmentId: Int) : Fragment(),
     private fun getFailureMessage(exception: CustomException): String {
         return when (exception) {
             is CustomException.NetworkException.UnKnownNetworkException -> {
-                getString(R.string.unknown_network_error)
+                exception.errorMessage
+            //                getString(R.string.unknown_network_error)
             }
 
             is CustomException.NetworkException.UnAuthorizedException -> {

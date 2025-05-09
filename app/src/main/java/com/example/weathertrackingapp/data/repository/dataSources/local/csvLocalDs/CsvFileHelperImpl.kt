@@ -23,7 +23,7 @@ abstract class CsvFileHelperImpl<DTO>(
         }
     }
 
-    override fun insertNewData(dto: DTO) = safeCsvFileCall<Unit> {
+    override fun insertNewData(dto: DTO) {
         val newRow = fromDtoToCsvRow(dto)
         BufferedWriter(FileWriter(file, KEEP_ALL_DATA)).use { writer ->
             writer.appendLine(newRow)
@@ -32,45 +32,27 @@ abstract class CsvFileHelperImpl<DTO>(
 
     override fun overrideAllOldData(dto: DTO) {
         Log.d(TAG, "overrideAllOldData of csv file with this Dto: $dto ")
-        val newRaw = fromDtoToCsvRow(dto)
+        val newRaw = fromDtoToCsvRow(dto).also {
+            Log.d(TAG, "new raw data to be written in the file = $it ")
+        }
         BufferedWriter(FileWriter(file, OVERRIDE_ALL_DATA)).use { writer ->
             writer.appendLine(newRaw)
         }
     }
 
-    override fun readAllDTOs(): List<DTO> = safeCsvFileCall(::getListOfDtoObjectFromCsvFile)
+    override fun readMoseRecentData(): DTO = fromCsvRowToDto(file.readLines().toString())
 
-    override fun readMoseRecentData(): DTO = safeCsvFileCall {
-        getListOfDtoObjectFromCsvFile().last()
-    }
 
-    private fun getListOfDtoObjectFromCsvFile() =
-        file.readLines().asSequence().also {
-            Log.d(TAG, "current file with before dropping first row = : ${it.toString()} ")
-        }.also {
-            Log.d(TAG, "current file with after dropping first row = : ${it.toString()} ")
-        }.filter { it.isNotBlank() }.also {
-            Log.d(TAG, "current file with after filtering not blank values = : $it ")
-        }.map(::fromCsvRowToDto).toList().also {
-            Log.d(TAG, "final cached dto after reading the file = : $it ")
-        }
+//        file.readLines().also {
+//            Log.d(TAG, "current file with before dropping first row = : ${it.toString()} ")
+//        }fromCsvRowToDto).also {
+//            Log.d(TAG, "final cached dto after reading the file = : $it ")
+//        }
 
     abstract fun fromDtoToCsvRow(dto: DTO): String
 
     abstract fun fromCsvRowToDto(row: String): DTO
 
-    private fun <T> safeCsvFileCall(function: () -> T): T {
-        return try {
-            function()
-        } catch (e: IOException) {
-            throw CustomException.DataException.LocalInputOutputException
-        } catch (e: IndexOutOfBoundsException) {
-            throw CustomException.DataException.NoCachedDataFound
-        } catch (e: Exception) {
-            Log.e(TAG, "Error while reading/writing CSV file: ${e.toString()}")
-            throw CustomException.DataException.UnKnownDataException(e)
-        }
-    }
 
     companion object {
         const val FIRST_ROW_OF_CSV_FILE = 1

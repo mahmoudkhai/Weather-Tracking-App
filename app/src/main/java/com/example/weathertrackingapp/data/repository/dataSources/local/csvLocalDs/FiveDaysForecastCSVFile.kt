@@ -27,7 +27,7 @@ class FiveDaysForecastCSVFile(
             append("$CSV_SEPARATOR${entity.address}")
             append("$CSV_SEPARATOR${entity.timezone}")
 
-            val daysString = entity.days.joinToString(DAY_SEPARATOR) { day ->
+            val daysString = entity.days?.joinToString(DAY_SEPARATOR) { day ->
                 listOf(
                     day.cloudcover, day.conditions, day.datetime, day.datetimeEpoch,
                     day.description, day.dew, day.feelslike, day.feelslikemax,
@@ -38,7 +38,7 @@ class FiveDaysForecastCSVFile(
                     day.sunset, day.sunsetEpoch, day.temp, day.tempmax, day.tempmin,
                     day.uvindex, day.visibility, day.winddir, day.windgust, day.windspeed
                 ).joinToString(FIELD_SEPARATOR)
-            }
+            } ?: ""
             append("$CSV_SEPARATOR$daysString")
         }
         return rowString.toString()
@@ -52,7 +52,7 @@ class FiveDaysForecastCSVFile(
         val timezone = data[TIMEZONE]
         val daysString = data[DAYS]
 
-        val days = daysString.split(DAY_SEPARATOR).map { dayStr ->
+        val days: List<WholeDayWeatherDto> = daysString.split(DAY_SEPARATOR).map { dayStr ->
             val parts = dayStr.split(FIELD_SEPARATOR)
             WholeDayWeatherDto(
                 cloudcover = parts[CLOUDCOVER].toDouble(),

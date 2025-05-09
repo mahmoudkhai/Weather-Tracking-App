@@ -3,7 +3,7 @@ package com.example.weathertrackingapp.data.repository
 import android.util.Log
 import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
 import com.example.weathertrackingapp.common.customException.CustomException
-import com.example.weathertrackingapp.data.mappers.CurrentConditionsMapper
+import com.example.weathertrackingapp.data.mappers.CurrentWeatherMapper
 import com.example.weathertrackingapp.data.mappers.FiveDaysForecastMapper
 import com.example.weathertrackingapp.domain.customState.DomainState
 import com.example.weathertrackingapp.domain.entity.requestModels.WeatherRequest
@@ -12,6 +12,8 @@ import com.example.weathertrackingapp.domain.entity.responseEntities.FiveDaysFor
 import com.example.weathertrackingapp.domain.repository.WeatherRepository
 import com.example.weathertrackingapp.domain.repository.dataSources.local.WeatherLocalDS
 import com.example.weathertrackingapp.domain.repository.dataSources.remote.WeatherRemoteDS
+import org.json.JSONException
+import java.io.IOException
 
 class WeatherRepositoryImpl(
     private val weatherRemoteDS: WeatherRemoteDS,
@@ -23,11 +25,11 @@ class WeatherRepositoryImpl(
             remoteDSCall = {
                 val currentWeatherDto = weatherRemoteDS.getCurrentWeather(weatherRequest)
                 weatherLocalDS.cacheCurrentWeatherDto(currentWeatherDto)
-                CurrentConditionsMapper.dtoToEntity(currentWeatherDto)
+                CurrentWeatherMapper.dtoToEntity(currentWeatherDto)
             },
             localDSCall = {
                 val localData = weatherLocalDS.getCurrentWeatherDto()
-                CurrentConditionsMapper.dtoToEntity(localData).also {
+                CurrentWeatherMapper.dtoToEntity(localData).also {
                     Log.d(TAG, "getCurrentWeather: from local data source entity = $it")
                 }
             }
@@ -54,23 +56,46 @@ class WeatherRepositoryImpl(
         localDSCall: () -> T,
     ): DomainState<T> {
         return try {
-            DomainState.SuccessWithFreshData(remoteDSCall())
+            DomainState.SuccessWithFreshData(safeRemoteDSCall(remoteDSCall))
         } catch (remoteDSException: CustomException) {
-            Log.e(
-                TAG,
-                "Error fetching from remote DS source: ${remoteDSException.localizedMessage}"
-            )
-            try {
-                val localData = localDSCall()
-                DomainState.FailureWithCachedData(listOf(remoteDSException), localData)
-            } catch (localDSException: CustomException) {
-                Log.e(
-                    TAG,
-                    "Error fetching from local DS storage: ${localDSException.localizedMessage}"
-                )
-                DomainState.FailureWithCachedData(listOf(remoteDSException, localDSException))
+            safeLocalDSCall(remoteDSException, localDSCall)
+        }
+    }
+
+    private fun <T> safeRemoteDSCall(
+        remoteDSCall: () -> T,
+    ): T {
+        return try {
+            remoteDSCall()
+        } catch (exception: Exception) {
+            throw when (exception) {
+                is IOException -> CustomException.NetworkException.NoInternetConnection
+                is JSONException -> CustomException.DataException.ParsingException
+                is CustomException -> exception
+                else -> {
+                    Log.d(TAG, "api call exception $exception")
+                    CustomException.NetworkException.UnKnownNetworkException("Unknown error with message: ${exception.message}")
+                }
             }
         }
     }
+
+    private fun <T> safeLocalDSCall(
+        remoteDSException: CustomException,
+        localDSCall: () -> T,
+    ): DomainState<T> = try {
+        DomainState.FailureWithCachedData(
+            exception = listOf(remoteDSException),
+            cachedData = localDSCall()
+        )
+    } catch (e: Exception) {
+        val localException = when (e) {
+            is IOException -> CustomException.DataException.LocalInputOutputException
+            is IndexOutOfBoundsException -> CustomException.DataException.NoCachedDataFound
+            else -> CustomException.DataException.UnKnownDataException(e)
+        }
+        DomainState.FailureWithCachedData(exception = listOf(remoteDSException, localException))
+    }
+
 
 }

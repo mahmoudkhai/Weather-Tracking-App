@@ -20,6 +20,18 @@
     <string name="sunrise">شروق الشمس:</string>
     <string name="sunset">غروب الشمس:</string>
 
+    <string name="WD_description">الوصف</string>
+    <string name="WD_datetime">التاريخ والوقت</string>
+    <string name="WD_icon">الأيقونة</string>
+    <string name="WD_conditions">الحالة</string>
+    <string name="WD_feels_like">الإحساس بالحرارة</string>
+    <string name="WD_humidity">الرطوبة</string>
+    <string name="WD_precip">الهطول</string>
+    <string name="WD_pressure">الضغط</string>
+    <string name="WD_temperature">درجة الحرارة</string>
+    <string name="WD_wind_speed">سرعة الرياح</string>
+
+
     <string name="no_internet_connection">لا يوجد اتصال بالإنترنت</string>
     <string name="unknown_network_error">خطأ في الشبكة</string>
     <string name="unauthorized_error">غير مصرح لك بالوصول</string>
@@ -38,6 +50,12 @@
     <string name="no_cached_data_in_database">لا يوجد بيانات تم تخزينها مسبقاً</string>
     <string name="un_know_database_exception">حدث خطأ غير معروف أثناء التعامل مع الملفات المخزنة مسبقاً</string>
     <string name="and"> و  </string>
+    <string name="time">الساعة الآن</string>
+    <string name="resolved_address">العنوان</string>
+    <string name="time_zone">التوقيت التابع له</string>
+    <string name="pressure">الضغط الجوى</string>
+    <string name="address">العنوان</string>
+    <string name="whole_day_summary">ملخص عن اليوم بالكامل</string>
 
 
 </resources>

@@ -3,14 +3,13 @@ package com.example.weathertrackingapp.data.repository.dataSources.remote.apiSer
 import android.util.Log
 import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
 import com.example.weathertrackingapp.common.customException.CustomException
+import com.example.weathertrackingapp.data.dto.CurrentConditionDto
 import com.example.weathertrackingapp.data.dto.CurrentWeatherDto
-import com.example.weathertrackingapp.data.dto.WholeDayWeatherDto
 import com.example.weathertrackingapp.data.dto.FiveDaysForecastDto
+import com.example.weathertrackingapp.data.dto.WholeDayWeatherDto
 import com.example.weathertrackingapp.domain.entity.requestModels.WeatherRequest
-import org.json.JSONException
 import org.json.JSONObject
 import java.io.BufferedReader
-import java.io.IOException
 import java.io.InputStreamReader
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
@@ -29,16 +28,10 @@ class ApiServiceImpl : ApiService {
         include: String,
     ): ResponseType {
         val url = buildWeatherUrl(
-            weatherRequest,
-            baseUrl,
-            apiKey,
-            unitGroup,
-            include,
-            startDate,
-            endDate
+            weatherRequest, baseUrl, apiKey, unitGroup, include, startDate, endDate
         )
 
-        return safeApiCall {
+        return apiCall {
             val connection = openHttpsUrlConnection(url)
             val responseCode = connection.responseCode
             Log.d(TAG, "Response Code = $responseCode")
@@ -64,8 +57,7 @@ class ApiServiceImpl : ApiService {
         startDate: String,
         endDate: String,
     ): String {
-        return "$baseUrl/${request.latLong.latitude},${request.latLong.longitude}/${startDate}/${endDate}" +
-                "?unitGroup=$unitGroup&lang=${request.language}&include=$include&key=$apiKey"
+        return "$baseUrl/${request.latLong.latitude},${request.latLong.longitude}/${startDate}/${endDate}" + "?unitGroup=$unitGroup&lang=${request.language}&include=$include&key=$apiKey"
     }
 
     private fun openHttpsUrlConnection(urlString: String): HttpsURLConnection {
@@ -83,21 +75,12 @@ class ApiServiceImpl : ApiService {
     }
 
 
-    private inline fun <T> safeApiCall(requiredOperationsToGetDtoObject: () -> Pair<HttpsURLConnection, T>): T {
+    private inline fun <T> apiCall(requiredOperationsToGetDtoObject: () -> Pair<HttpsURLConnection, T>): T {
         var connection: HttpsURLConnection? = null
         return try {
-            val (conn, dtoObject) = requiredOperationsToGetDtoObject()
+            val (conn: HttpsURLConnection, dtoObject) = requiredOperationsToGetDtoObject()
             connection = conn
             dtoObject
-        } catch (e: JSONException) {
-            throw CustomException.DataException.ParsingException
-        } catch (e: IOException) {
-            throw CustomException.NetworkException.NoInternetConnection
-        } catch (e: CustomException) {
-            throw e
-        } catch (e: Exception) {
-            Log.d(TAG, "safeApiCall caught exception :$e ")
-            throw CustomException.NetworkException.UnKnownNetworkException("Unknown error: ${e.message}")
         } finally {
             connection?.disconnect()
         }
@@ -113,7 +96,7 @@ class ApiServiceImpl : ApiService {
             429 -> throw CustomException.NetworkException.TooManyRequests
             else -> {
                 Log.d(TAG, "handleHttpResponseCode throws unKnownNetworkException with code:$code ")
-                throw CustomException.NetworkException.UnKnownNetworkException(code.toString())
+                throw CustomException.NetworkException.UnKnownNetworkException("Un Known Network Error with Code $code")
             }
         }
     }
@@ -131,9 +114,7 @@ class ApiServiceImpl : ApiService {
         responseType: KClass<DTO>,
     ): DTO {
         return when (responseType) {
-            CurrentWeatherDto::class -> buildCurrentConditionDtoObject(
-                json.getJSONObject(ATTRIBUTE_TO_SELECT)
-            ) as DTO
+            CurrentWeatherDto::class -> buildCurrentWeatherDtoObject(json) as DTO
 
             FiveDaysForecastDto::class -> buildFiveDaysForecastDtoObject(json) as DTO
             else -> throw CustomException.DataException.UnSupportedTypeCasting
@@ -190,38 +171,81 @@ class ApiServiceImpl : ApiService {
                         windspeed = dayJson.getDouble("windspeed")
                     )
                 }
-            }
-        )
+            })
     }
 
-    private fun buildCurrentConditionDtoObject(json: JSONObject) = CurrentWeatherDto(
-        cloudcover = json.getDouble("cloudcover"),
-        conditions = json.getString("conditions"),
-        datetime = json.getString("datetime"),
-        datetimeEpoch = json.getInt("datetimeEpoch"),
-        dew = json.getDouble("dew"),
-        feelslike = json.getDouble("feelslike"),
-        humidity = json.getDouble("humidity"),
-        icon = json.getString("icon"),
-        moonphase = json.getDouble("moonphase"),
-        precipprob = json.getDouble("precipprob"),
-        pressure = json.getDouble("pressure"),
-        snow = json.getDouble("snow"),
-        snowdepth = json.getDouble("snowdepth"),
-        solarenergy = json.getDouble("solarenergy"),
-        solarradiation = json.getDouble("solarradiation"),
-        source = json.getString("source"),
-        stations = json.getJSONArray("stations").let { arr ->
-            List(arr.length()) { i -> arr.getString(i) }
-        },
-        sunrise = json.getString("sunrise"),
-        sunriseEpoch = json.getInt("sunriseEpoch"),
-        sunset = json.getString("sunset"),
-        sunsetEpoch = json.getInt("sunsetEpoch"),
-        temp = json.getDouble("temp"),
-        uvindex = json.getDouble("uvindex"),
-        visibility = json.getDouble("visibility"),
-        winddir = json.getDouble("winddir"),
-        windspeed = json.getDouble("windspeed")
-    )
+    private fun buildCurrentWeatherDtoObject(json: JSONObject): CurrentWeatherDto {
+        return CurrentWeatherDto(
+            queryCost = json.optInt("queryCost"),
+            resolvedAddress = json.optString("resolvedAddress"),
+            timeZone = json.optString("timezone"),
+            address = json.optString("address"),
+            currentConditions = json.optJSONObject("currentConditions")?.let { conditionJson ->
+                CurrentConditionDto(
+                    cloudcover = conditionJson.optDouble("cloudcover"),
+                    conditions = conditionJson.optString("conditions"),
+                    datetime = conditionJson.optString("datetime"),
+                    datetimeEpoch = conditionJson.optInt("datetimeEpoch"),
+                    dew = conditionJson.optDouble("dew"),
+                    feelslike = conditionJson.optDouble("feelslike"),
+                    humidity = conditionJson.optDouble("humidity"),
+                    icon = conditionJson.optString("icon"),
+                    moonphase = conditionJson.optDouble("moonphase"),
+                    precipprob = conditionJson.optDouble("precipprob"),
+                    pressure = conditionJson.optDouble("pressure"),
+                    snow = conditionJson.optDouble("snow"),
+                    snowdepth = conditionJson.optDouble("snowdepth"),
+                    solarenergy = conditionJson.optDouble("solarenergy"),
+                    solarradiation = conditionJson.optDouble("solarradiation"),
+                    source = conditionJson.optString("source"),
+                    sunrise = conditionJson.optString("sunrise"),
+                    sunriseEpoch = conditionJson.optInt("sunriseEpoch"),
+                    sunset = conditionJson.optString("sunset"),
+                    sunsetEpoch = conditionJson.optInt("sunsetEpoch"),
+                    temp = conditionJson.optDouble("temp"),
+                    uvindex = conditionJson.optDouble("uvindex"),
+                    visibility = conditionJson.optDouble("visibility"),
+                    winddir = conditionJson.optDouble("winddir"),
+                    windspeed = conditionJson.optDouble("windspeed")
+                )
+            },
+            days = json.getJSONArray("days").getJSONObject(0)?.let { dayJson ->
+                WholeDayWeatherDto(
+                    cloudcover = dayJson.getDouble("cloudcover"),
+                    conditions = dayJson.getString("conditions"),
+                    datetime = dayJson.getString("datetime"),
+                    datetimeEpoch = dayJson.getInt("datetimeEpoch"),
+                    description = dayJson.getString("description"),
+                    dew = dayJson.getDouble("dew"),
+                    feelslike = dayJson.getDouble("feelslike"),
+                    feelslikemax = dayJson.getDouble("feelslikemax"),
+                    feelslikemin = dayJson.getDouble("feelslikemin"),
+                    humidity = dayJson.getDouble("humidity"),
+                    icon = dayJson.getString("icon"),
+                    moonphase = dayJson.getDouble("moonphase"),
+                    precip = dayJson.getDouble("precip"),
+                    precipcover = dayJson.getDouble("precipcover"),
+                    precipprob = dayJson.getDouble("precipprob"),
+                    pressure = dayJson.getDouble("pressure"),
+                    severerisk = dayJson.getDouble("severerisk"),
+                    snow = dayJson.getDouble("snow"),
+                    snowdepth = dayJson.getDouble("snowdepth"),
+                    solarenergy = dayJson.getDouble("solarenergy"),
+                    solarradiation = dayJson.getDouble("solarradiation"),
+                    source = dayJson.getString("source"),
+                    sunrise = dayJson.getString("sunrise"),
+                    sunriseEpoch = dayJson.getInt("sunriseEpoch"),
+                    sunset = dayJson.getString("sunset"),
+                    sunsetEpoch = dayJson.getInt("sunsetEpoch"),
+                    temp = dayJson.getDouble("temp"),
+                    tempmax = dayJson.getDouble("tempmax"),
+                    tempmin = dayJson.getDouble("tempmin"),
+                    uvindex = dayJson.getDouble("uvindex"),
+                    visibility = dayJson.getDouble("visibility"),
+                    winddir = dayJson.getDouble("winddir"),
+                    windgust = dayJson.getDouble("windgust"),
+                    windspeed = dayJson.getDouble("windspeed")
+                )
+            })
+    }
 }

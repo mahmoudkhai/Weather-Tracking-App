@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline70_horizontal"
+        android:id="@+id/guideline80_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -33,7 +33,7 @@
         style="@style/errorStyle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline70_horizontal"
+        app:layout_constraintTop_toBottomOf="@id/guideline80_horizontal"
         tools:text="Error" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

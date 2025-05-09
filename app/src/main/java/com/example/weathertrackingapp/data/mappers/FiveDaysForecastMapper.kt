@@ -12,7 +12,7 @@ object FiveDaysForecastMapper :
             resolvedAddress = input.resolvedAddress,
             address = input.address,
             timezone = input.timezone,
-            days = input.days.map { WholeDayWeatherMapper.dtoToEntity(it) }
+            days = input.days?.map { WholeDayWeatherMapper.dtoToEntity(it) }
         )
     }
 
