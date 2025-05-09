@@ -1,16 +1,20 @@
 package com.example.weathertrackingapp.data.mappers
 
 import com.example.weathertrackingapp.data.dto.FiveDaysForecastDto
-import com.example.weathertrackingapp.domain.entity.responseEntities.FiveDaysForecast
+import com.example.weathertrackingapp.domain.entity.responseEntities.FiveDaysForecastEntity
 
-object FiveDaysForecastMapper : Mapper<FiveDaysForecastDto, FiveDaysForecast> {
+object FiveDaysForecastMapper :
+    DataToDomainMapper<FiveDaysForecastDto, FiveDaysForecastEntity> {
 
-    override fun dtoToDomain(input: FiveDaysForecastDto): FiveDaysForecast {
-        return FiveDaysForecast(
+
+    override fun dtoToEntity(input: FiveDaysForecastDto): FiveDaysForecastEntity {
+        return FiveDaysForecastEntity(
             resolvedAddress = input.resolvedAddress,
             address = input.address,
             timezone = input.timezone,
-            days = input.days.map { DayForecastMapper.dtoToDomain(it) }
+            days = input.days?.map { WholeDayWeatherMapper.dtoToEntity(it) }
         )
     }
+
+
 }

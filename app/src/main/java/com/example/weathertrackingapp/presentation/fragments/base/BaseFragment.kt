@@ -1,50 +1,45 @@
 package com.example.weathertrackingapp.presentation.fragments.base
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.weathertrackingapp.R
 import com.example.weathertrackingapp.common.customException.CustomException
-import com.example.weathertrackingapp.common.observerPattern.Observer
+import com.example.weathertrackingapp.common.observerPattern.Subscriber
 import com.example.weathertrackingapp.domain.entity.requestModels.LatLong
 import com.example.weathertrackingapp.domain.entity.requestModels.WeatherRequest
 import com.example.weathertrackingapp.presentation.delegationPattern.LocationUtil
 import com.example.weathertrackingapp.presentation.delegationPattern.LocationUtilImpl
-import com.example.weathertrackingapp.presentation.presentationUtil.PresentationConstants
 import com.example.weathertrackingapp.presentation.presentationUtil.UiEvent
 import com.google.android.gms.location.LocationServices
 
-abstract class BaseFragment<DataType>(private val fragmentId: Int) : Fragment(), Observer<UiEvent>,
+abstract class BaseFragment<DataType>(private val fragmentId: Int) : Fragment(),
+    Subscriber<UiEvent>,
     LocationUtil by LocationUtilImpl() {
 
     abstract val viewModel: BaseViewModel<UiEvent>
-    lateinit var systemLanguage: String
-
+    lateinit var errorTextView: TextView
+    lateinit var progressBar: ProgressBar
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         return inflater.inflate(fragmentId, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        systemLanguage = savedInstanceState?.getString(PresentationConstants.SYSTEM_LANGUAGE)
-            ?: PresentationConstants.DEFAULT_LANGUAGE
+        initializeViews(view)
         setFusedLocationClient(LocationServices.getFusedLocationProviderClient(requireActivity()))
         fetchWeatherData()
     }
 
+    abstract fun initializeViews(view: View)
 
     private fun fetchWeatherData() {
         try {
@@ -57,35 +52,55 @@ abstract class BaseFragment<DataType>(private val fragmentId: Int) : Fragment(),
         }
     }
 
-    fun onRefresh() = fetchWeatherData()
-
     abstract fun getDataInBackgroundThread(weatherRequest: WeatherRequest)
     abstract fun createWeatherRequest(latLong: LatLong): WeatherRequest
     abstract fun registerObserverIntoViewModel()
 
+    fun onRefresh() = fetchWeatherData()
+
     override fun onUpdate(domainState: UiEvent) = requireActivity().runOnUiThread {
         when (domainState) {
             is UiEvent.ShowLoading -> showLoading(domainState.isLoading)
-            is UiEvent.Success<*> -> bindViews(domainState.data as DataType)
-            is UiEvent.ShowError -> showError(errorMessage = getFailureMessage(exception = domainState.error))
+            // i need to solve this to avoid casting exception at runtime if presentation model changed and i forget to edit it in fragment
+            is UiEvent.SuccessWithFreshData<*> -> {
+                hideErrorMessage()
+                bindViews(domainState.data as DataType)
+            }
+
+            is UiEvent.SuccessWithCachedData<*> -> {
+                bindViews(domainState.data as DataType)
+            }
+
+            is UiEvent.ShowError -> showError(
+                errorMessage = domainState.error.joinToString(
+                    getString(R.string.and)
+                ) {
+                    getFailureMessage(exception = it)
+                })
         }
     }
 
     private fun showLoading(isLoading: Boolean) {
-        val loadingView = view?.findViewById<View>(R.id.progress_bar)
-        if (loadingView != null) {
-            val progressBar = loadingView.findViewById<ProgressBar>(R.id.progress_bar)
-            progressBar?.visibility = if (isLoading) View.VISIBLE else View.GONE
-        }
+        progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
-    abstract fun showError(errorMessage: String)
+
+    private fun showError(errorMessage: String) = with(errorTextView) {
+        visibility = View.VISIBLE
+        text = errorMessage.plus(" ${getString(R.string.swipe_to_refresh)}")
+    }
+
+    private fun hideErrorMessage() = with(errorTextView) {
+        visibility = View.GONE
+    }
+
     abstract fun bindViews(data: DataType)
 
     private fun getFailureMessage(exception: CustomException): String {
         return when (exception) {
             is CustomException.NetworkException.UnKnownNetworkException -> {
-                getString(R.string.unknown_network_error)
+                exception.errorMessage
+            //                getString(R.string.unknown_network_error)
             }
 
             is CustomException.NetworkException.UnAuthorizedException -> {
@@ -120,8 +135,16 @@ abstract class BaseFragment<DataType>(private val fragmentId: Int) : Fragment(),
                 getString(R.string.unknown_location_error)
             }
 
-            CustomException.DataException.UnSupportedTypeCasting -> {
+            is CustomException.DataException.UnSupportedTypeCasting -> {
                 getString(R.string.un_supported_type_casting)
+            }
+
+            is CustomException.DataException.LocalInputOutputException -> getString(R.string.input_output_exception)
+
+            is CustomException.DataException.NoCachedDataFound -> getString(R.string.no_cached_data_in_database)
+
+            is CustomException.DataException.UnKnownDataException -> {
+                getString(R.string.un_know_database_exception).plus(exception.exception.toString())
             }
 
             else -> {

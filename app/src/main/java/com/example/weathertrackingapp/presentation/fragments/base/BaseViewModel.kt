@@ -1,21 +1,21 @@
 package com.example.weathertrackingapp.presentation.fragments.base
 
-import com.example.weathertrackingapp.common.observerPattern.Observable
 import com.example.weathertrackingapp.common.observerPattern.Observer
+import com.example.weathertrackingapp.common.observerPattern.Subscriber
 
-abstract class BaseViewModel<OBSERVABLE> : Observable<OBSERVABLE> {
+abstract class BaseViewModel<OBSERVER> : Observer<OBSERVER> {
 
-    abstract val observers: MutableSet<Observer<OBSERVABLE>>
+    abstract val subscribers: MutableSet<Subscriber<OBSERVER>>
 
-    override fun registerObserver(observer: Observer<OBSERVABLE>) {
-        observers.add(observer)
+    override fun registerSubscriber(subscriber: Subscriber<OBSERVER>) {
+        subscribers.add(subscriber)
     }
 
-    override fun unregisterObserver(observer: Observer<OBSERVABLE>) {
-        observers.remove(observer)
+    override fun unregisterSubscriber(subscriber: Subscriber<OBSERVER>) {
+        subscribers.remove(subscriber)
     }
 
-    override fun notifyObservers(newEvent: OBSERVABLE) {
-        observers.forEach { it.onUpdate(newEvent) }
+    override fun notifyAllSubscribers(newEvent: OBSERVER) {
+        subscribers.forEach { it.onUpdate(newEvent) }
     }
 }

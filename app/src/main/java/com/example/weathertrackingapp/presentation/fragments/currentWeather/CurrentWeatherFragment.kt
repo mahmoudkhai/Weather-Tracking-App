@@ -8,11 +8,13 @@ import com.example.weathertrackingapp.R
 import com.example.weathertrackingapp.common.di.AppDependenciesProvider
 import com.example.weathertrackingapp.domain.entity.requestModels.LatLong
 import com.example.weathertrackingapp.domain.entity.requestModels.WeatherRequest
-import com.example.weathertrackingapp.domain.entity.responseEntities.CurrentWeather
+import com.example.weathertrackingapp.presentation.WeatherApp
 import com.example.weathertrackingapp.presentation.delegationPattern.UiUtil
 import com.example.weathertrackingapp.presentation.delegationPattern.UiUtilImpl
 import com.example.weathertrackingapp.presentation.fragments.base.BaseFragment
 import com.example.weathertrackingapp.presentation.fragments.fiveDaysForecase.FiveDaysForecastFragment
+import com.example.weathertrackingapp.presentation.model.CurrentWeather
+import com.example.weathertrackingapp.presentation.presentationUtil.bindOrHide
 
 class CurrentWeatherFragment : UiUtil by UiUtilImpl(),
     BaseFragment<CurrentWeather>(R.layout.fragment_current_weather) {
@@ -33,6 +35,10 @@ class CurrentWeatherFragment : UiUtil by UiUtilImpl(),
         }
     }
 
+    override fun initializeViews(view: View) {
+        errorTextView = view.findViewById(R.id.errorTextView)
+        progressBar = view.findViewById(R.id.progress_bar)
+    }
 
     private fun navigateToFiveDaysForecastFragment() {
         parentFragmentManager.beginTransaction()
@@ -42,7 +48,7 @@ class CurrentWeatherFragment : UiUtil by UiUtilImpl(),
     }
 
     override fun registerObserverIntoViewModel() =
-        viewModel.registerObserver(this)
+        viewModel.registerSubscriber(this)
 
     override fun getDataInBackgroundThread(weatherRequest: WeatherRequest) =
         Thread {
@@ -56,25 +62,8 @@ class CurrentWeatherFragment : UiUtil by UiUtilImpl(),
     override fun createWeatherRequest(latLong: LatLong): WeatherRequest =
         WeatherRequest(
             latLong = latLong,
-            language = systemLanguage,
+            language = WeatherApp.systemLanguage,
         )
-
-
-//    override fun showLoading(isLoading: Boolean) {
-//        requireView().findViewById<ProgressBar>(R.id.progress_bar).visibility = if (isLoading) {
-//            View.VISIBLE
-//        } else {
-//            View.GONE
-//        }
-//    }
-
-    override fun showError(errorMessage: String) {
-        requireView().findViewById<TextView>(R.id.errorTextView).text =
-            errorMessage.plus(
-                " ${getString(R.string.swipe_to_refresh)}"
-            )
-    }
-
 
     override fun bindViews(data: CurrentWeather) {
         bindCurrentConditions(data)
@@ -82,25 +71,69 @@ class CurrentWeatherFragment : UiUtil by UiUtilImpl(),
 
     private fun bindCurrentConditions(currentWeather: CurrentWeather) {
         val view = requireView()
-        view.findViewById<TextView>(R.id.tvTemperature).text =
-            currentWeather.temperature.toString()
-        view.findViewById<TextView>(R.id.tvFeelsLike).text =
-            currentWeather.feelsLike.toString()
-        view.findViewById<TextView>(R.id.tvConditions).text = currentWeather.conditions
-        view.findViewById<TextView>(R.id.tvIcon).text = currentWeather.icon
-        view.findViewById<TextView>(R.id.tvHumidity).text =
-            currentWeather.humidity.toString()
-        view.findViewById<TextView>(R.id.tvCloudCover).text =
-            currentWeather.cloudCover.toString()
-        view.findViewById<TextView>(R.id.tvWindSpeed).text =
-            currentWeather.windSpeed.toString()
-        view.findViewById<TextView>(R.id.tvUvIndex).text =
-            currentWeather.uvIndex.toString()
-        view.findViewById<TextView>(R.id.tvSunrise).text = currentWeather.sunrise
-        view.findViewById<TextView>(R.id.tvSunset).text = currentWeather.sunset
+
+        val conditions = currentWeather.currentConditions
+
+        // Existing bindings
+        view.findViewById<TextView>(R.id.tvTemperature)
+            .bindOrHide(conditions.temperature?.toString())
+        view.findViewById<TextView>(R.id.tvFeelsLike)
+            .bindOrHide(conditions.feelsLike?.toString())
+        view.findViewById<TextView>(R.id.tvConditions)
+            .bindOrHide(conditions.conditions)
+        view.findViewById<TextView>(R.id.tvIcon)
+            .bindOrHide(conditions.icon)
+        view.findViewById<TextView>(R.id.tvPressure)
+            .bindOrHide(conditions.pressure?.toString())
+        view.findViewById<TextView>(R.id.tvHumidity)
+            .bindOrHide(conditions.humidity?.toString())
+        view.findViewById<TextView>(R.id.tvCloudCover)
+            .bindOrHide(conditions.cloudCover?.toString())
+        view.findViewById<TextView>(R.id.tvWindSpeed)
+            .bindOrHide(conditions.windSpeed?.toString())
+        view.findViewById<TextView>(R.id.tvUvIndex)
+            .bindOrHide(conditions.uvIndex?.toString())
+        view.findViewById<TextView>(R.id.tvSunrise)
+            .bindOrHide(conditions.sunrise)
+        view.findViewById<TextView>(R.id.tvSunset)
+            .bindOrHide(conditions.sunset)
+        view.findViewById<TextView>(R.id.tvDate)
+            .bindOrHide(conditions.dateTime)
+        // Top-level CurrentWeather fields
+        view.findViewById<TextView>(R.id.tvResolvedAddress)
+            .bindOrHide(currentWeather.resolvedAddress)
+        view.findViewById<TextView>(R.id.tvTimeZone)
+            .bindOrHide(currentWeather.timeZone)
+        view.findViewById<TextView>(R.id.tvAddress)
+            .bindOrHide(currentWeather.address)
+
+        // New whole-day bindings (assuming you get it from currentWeather.wholeDay or similar)
+        val wholeDay = currentWeather.wholeDayWeather  // adjust based on your actual model
+
+        view.findViewById<TextView>(R.id.tvWholeDayDescription)
+            .bindOrHide(wholeDay.description)
+        view.findViewById<TextView>(R.id.tvWholeDayDatetime)
+            .bindOrHide(wholeDay.datetime)
+        view.findViewById<TextView>(R.id.tvWholeDayIcon)
+            .bindOrHide(wholeDay.icon)
+        view.findViewById<TextView>(R.id.tvWholeDayConditions)
+            .bindOrHide(wholeDay.conditions)
+        view.findViewById<TextView>(R.id.tvWholeDayFeelsLike)
+            .bindOrHide(wholeDay.feelslike?.toString())
+        view.findViewById<TextView>(R.id.tvWholeDayHumidity)
+            .bindOrHide(wholeDay.humidity?.toString())
+        view.findViewById<TextView>(R.id.tvWholeDayPrecip)
+            .bindOrHide(wholeDay.precip?.toString())
+        view.findViewById<TextView>(R.id.tvWholeDayPressure)
+            .bindOrHide(wholeDay.pressure?.toString())
+        view.findViewById<TextView>(R.id.tvWholeDayTemperature)
+            .bindOrHide(wholeDay.temp?.toString())
+        view.findViewById<TextView>(R.id.tvWholeDayWindSpeed)
+            .bindOrHide(wholeDay.windspeed?.toString())
     }
 
+
     override fun unRegisterFragmentFromViewModel() {
-        viewModel.unregisterObserver(this)
+        viewModel.unregisterSubscriber(this)
     }
 }

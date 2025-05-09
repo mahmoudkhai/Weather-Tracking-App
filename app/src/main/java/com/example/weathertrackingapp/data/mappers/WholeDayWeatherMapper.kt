@@ -1,12 +1,13 @@
 package com.example.weathertrackingapp.data.mappers
 
-import com.example.weathertrackingapp.data.dto.DayForecastDto
-import com.example.weathertrackingapp.domain.entity.responseEntities.DayForecast
+import com.example.weathertrackingapp.data.dto.WholeDayWeatherDto
+import com.example.weathertrackingapp.domain.entity.responseEntities.WholeDayWeatherEntity
 
-object DayForecastMapper : Mapper<DayForecastDto, DayForecast> {
+object WholeDayWeatherMapper :
+    DataToDomainMapper<WholeDayWeatherDto, WholeDayWeatherEntity> {
 
-    override fun dtoToDomain(dto: DayForecastDto): DayForecast {
-        return DayForecast(
+    override fun dtoToEntity(dto: WholeDayWeatherDto): WholeDayWeatherEntity {
+        return WholeDayWeatherEntity(
             description = dto.description,
             conditions = dto.conditions,
             datetime = dto.datetime,
@@ -20,4 +21,5 @@ object DayForecastMapper : Mapper<DayForecastDto, DayForecast> {
             windspeed = dto.windspeed
         )
     }
+
 }

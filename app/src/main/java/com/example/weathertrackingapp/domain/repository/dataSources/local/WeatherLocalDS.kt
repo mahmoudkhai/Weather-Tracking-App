@@ -1,11 +1,11 @@
 package com.example.weathertrackingapp.domain.repository.dataSources.local
 
-import com.example.weathertrackingapp.domain.entity.responseEntities.CurrentWeather
-import com.example.weathertrackingapp.domain.entity.responseEntities.FiveDaysForecast
+import com.example.weathertrackingapp.data.dto.CurrentWeatherDto
+import com.example.weathertrackingapp.data.dto.FiveDaysForecastDto
 
 interface WeatherLocalDS {
-    fun cacheCurrentWeather(currentWeather: CurrentWeather)
-    fun getCurrentWeather(): CurrentWeather
-    fun cacheFiveDaysForecast(fiveDaysForecast:FiveDaysForecast)
-    fun getFiveDaysForecast(): FiveDaysForecast
+    fun cacheCurrentWeatherDto(currentWeatherEntity: CurrentWeatherDto)
+    fun getCurrentWeatherDto(): CurrentWeatherDto
+    fun cacheFiveDaysForecastDto(fiveDaysForecastDto: FiveDaysForecastDto)
+    fun getFiveDaysForecastDto(): FiveDaysForecastDto
 }

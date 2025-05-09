@@ -1,19 +1,20 @@
 package com.example.weathertrackingapp.presentation.fragments.currentWeather
 
+import com.example.weathertrackingapp.common.observerPattern.Subscriber
 import com.example.weathertrackingapp.domain.customState.DomainState
-import com.example.weathertrackingapp.domain.entity.responseEntities.CurrentWeather
+import com.example.weathertrackingapp.domain.entity.responseEntities.CurrentWeatherEntity
 import com.example.weathertrackingapp.domain.useCase.GetCurrentWeatherUseCase
-import com.example.weathertrackingapp.common.observerPattern.Observer
 import com.example.weathertrackingapp.presentation.fragments.base.BaseViewModel
+import com.example.weathertrackingapp.presentation.presentationUtil.toCurrentWeather
 import com.example.weathertrackingapp.presentation.presentationUtil.UiEvent
 
 class CurrentWeatherViewModel(private val getCurrentWeatherUseCase: GetCurrentWeatherUseCase) :
-    BaseViewModel<UiEvent>(), Observer<DomainState<CurrentWeather>> {
+    BaseViewModel<UiEvent>(), Subscriber<DomainState<CurrentWeatherEntity>> {
 
-    override val observers = mutableSetOf<Observer<UiEvent>>()
+    override val subscribers = mutableSetOf<Subscriber<UiEvent>>()
 
     init {
-        getCurrentWeatherUseCase.registerObserver(this)
+        getCurrentWeatherUseCase.registerSubscriber(this)
     }
 
     fun processUserIntent(intent: CurrentWeatherScreenContract.Intent) =
@@ -23,10 +24,19 @@ class CurrentWeatherViewModel(private val getCurrentWeatherUseCase: GetCurrentWe
             }
         }
 
-    override fun onUpdate(domainState: DomainState<CurrentWeather>) = when (domainState) {
-        is DomainState.Loading -> notifyObservers(UiEvent.ShowLoading(domainState.isLoading))
-        is DomainState.Success<CurrentWeather> -> notifyObservers(UiEvent.Success(domainState.data))
-        is DomainState.Failure -> notifyObservers(UiEvent.ShowError(domainState.exception))
+    override fun onUpdate(domainState: DomainState<CurrentWeatherEntity>) = when (domainState) {
+        is DomainState.Loading -> notifyAllSubscribers(UiEvent.ShowLoading(domainState.isLoading))
+        is DomainState.SuccessWithFreshData<CurrentWeatherEntity> -> notifyAllSubscribers(
+            UiEvent.SuccessWithFreshData(domainState.data.toCurrentWeather())
+        )
+
+        is DomainState.FailureWithCachedData -> {
+            if (domainState.cachedData != null) {
+                notifyAllSubscribers(UiEvent.ShowError(domainState.exception))
+                notifyAllSubscribers(UiEvent.SuccessWithCachedData(domainState.cachedData.toCurrentWeather()))
+            } else
+                notifyAllSubscribers(UiEvent.ShowError(domainState.exception))
+        }
     }
 
 }
