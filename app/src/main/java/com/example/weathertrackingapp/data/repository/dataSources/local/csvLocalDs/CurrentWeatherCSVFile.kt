@@ -31,7 +31,7 @@ class CurrentWeatherCSVFile(
             append("${dto.queryCost},")
             append("${dto.resolvedAddress?.replace(',', '|')},")
             append("${dto.timeZone?.replace(',', '|')},")
-            append("${dto.address},")
+            append("${dto.address?.replace(',', '|')},")
             append("${dto.currentConditions?.pressure},")
             append("${dto.currentConditions?.datetime},")
             append("${dto.currentConditions?.feelslike},")

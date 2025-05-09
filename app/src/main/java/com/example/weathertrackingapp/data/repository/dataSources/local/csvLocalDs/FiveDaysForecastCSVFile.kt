@@ -21,13 +21,13 @@ class FiveDaysForecastCSVFile(
         }
     }
 
-    override fun fromDtoToCsvRow(entity: FiveDaysForecastDto): String {
+    override fun fromDtoToCsvRow(dto: FiveDaysForecastDto): String {
         val rowString = StringBuilder().apply {
-            append(entity.resolvedAddress)
-            append("$CSV_SEPARATOR${entity.address}")
-            append("$CSV_SEPARATOR${entity.timezone}")
+            append("${dto.resolvedAddress?.replace(',', '|')},")
+            append("${dto.address?.replace(',', '|')},")
+            append("${dto.timezone?.replace(',', '|')},")
 
-            val daysString = entity.days?.joinToString(DAY_SEPARATOR) { day ->
+            val daysString = dto.days?.joinToString(DAY_SEPARATOR) { day ->
                 listOf(
                     day.cloudcover, day.conditions, day.datetime, day.datetimeEpoch,
                     day.description, day.dew, day.feelslike, day.feelslikemax,

@@ -56,6 +56,11 @@
     <string name="pressure">الضغط الجوى</string>
     <string name="address">العنوان</string>
     <string name="whole_day_summary">ملخص عن اليوم بالكامل</string>
+    <string name="day_5">اليوم الخامس</string>
+    <string name="day_3">اليوم الثالت</string>
+    <string name="day_2">اليوم الثانى</string>
+    <string name="day_1">اليوم الأول</string>
+    <string name="day_4">اليوم الرابع</string>
 
 
 </resources>

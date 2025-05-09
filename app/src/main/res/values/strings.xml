@@ -60,5 +60,10 @@
     <string name="pressure">Pressure</string>
     <string name="address">Address</string>
     <string name="whole_day_summary">Whole Day Summary</string>
+    <string name="day_5">Day 5:</string>
+    <string name="day_3">Day 3:</string>
+    <string name="day_2">Day 2:</string>
+    <string name="day_1">Day 1:</string>
+    <string name="day_4">Day 4:</string>
 
 </resources>

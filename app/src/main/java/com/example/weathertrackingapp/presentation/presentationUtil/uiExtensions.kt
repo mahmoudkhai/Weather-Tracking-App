@@ -3,11 +3,11 @@ package com.example.weathertrackingapp.presentation.presentationUtil
 import android.view.View
 import android.widget.TextView
 
-fun TextView.bindOrHide(value: String?) {
-    if (value.isNullOrBlank()) {
+fun TextView.bindOrHide(value: Any?) {
+    if (value.toString().isNullOrBlank()) {
         visibility = View.INVISIBLE
     } else {
-        text = value
+        text = value.toString()
         visibility = View.VISIBLE
     }
 }
