@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.example.weathertrackingapp.presentation.delegationPattern.SystemUtil
 import com.example.weathertrackingapp.presentation.delegationPattern.SystemUtilImpl
+import com.example.weathertrackingapp.presentation.presentationUtil.BackgroundExecutor
 
 class WeatherApp : Application(), SystemUtil by SystemUtilImpl() {
 

@@ -18,6 +18,7 @@ import com.example.weathertrackingapp.presentation.delegationPattern.PermissionU
 import com.example.weathertrackingapp.presentation.delegationPattern.UiUtil
 import com.example.weathertrackingapp.presentation.delegationPattern.UiUtilImpl
 import com.example.weathertrackingapp.presentation.fragments.currentWeather.CurrentWeatherFragment
+import com.example.weathertrackingapp.presentation.presentationUtil.BackgroundExecutor
 
 /**
  * MainActivity delegates utility responsibilities to implementation classes using Kotlin's delegation pattern.
@@ -158,6 +159,7 @@ class MainActivity : AppCompatActivity(),
     override fun onDestroy() {
         super.onDestroy()
         releaseDialog()
+        BackgroundExecutor.shutdown()
     }
 
 }

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintSet.Layout
 import androidx.fragment.app.Fragment
 import com.example.weathertrackingapp.R
 import com.example.weathertrackingapp.common.customException.CustomException
@@ -14,23 +15,25 @@ import com.example.weathertrackingapp.domain.entity.requestModels.LatLong
 import com.example.weathertrackingapp.domain.entity.requestModels.WeatherRequest
 import com.example.weathertrackingapp.presentation.delegationPattern.LocationUtil
 import com.example.weathertrackingapp.presentation.delegationPattern.LocationUtilImpl
+import com.example.weathertrackingapp.presentation.delegationPattern.UiUtil
+import com.example.weathertrackingapp.presentation.delegationPattern.UiUtilImpl
+import com.example.weathertrackingapp.presentation.presentationUtil.BackgroundExecutor
 import com.example.weathertrackingapp.presentation.presentationUtil.UiEvent
 import com.google.android.gms.location.LocationServices
 
 abstract class BaseFragment<DataType>(private val fragmentId: Int) : Fragment(),
     Subscriber<UiEvent>,
+    UiUtil by UiUtilImpl(),
     LocationUtil by LocationUtilImpl() {
 
     abstract val viewModel: BaseViewModel<UiEvent>
     lateinit var errorTextView: TextView
-    lateinit var progressBar: ProgressBar
+    lateinit var loadingProgressBar: ProgressBar
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View {
-        return inflater.inflate(fragmentId, container, false)
-    }
+    ): View = inflater.inflate(fragmentId, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -81,7 +84,7 @@ abstract class BaseFragment<DataType>(private val fragmentId: Int) : Fragment(),
     }
 
     private fun showLoading(isLoading: Boolean) {
-        progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        loadingProgressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
 
@@ -100,7 +103,7 @@ abstract class BaseFragment<DataType>(private val fragmentId: Int) : Fragment(),
         return when (exception) {
             is CustomException.NetworkException.UnKnownNetworkException -> {
                 exception.errorMessage
-            //                getString(R.string.unknown_network_error)
+                //                getString(R.string.unknown_network_error)
             }
 
             is CustomException.NetworkException.UnAuthorizedException -> {
@@ -153,10 +156,16 @@ abstract class BaseFragment<DataType>(private val fragmentId: Int) : Fragment(),
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        BackgroundExecutor.cancelCurrentWork()
+    }
+
     abstract fun unRegisterFragmentFromViewModel()
     override fun onDestroy() {
         super.onDestroy()
         destroyFusedLocationClient()
         unRegisterFragmentFromViewModel()
+        BackgroundExecutor.cancelCurrentWork()
     }
 }

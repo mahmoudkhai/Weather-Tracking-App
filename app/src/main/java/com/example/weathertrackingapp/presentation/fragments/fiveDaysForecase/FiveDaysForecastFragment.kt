@@ -1,6 +1,5 @@
 package com.example.weathertrackingapp.presentation.fragments.fiveDaysForecase
 
-import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import com.example.weathertrackingapp.R
@@ -19,15 +18,10 @@ class FiveDaysForecastFragment :
         AppDependenciesProvider.provideFiveDaysForecastViewModel()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
     override fun initializeViews(view: View) {
         errorTextView = view.findViewById(R.id.errorTextView)
-        progressBar = view.findViewById(R.id.progress_bar)
+        loadingProgressBar = view.findViewById(R.id.progress_bar)
     }
-
 
     override fun registerObserverIntoViewModel() = viewModel.registerSubscriber(this)
 

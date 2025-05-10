@@ -28,44 +28,35 @@ class UiUtilImpl : UiUtil {
         loadingProgressBar: ProgressBar,
         onRefresh: () -> Unit,
     ) {
-        var isThresholdReached = false
 
-        var longPressDetected = false
-        val handler = Handler(Looper.getMainLooper())
-        val longPressRunnable = Runnable {
-            longPressDetected = true
-            // Handle long press logic here
-        }
-
+        var isRefreshing = false
         rootLayout.setOnTouchListener { _, motionEvent ->
             when (motionEvent.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    longPressDetected = false
-                    handler.postDelayed(longPressRunnable, 500) // 500ms delay for long press
                     firstTouchPointOnVerticalAxis = motionEvent.y // first touch point
                     CONTINUE_LISTENING_FOR_USER_TOUCH
                 }
 
                 MotionEvent.ACTION_MOVE -> {
-                    if (longPressDetected) resetProgressBar(loadingProgressBar)
-                    if (userSwappedDown(motionEvent) && !isThresholdReached) {  // only respond to downward swipes
-                        showProgressBarWhileUserSwipingDown(loadingProgressBar, motionEvent)
-                    }
-                    if (userReachedThresholdPoint(motionEvent) && !isThresholdReached) {
-                        isThresholdReached = true
-                        triggerRefresh(rootLayout, loadingProgressBar, onRefresh)
-                        return@setOnTouchListener STOP_LISTENING_FOR_USER_TOUCH
-                    } else CONTINUE_LISTENING_FOR_USER_TOUCH
+                    showProgressBarWhileUserSwipingDown(loadingProgressBar, motionEvent)
+                    CONTINUE_LISTENING_FOR_USER_TOUCH
                 }
 
                 MotionEvent.ACTION_UP -> {
+                    Log.d(
+                        TAG,
+                        "Action Up and threshold reached = ${userReachedThresholdPoint(motionEvent)}"
+                    )
                     resetProgressBar(loadingProgressBar)
-                    isThresholdReached = false
+                    if (!isRefreshing && userReachedThresholdPoint(motionEvent)) {
+                        isRefreshing = true
+                        triggerRefresh(rootLayout, loadingProgressBar, onRefresh)
+                        isRefreshing = false
+                    }
                     STOP_LISTENING_FOR_USER_TOUCH
                 }
 
                 else -> {
-                    isThresholdReached = true
                     STOP_LISTENING_FOR_USER_TOUCH
                 }
             }
@@ -131,7 +122,7 @@ class UiUtilImpl : UiUtil {
         .start()
 
 
-    private fun userReachedThresholdPoint(motionEvent: MotionEvent) =
+    private fun userReachedThresholdPoint(motionEvent: MotionEvent): Boolean =
         getHowFarUserSwipedDownward(motionEvent) > USER_SWIPE_THRESHOLD
 
 
@@ -145,7 +136,7 @@ class UiUtilImpl : UiUtil {
         private const val CONTINUE_LISTENING_FOR_USER_TOUCH = true
         private const val STOP_LISTENING_FOR_USER_TOUCH = false
         private var firstTouchPointOnVerticalAxis = 0f
-        private const val USER_SWIPE_THRESHOLD = 1200f
+        private const val USER_SWIPE_THRESHOLD = 900f
         private const val TOP_OF_SCREEN = 0f
         private const val PROGRESS_BAR_SHIFTING_FROM_ORIGINAL_POSITION = 0f
         private const val SHIFTING_DURATION_IN_MS = 500L
