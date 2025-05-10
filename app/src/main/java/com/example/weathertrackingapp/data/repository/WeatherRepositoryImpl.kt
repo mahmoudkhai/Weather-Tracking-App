@@ -93,8 +93,9 @@ class WeatherRepositoryImpl(
             is IOException -> CustomException.DataException.LocalInputOutputException
             is IndexOutOfBoundsException -> {
                 Log.d(TAG, "IndexOutOfBoundsException = $e")
-                CustomException.DataException.NoCachedDataFound(e)
+                CustomException.DataException.NoCachedDataFound
             }
+
             else -> CustomException.DataException.UnKnownDataException(e)
         }
         DomainState.FailureWithCachedData(exception = listOf(remoteDSException, localException))
