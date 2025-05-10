@@ -52,40 +52,40 @@ class FiveDaysForecastFragment :
             findViewById<TextView>(R.id.TVfirstDayConditions).bindOrHide(firstDay?.conditions)
             findViewById<TextView>(R.id.TVfirstDayDateTime).bindOrHide(firstDay?.datetime)
             findViewById<TextView>(R.id.TVfirstDayIcon).bindOrHide(firstDay?.icon)
-            findViewById<TextView>(R.id.TVfirstDayTemp).bindOrHide(firstDay?.temp)
-            findViewById<TextView>(R.id.TVfirstDayWindSpeed).bindOrHide(firstDay?.windspeed)
+            findViewById<TextView>(R.id.TVfirstDayTemp).bindOrHide(firstDay?.temp.toString())
+            findViewById<TextView>(R.id.TVfirstDayWindSpeed).bindOrHide(firstDay?.windspeed.toString())
 
             // Second day bindings
             findViewById<TextView>(R.id.TVDescription2).bindOrHide(secondDay?.description)
             findViewById<TextView>(R.id.TVConditions2).bindOrHide(secondDay?.conditions)
             findViewById<TextView>(R.id.TVDateTime2).bindOrHide(secondDay?.datetime)
             findViewById<TextView>(R.id.TVIcon2).bindOrHide(secondDay?.icon)
-            findViewById<TextView>(R.id.TVTemp2).bindOrHide(secondDay?.temp)
-            findViewById<TextView>(R.id.TVWindSpeed2).bindOrHide(secondDay?.windspeed)
+            findViewById<TextView>(R.id.TVTemp2).bindOrHide(secondDay?.temp.toString())
+            findViewById<TextView>(R.id.TVWindSpeed2).bindOrHide(secondDay?.windspeed.toString())
 
             // Third day bindings
             findViewById<TextView>(R.id.TVDescription3).bindOrHide(thirdDay?.description)
             findViewById<TextView>(R.id.TVConditions3).bindOrHide(thirdDay?.conditions)
             findViewById<TextView>(R.id.TVDateTime3).bindOrHide(thirdDay?.datetime)
             findViewById<TextView>(R.id.TVIcon3).bindOrHide(thirdDay?.icon)
-            findViewById<TextView>(R.id.TVTemp3).bindOrHide(thirdDay?.temp)
-            findViewById<TextView>(R.id.TVWindSpeed3).bindOrHide(thirdDay?.windspeed)
+            findViewById<TextView>(R.id.TVTemp3).bindOrHide(thirdDay?.temp.toString())
+            findViewById<TextView>(R.id.TVWindSpeed3).bindOrHide(thirdDay?.windspeed.toString())
 
             // Fourth day bindings
             findViewById<TextView>(R.id.TVDescription4).bindOrHide(fourthDay?.description)
             findViewById<TextView>(R.id.TVConditions4).bindOrHide(fourthDay?.conditions)
             findViewById<TextView>(R.id.TVDateTime4).bindOrHide(fourthDay?.datetime)
             findViewById<TextView>(R.id.TVIcon4).bindOrHide(fourthDay?.icon)
-            findViewById<TextView>(R.id.TVTemp4).bindOrHide(fourthDay?.temp)
-            findViewById<TextView>(R.id.TVWindSpeed4).bindOrHide(fourthDay?.windspeed)
+            findViewById<TextView>(R.id.TVTemp4).bindOrHide(fourthDay?.temp.toString())
+            findViewById<TextView>(R.id.TVWindSpeed4).bindOrHide(fourthDay?.windspeed.toString())
 
             // Fifth day bindings
             findViewById<TextView>(R.id.TVDescription5).bindOrHide(fifthDay?.description)
             findViewById<TextView>(R.id.TVConditions5).bindOrHide(fifthDay?.conditions)
             findViewById<TextView>(R.id.TVDateTime5).bindOrHide(fifthDay?.datetime)
             findViewById<TextView>(R.id.TVIcon5).bindOrHide(fifthDay?.icon)
-            findViewById<TextView>(R.id.TVTemp5).bindOrHide(fifthDay?.temp)
-            findViewById<TextView>(R.id.TVWindSpeed5).bindOrHide(fifthDay?.windspeed)
+            findViewById<TextView>(R.id.TVTemp5).bindOrHide(fifthDay?.temp.toString())
+            findViewById<TextView>(R.id.TVWindSpeed5).bindOrHide(fifthDay?.windspeed.toString())
 
         }
     }
