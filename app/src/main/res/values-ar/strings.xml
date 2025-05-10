@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="location_is_null">عذراً، لا يمكن الوصول للموقع</string>
+    <string name="go_to_setting_dialog">الموقع تم رفضة، برجاء تفعيلة يدوياً فى الإعدادات </string>
+    <string name="permission_needed">برجاء منح الإذن</string>
+    <string name="go_to_settings">الذهاب إلى الإعدادات</string>
+    <string name="cancel">إلغاء</string>
+    <string name="please_allow_location_access"> هذا التطبيق مبنى على إستخدام الموقع الجغرافى، برجاء السماح بالوصول إلى الموقع الجغرافى </string>
+    <string name="allow">سماح</string>
+
+    <string name="current_weather">الطقس الحالي</string>
+    <string name="temperature">درجة الحرارة:</string>
+    <string name="feels_like">يشعر وكأنه:</string>
+    <string name="conditions">الظروف:</string>
+    <string name="icon">شكل السحاب:</string>
+    <string name="humidity">الرطوبة:</string>
+    <string name="cloud_cover">الغطاء السحابي:</string>
+    <string name="wind_speed">سرعة الرياح:</string>
+    <string name="uv_index"> الأشعة فوق البنفسجية:</string>
+    <string name="sunrise">شروق الشمس:</string>
+    <string name="sunset">غروب الشمس:</string>
+
+    <string name="WD_description">الوصف</string>
+    <string name="WD_datetime">التاريخ والوقت</string>
+    <string name="WD_icon">الأيقونة</string>
+    <string name="WD_conditions">الحالة</string>
+    <string name="WD_feels_like">الإحساس بالحرارة</string>
+    <string name="WD_humidity">الرطوبة</string>
+    <string name="WD_precip">الهطول</string>
+    <string name="WD_pressure">الضغط</string>
+    <string name="WD_temperature">درجة الحرارة</string>
+    <string name="WD_wind_speed">سرعة الرياح</string>
+
+
+    <string name="no_internet_connection">لا يوجد اتصال بالإنترنت</string>
+    <string name="unknown_network_error">خطأ في الشبكة</string>
+    <string name="unauthorized_error">غير مصرح لك بالوصول</string>
+    <string name="not_found_error">الصفحة أو المورد غير موجود</string>
+    <string name="bad_request_error">طلب غير صالح</string>
+    <string name="internal_server_error">خطأ في الخادم الداخلي</string>
+    <string name="too_many_requests_error">تم إرسال العديد من الطلبات في وقت قصير</string>
+
+    <string name="parsing_error">خطأ في تحليل البيانات</string>
+    <string name="unknown_location_error">موقع غير معروف</string>
+    <string name="general_error">خطأ عام، برجاء الإتصال بالدعم الفنى</string>
+    <string name="swipe_to_refresh">اسحب لأسفل لإعادة المحاولة</string>
+    <string name="click_here_to_view_next_5_days_forecast">إضغط هنا لرؤية طقس خمسة أيام قادمة</string>
+    <string name="un_supported_type_casting">خطأ اثناء تحويل شكل البيانات لنوع معين</string>
+    <string name="input_output_exception">حدثت مشكلة فى القراءة أو الكتابة فى الداتابيز</string>
+    <string name="no_cached_data_in_database">لا يوجد بيانات تم تخزينها مسبقاً</string>
+    <string name="un_know_database_exception">حدث خطأ غير معروف أثناء التعامل مع الملفات المخزنة مسبقاً</string>
+    <string name="and"> و  </string>
+    <string name="time">الساعة الآن</string>
+    <string name="resolved_address">العنوان</string>
+    <string name="time_zone">التوقيت التابع له</string>
+    <string name="pressure">الضغط الجوى</string>
+    <string name="address">العنوان</string>
+    <string name="whole_day_summary">ملخص عن اليوم بالكامل</string>
+    <string name="day_5">اليوم الخامس</string>
+    <string name="day_3">اليوم الثالت</string>
+    <string name="day_2">اليوم الثانى</string>
+    <string name="day_1">اليوم الأول</string>
+    <string name="day_4">اليوم الرابع</string>
+
+
+</resources>

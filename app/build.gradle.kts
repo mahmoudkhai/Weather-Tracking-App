@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.weathertrackingapp"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -33,6 +33,7 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
 }
 
 dependencies {
@@ -42,7 +43,12 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.play.services.location)
+    testImplementation(libs.junit.jupiter.api.v5100)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+    testImplementation(kotlin("test"))
+
+}
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
