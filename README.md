@@ -54,14 +54,28 @@ The app is built using the **Google-recommended architecture**:
 
 ## 📱 Screenshots
 
-*(You can add screenshots here by placing them in a `/screenshots` folder and referencing them like this):*  
-```markdown
-![Request User Location](screenshots/1_requestLocation.jpeg)
-![Illustrate why location is needed](screenshots/2_requestLocationAgain.jpeg)
-![Go To Setting To Enable Location Manually](screenshots/3_goToSettings.jpeg)
-![Data Loading](screenshots/4_loadingData.jpeg)
-![Data Fetched Successfully](screenshots/5_dataFetchedSuccessfully.jpeg)
-![Five Days Forecast Screen](screenshots/6_FiveDaysForecast.jpeg)
-![Offline State, Show Only Cached Data](screenshots/7_cachedData.jpeg)
-![Show Cached Five Days Forecast](screenshots/8_cachedFiveDaysForecastData.jpeg)
+![Request User Location](screenshots/1_requestLocation.jpeg)  
+*Request User Location*
+
+![Illustrate why location is needed](screenshots/2_requestLocationAgain.jpeg)  
+*Illustrate why location is needed*
+
+![Go To Setting To Enable Location Manually](screenshots/3_goToSettings.jpeg)  
+*Go To Setting To Enable Location Manually*
+
+![Data Loading](screenshots/4_loadingData.jpeg)  
+*Data Loading*
+
+![Data Fetched Successfully](screenshots/5_dataFetchedSuccessfully.jpeg)  
+*Data Fetched Successfully*
+
+![Five Days Forecast Screen](screenshots/6_FiveDaysForecast.jpeg)  
+*Five Days Forecast Screen*
+
+![Offline State, Show Only Cached Data](screenshots/7_cachedData.jpeg)  
+*Offline State, Show Only Cached Data*
+
+![Show Cached Five Days Forecast](screenshots/8_cachedFiveDaysForecastData.jpeg)  
+*Show Cached Five Days Forecast*
+
 
