@@ -1,3 +1,69 @@
 <resources>
     <string name="app_name">Weather Tracking App</string>
+    <string name="location_is_null">Sorry, location in null </string>
+    <string name="go_to_setting_dialog">Location permission was denied. Please enable it manually in Settings.</string>
+    <string name="permission_needed">Permission needed</string>
+    <string name="go_to_settings">Go to Settings</string>
+    <string name="cancel">Cancel</string>
+    <string name="please_allow_location_access">We need your location to provide location-based features. Please allow location access.</string>
+    <string name="allow">Allow</string>
+
+    <string name="current_weather">Current Weather</string>
+    <string name="temperature">Temperature:</string>
+    <string name="feels_like">Feels Like:</string>
+    <string name="conditions">Conditions:</string>
+    <string name="icon">Cloud Appearance:</string>
+    <string name="humidity">Humidity:</string>
+    <string name="cloud_cover">Cloud Cover:</string>
+    <string name="wind_speed">Wind Speed:</string>
+    <string name="uv_index">UV Index:</string>
+    <string name="sunrise">Sunrise:</string>
+    <string name="sunset">Sunset:</string>
+
+    <string name="WD_description">Description</string>
+    <string name="WD_datetime">Datetime</string>
+    <string name="WD_icon">Icon</string>
+    <string name="WD_conditions">Conditions</string>
+    <string name="WD_feels_like">Feels Like</string>
+    <string name="WD_humidity">Humidity</string>
+    <string name="WD_precip">Precipitation</string>
+    <string name="WD_pressure">Pressure</string>
+    <string name="WD_temperature">Temperature</string>
+    <string name="WD_wind_speed">Wind Speed</string>
+
+
+    <string name="no_internet_connection">No Internet Connection</string>
+    <string name="unknown_network_error">Unknown Network Error</string>
+    <string name="unauthorized_error">Unauthorized</string>
+    <string name="not_found_error">Not Found</string>
+    <string name="bad_request_error">Bad Request</string>
+    <string name="internal_server_error">Internal Server Error</string>
+    <string name="too_many_requests_error">Too Many Requests</string>
+
+    <string name="parsing_error">Parsing or Mapping Error</string>
+    <string name="unknown_location_error">Unknown Location</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="general_error">General Error, Talk With Support Team</string>
+    <string name="swipe_to_refresh">Swipe to refresh</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="click_here_to_view_next_5_days_forecast">Click Here To View Next 5 Days Forecast</string>
+    <string name="un_supported_type_casting">UnSupportedTypeCasting</string>
+    <string name="input_output_exception">Input Output Error When Dealing With Local DataBase</string>
+    <string name="no_cached_data_in_database">Local database Error, there is no data in the cache</string>
+    <string name="un_know_database_exception">Local database error %1$s</string>
+    <string name="and">and </string>
+    <string name="time">time</string>
+    <string name="resolved_address">Resolved Address</string>
+    <string name="time_zone">Time Zone</string>
+    <string name="pressure">Pressure</string>
+    <string name="address">Address</string>
+    <string name="whole_day_summary">Whole Day Summary</string>
+    <string name="day_5">Day 5:</string>
+    <string name="day_3">Day 3:</string>
+    <string name="day_2">Day 2:</string>
+    <string name="day_1">Day 1:</string>
+    <string name="day_4">Day 4:</string>
+
 </resources>
