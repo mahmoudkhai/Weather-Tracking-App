@@ -48,7 +48,21 @@ class WeatherRepositoryImpl(
         )
     }
 
-
+    /**
+     * Tries to get data safely from the remote data source first.
+     *
+     * If the remote call succeeds, it wraps the result in a DomainState.SuccessWithFreshData.
+     *
+     * If the remote call fails it wrap thrown exception with a CustomException, and it falls back to the local data source
+     * and returns the result wrapped as DomainState.FailureWithCachedData.
+     *
+     * If local data source was empty or an exception is thrown it returns a DomainState.FailureWithCachedData with null cached data.
+     *
+     * This method helps ensure the app always tries the freshest data first (remote), but gracefully
+     * handles failures by using local data if available.
+     *
+     * @return A DomainState object representing either the fresh remote data or the fallback local data.
+     */
     private fun <T> safeDataSourceCall(
         remoteDSCall: () -> T,
         localDSCall: () -> T,

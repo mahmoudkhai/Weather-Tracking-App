@@ -3,9 +3,9 @@ package com.example.weathertrackingapp.data.repository.dataSources.remote
 import android.util.Log
 import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
 import com.example.weathertrackingapp.data.constants.ApiKeyProvider
-import com.example.weathertrackingapp.data.repository.dataSources.remote.apiService.ApiService
 import com.example.weathertrackingapp.data.dto.CurrentWeatherDto
 import com.example.weathertrackingapp.data.dto.FiveDaysForecastDto
+import com.example.weathertrackingapp.data.repository.dataSources.remote.apiService.ApiService
 import com.example.weathertrackingapp.domain.entity.requestModels.WeatherRequest
 import com.example.weathertrackingapp.domain.repository.dataSources.remote.WeatherRemoteDS
 import java.time.LocalDate
@@ -18,9 +18,9 @@ class WeatherRemoteDSImpl(private val api: ApiService) : WeatherRemoteDS {
             responseType = CurrentWeatherDto::class,
             weatherRequest = weatherRequest,
             baseUrl = BASE_URL,
-            apiKey = ApiKeyProvider.API_KEY,
             startDate = LocalDate.now().toString(),
             endDate = LocalDate.now().toString(),
+            apiKey = ApiKeyProvider.API_KEY
         )
     }
 
@@ -32,7 +32,7 @@ class WeatherRemoteDSImpl(private val api: ApiService) : WeatherRemoteDS {
             baseUrl = BASE_URL,
             startDate = LocalDate.now().toString(),
             endDate = LocalDate.now().plusDays(5).toString(),
-            apiKey = ApiKeyProvider.API_KEY,
+            apiKey = ApiKeyProvider.API_KEY
         )
     }
 

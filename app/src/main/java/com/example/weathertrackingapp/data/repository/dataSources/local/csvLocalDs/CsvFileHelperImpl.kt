@@ -2,12 +2,18 @@ package com.example.weathertrackingapp.data.repository.dataSources.local.csvLoca
 
 import android.util.Log
 import com.example.weathertrackingapp.common.constants.CommonConstants.TAG
-import com.example.weathertrackingapp.common.customException.CustomException
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
-import java.io.IOException
 
+/**
+ * Abstract class that implements the CSVFileHelper interface to handle CSV file operations.
+ * It provides functionality to insert, read, and override data in a CSV file.
+ *
+ * @param DTO The data type being stored in or read from the CSV file.
+ * @param filePath The path of the CSV file.
+ * @param headers The list of headers for the CSV file.
+ */
 abstract class CsvFileHelperImpl<DTO>(
     filePath: String,
     private val headers: List<String>,
@@ -40,16 +46,7 @@ abstract class CsvFileHelperImpl<DTO>(
         Log.d(TAG, "Verifying written file content: ${file.readLines().last()}")
     }
 
-    override fun readMoseRecentData(): DTO = fromCsvRowToDto(file.readLines().last().also {
-        Log.d(TAG, "this is the string to convert to dto $it")
-    })
-
-
-//        file.readLines().also {
-//            Log.d(TAG, "current file with before dropping first row = : ${it.toString()} ")
-//        }fromCsvRowToDto).also {
-//            Log.d(TAG, "final cached dto after reading the file = : $it ")
-//        }
+    override fun readMoseRecentData(): DTO = fromCsvRowToDto(file.readLines().last())
 
     abstract fun fromDtoToCsvRow(dto: DTO): String
 
@@ -57,7 +54,6 @@ abstract class CsvFileHelperImpl<DTO>(
 
 
     companion object {
-        const val FIRST_ROW_OF_CSV_FILE = 1
         const val KEEP_ALL_DATA = true
         const val OVERRIDE_ALL_DATA = false
     }
