@@ -54,8 +54,18 @@ The app is built using the **Google-recommended architecture**:
 
 ## 📱 Screenshots
 
-*(You can add screenshots here by placing them in a `/screenshots` folder and referencing them like this):*  
-```markdown
-(https://github.com/user-attachments/assets/58afbd1c-df9f-48f8-b677-e584042b057d
-e.png)
-![Current Weather Details]()
+<img src="screenshots/1_requestLocation.jpeg" alt="Request User Location" width="400"/>
+
+<img src="screenshots/2_requestLocationAgain.jpeg" alt="Illustrate why location is needed" width="400"/>
+
+<img src="screenshots/3_goToSettings.jpeg" alt="Go To Setting To Enable Location Manually" width="400"/>
+
+<img src="screenshots/4_loadingData.jpeg" alt="Data Loading" width="400"/>
+
+<img src="screenshots/5_dataFetchedSuccessfully.jpeg" alt="Data Fetched Successfully" width="400"/>
+
+<img src="screenshots/6_FiveDaysForecast.jpeg" alt="Five Days Forecast Screen" width="400"/>
+
+<img src="screenshots/7_cachedData.jpeg" alt="Offline State, Show Only Cached Data" width="400"/>
+
+<img src="screenshots/8_cachedFiveDaysForecastData.jpeg" alt="Show Cached Five Days Forecast" width="400"/>
