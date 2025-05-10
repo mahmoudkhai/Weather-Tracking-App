@@ -29,9 +29,7 @@ class WeatherRepositoryImpl(
             },
             localDSCall = {
                 val localData = weatherLocalDS.getCurrentWeatherDto()
-                CurrentWeatherMapper.dtoToEntity(localData).also {
-                    Log.d(TAG, "getCurrentWeather: from local data source entity = $it")
-                }
+                CurrentWeatherMapper.dtoToEntity(localData)
             }
         )
     }
