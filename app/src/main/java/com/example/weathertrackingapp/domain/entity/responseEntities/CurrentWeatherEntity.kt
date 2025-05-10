@@ -8,7 +8,7 @@ data class CurrentWeatherEntity(
     val timeZone: String? = null,
     val address: String? = null,
     val currentConditions: CurrentConditionsEntity? = null,
-    val wholeDayWeather: WholeDayWeatherEntity
+    val wholeDayWeather: WholeDayWeatherEntity = WholeDayWeatherEntity()
 )
 
 data class CurrentConditionsEntity(

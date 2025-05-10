@@ -30,12 +30,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    buildFeatures {
-        viewBinding = true
-    }
     kotlinOptions {
         jvmTarget = "11"
     }
+
 }
 
 dependencies {
@@ -46,7 +44,11 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.play.services.location)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation(libs.junit.jupiter.api.v5100)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+    testImplementation(kotlin("test"))
+
+}
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
