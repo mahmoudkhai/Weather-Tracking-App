@@ -54,28 +54,18 @@ The app is built using the **Google-recommended architecture**:
 
 ## 📱 Screenshots
 
-![Request User Location](screenshots/1_requestLocation.jpeg)  
-*Request User Location*
+<img src="screenshots/1_requestLocation.jpeg" alt="Request User Location" width="400"/>
 
-![Illustrate why location is needed](screenshots/2_requestLocationAgain.jpeg)  
-*Illustrate why location is needed*
+<img src="screenshots/2_requestLocationAgain.jpeg" alt="Illustrate why location is needed" width="400"/>
 
-![Go To Setting To Enable Location Manually](screenshots/3_goToSettings.jpeg)  
-*Go To Setting To Enable Location Manually*
+<img src="screenshots/3_goToSettings.jpeg" alt="Go To Setting To Enable Location Manually" width="400"/>
 
-![Data Loading](screenshots/4_loadingData.jpeg)  
-*Data Loading*
+<img src="screenshots/4_loadingData.jpeg" alt="Data Loading" width="400"/>
 
-![Data Fetched Successfully](screenshots/5_dataFetchedSuccessfully.jpeg)  
-*Data Fetched Successfully*
+<img src="screenshots/5_dataFetchedSuccessfully.jpeg" alt="Data Fetched Successfully" width="400"/>
 
-![Five Days Forecast Screen](screenshots/6_FiveDaysForecast.jpeg)  
-*Five Days Forecast Screen*
+<img src="screenshots/6_FiveDaysForecast.jpeg" alt="Five Days Forecast Screen" width="400"/>
 
-![Offline State, Show Only Cached Data](screenshots/7_cachedData.jpeg)  
-*Offline State, Show Only Cached Data*
+<img src="screenshots/7_cachedData.jpeg" alt="Offline State, Show Only Cached Data" width="400"/>
 
-![Show Cached Five Days Forecast](screenshots/8_cachedFiveDaysForecastData.jpeg)  
-*Show Cached Five Days Forecast*
-
-
+<img src="screenshots/8_cachedFiveDaysForecastData.jpeg" alt="Show Cached Five Days Forecast" width="400"/>
