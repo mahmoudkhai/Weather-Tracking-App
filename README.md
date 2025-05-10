@@ -51,6 +51,8 @@ The app is built using the **Google-recommended architecture**:
 - Registered and initialized components are **properly cleaned up and destroyed** when no longer needed, to avoid unnecessary resource consumption.
 
 ---
+## ⚠️ Hint
+- You must provide your own API key to use this app.
 
 ## 📱 Screenshots
 
