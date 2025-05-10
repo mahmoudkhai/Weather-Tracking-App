@@ -8,13 +8,17 @@ import com.example.weathertrackingapp.domain.entity.responseEntities.FiveDaysFor
 import com.example.weathertrackingapp.domain.repository.WeatherRepository
 
 class MockedRepository : WeatherRepository {
-    var shouldFail: Boolean = false
-    var exceptions = listOf<CustomException>()
-    var fiveDaysForecastCachedData: FiveDaysForecastEntity? = null
+    companion object {
+        var shouldFail: Boolean = false
+        var exceptions = listOf<CustomException>()
+        var currentWeatherCachedData: CurrentWeatherEntity? = null
+        var fiveDaysForecastCachedData: FiveDaysForecastEntity? = null
+
+    }
 
     override fun getCurrentWeather(weatherRequest: WeatherRequest): DomainState<CurrentWeatherEntity> {
         return if (shouldFail) {
-            DomainState.FailureWithCachedData(listOf(CustomException.NetworkException.NoInternetConnection))
+            DomainState.FailureWithCachedData(exceptions, cachedData = currentWeatherCachedData)
         } else {
             DomainState.SuccessWithFreshData(CurrentWeatherEntity())
         }
@@ -26,8 +30,5 @@ class MockedRepository : WeatherRepository {
         } else {
             DomainState.SuccessWithFreshData(FiveDaysForecastEntity())
         }
-    }
-
-    companion object {
     }
 }

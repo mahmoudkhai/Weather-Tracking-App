@@ -6,6 +6,7 @@ import com.example.weathertrackingapp.domain.entity.requestModels.LatLong
 import com.example.weathertrackingapp.domain.entity.requestModels.WeatherRequest
 import com.example.weathertrackingapp.domain.entity.responseEntities.FiveDaysForecastEntity
 import com.example.weathertrackingapp.domain.fake.MockedRepository
+import com.example.weathertrackingapp.domain.fake.MockedRepository.Companion.shouldFail
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import kotlin.test.Test
@@ -30,9 +31,11 @@ class GetFiveDaysForecastUseCaseTest {
     }
 
     @Test
-    fun `Given weather request, When invoking the useCase, Then subscriper get loading then success with data, then stop loading`() {
+    fun `Given weather request, When invoking the useCase, Then subscriber get loading then success with data, then stop loading`() {
         //Given
-        weatherRepository.shouldFail = false
+        weatherRepository.apply {
+            shouldFail = false
+        }
         //When
         getFiveDaysWeather(weatherRequest)
         firstUpdate = subscriber.updates[FIRST_STATE]
@@ -56,7 +59,8 @@ class GetFiveDaysForecastUseCaseTest {
         )
         weatherRepository.apply {
             shouldFail = true
-            this.exceptions = exceptions
+            MockedRepository.exceptions = exceptions
+            MockedRepository.fiveDaysForecastCachedData = null
         }
         //When
         getFiveDaysWeather(weatherRequest)
@@ -78,8 +82,8 @@ class GetFiveDaysForecastUseCaseTest {
         val cachedData = FiveDaysForecastEntity()
         weatherRepository.apply {
             shouldFail = true
-            this.exceptions = exceptions
-            fiveDaysForecastCachedData = cachedData
+            MockedRepository.exceptions = exceptions
+            MockedRepository.fiveDaysForecastCachedData = cachedData
         }
         //When
         getFiveDaysWeather(weatherRequest)
